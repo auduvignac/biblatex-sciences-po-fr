@@ -32,19 +32,11 @@
 
 % --- FORMATTAGE DES NOMS : NOM, Prénom. (avec majuscules) ---
 \DeclareNameFormat{labelname}{%
-  \ifnumequal{\value{listcount}}{1}
-    {% Premier auteur: NOM, Prénom.
-      \nameparts{#1}%
-      \ifdef\namepartfamily{\MakeUppercase{\namepartfamily}}{}%
-      \addcomma\space%
-      \ifdef\namepartgiven{\namepartgiven}{}%
-    }
-    {% Autres auteurs: NOM, Prénom.
-      \nameparts{#1}%
-      \ifdef\namepartfamily{\MakeUppercase{\namepartfamily}}{}%
-      \addcomma\space%
-      \ifdef\namepartgiven{\namepartgiven}{}%
-    }%
+  % Même format pour tous les auteurs : NOM, Prénom.
+  \nameparts{#1}%
+  \ifdef\namepartfamily{\MakeUppercase{\namepartfamily}}{}%
+  \addcomma\space%
+  \ifdef\namepartgiven{\namepartgiven}{}%
   \ifnumless{\value{listcount}}{\value{liststop}}{\addcomma\space}{}%
 }
 % Utiliser ce format pour tous les auteurs (notes + bibliographie)
