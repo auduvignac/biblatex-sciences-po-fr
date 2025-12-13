@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel} % Charger babel pour la typographie française générale
+\usepackage{csquotes}
+\usepackage{hyperref}
+
+% Configuration de biblatex (activation d'ibid./op. cit. pour les notes)
+\usepackage[
+    style=authoryear, % Base pour la bibliographie
+    citestyle=verbose-trad1, % Style de notes avec ibid./op. cit.
+    backend=biber,    
+    hyperref=true,
+    pagetracker=true, % Assure le suivi des pages (pour ibid.)
+    doi=false,        
+    url=false,
+    autolang=other % Empêche biblatex d'adapter la langue via babel (utile pour ibid./op. cit.)
+]{biblatex}
+
+% Fichier bibliographique
+\addbibresource{bibliographies/livres.bib} 
+
+% --- GESTION DU NOMBRE D'AUTEURS (et al.) ---
+\AtBeginDocument{%
+    % Limite à 3 auteurs avant de mettre et al.
+    \setcounter{maxnames}{3}
+    \setcounter{minnames}{1}
+}
+% Séparateurs entre auteurs : virgule + espace
+\DeclareDelimFormat{multinamedelim}{\addcomma\space}
+\DeclareDelimFormat{finalnamedelim}{\addcomma\space}
+
+% --- FORMATTAGE DES NOMS : NOM, Prénom. (avec majuscules) ---
+\DeclareNameFormat{labelname}{%
+  % Même format pour tous les auteurs : NOM, Prénom.
+  \nameparts{#1}%
+  \ifdef\namepartfamily{\MakeUppercase{\namepartfamily}}{}%
+  \addcomma\space%
+  \ifdef\namepartgiven{\namepartgiven}{}%
+  \ifnumless{\value{listcount}}{\value{liststop}}{\addcomma\space}{}%
+}
+% Utiliser ce format pour tous les auteurs (notes + bibliographie)
+\DeclareNameAlias{author}{labelname}
+
+% --- FORMATTAGE DES CHAMPS STANDARDS (pas d'italique, ponctuation) ---
+\DeclareFieldFormat{title}{#1\adddot} 
+\DeclareFieldFormat{edition}{#1\adddot}
+
+% --- DRIVER POUR LIVRE (@book) ---
+% Format: AUTEUR, Prénom. Titre. Edition. Lieu de publication : éditeur, année. Pagination.
+\DeclareBibliographyDriver{book}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \newunit\newblock%
+  \printfield{title}% 
+  \newunit\newblock%
+  \printfield{edition}% 
+  \newunit\newblock%
+  \printlist{location}% 
+  \addcolon\space%
+  \printlist{publisher}% 
+  \addcomma\space%
+  \printfield{year}\adddot%
+  \addspace%
+  \printfield{pages}%
+  \usebibmacro{finentry}%
+}
+
+
+\begin{document}
+
+\section*{Texte d'exemple}
+
+\subsection*{Citations}
+% Les citations d'article ont été retirées pour se concentrer uniquement sur les livres
+\footcite{Boursin:1991} % 1. Boursin (Première citation complète)
+\footcite{Fitoussi:1995} % 2. Fitoussi (Première citation complète)
+\footcite{Fitoussi:1995} % 3. Fitoussi (Devrait être ibid.)
+\footcite[][150]{Fitoussi:1995} % 4. Fitoussi, p. 150 (Devrait être ibid., p. 150)
+\footcite{Vernant:2000} % 5. Vernant (Citation complète)
+\footcite{Fitoussi:1995} % 6. Fitoussi (Devrait être op. cit. / loc. cit.)
+\footcite{Hermet:2000} % 7. Hermet et al. (doit produire et al.)
+\footcite{Lazar:1991} % 8. Lazar et al. (citation complète)
+
+
+\newpage
+\printbibliography[heading=bibintoc, title=Bibliographie]
+
+\end{document}
