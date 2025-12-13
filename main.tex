@@ -66,7 +66,7 @@
 \DeclareFieldFormat[thesis]{pages}{#1} % pagination libre pour les thèses
 \DeclareFieldFormat[movie]{title}{#1} % pas de guillemets pour les films
 \DeclareFieldFormat[online]{title}{#1} % pas de guillemets pour les vidéos en ligne
-\DeclareFieldFormat[online]{url}{#1} % pas de préfixe pour les vidéos en ligne
+\DeclareFieldFormat[online]{url}{\url{#1}} % conserver la casse/ligatures tout en bénéficiant des retours à la ligne de \url
 \DeclareFieldFormat[online]{urldate}{\mkbibbrackets{vue le\space#1}}
 \DeclareFieldFormat[online]{pubdate}{\mkbibdatelong{#1}}
 \DeclareFieldFormat[online]{updatedate}{\mkbibdatelong{#1}}
