@@ -120,7 +120,7 @@
   \addcomma\space%
   \iffieldundef{volume}{}{\printtext{vol.\addspace}\printfield{volume}\addcomma\space}%
   \iffieldundef{number}{}{\printtext{n\textsuperscript{o}\addspace}\printfield{number}\addcomma\space}%
-  \printtext{p.\addspace}\printfield{pages}%
+  \iffieldundef{pages}{}{\printtext{p.\addspace}\printfield{pages}}%
   \usebibmacro{finentry}%
 }
 
