@@ -136,17 +136,14 @@
   \newunit\newblock%
   \printfield{title}%
   \setunit{\adddot\space}%
-  \printfield{type}%
-  \setunit{\addcolon\space}%
-  \printfield{discipline}%
-  \setunit{\addcolon\space}%
-  \printlist{location}%
-  \setunit{\addcolon\space}%
-  \printlist{institution}%
-  \setunit{\addcolon\space}%
+  \iffieldundef{type}{}{\printfield{type}\setunit{\addcolon\space}}%
+  \iffieldundef{discipline}{}{\printfield{discipline}\setunit{\addcolon\space}}%
+  \iffieldundef{location}{}{\printlist{location}\setunit{\addcolon\space}}%
+  \iffieldundef{institution}{}{\printlist{institution}\setunit{\addcolon\space}}%
   \printfield{year}\adddot%
-  \addspace%
-  \printfield{pages}%
+  \iffieldundef{pages}{}{%
+    \addspace%
+    \printfield{pages}}%
   \usebibmacro{finentry}%
 }
 
