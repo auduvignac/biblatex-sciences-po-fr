@@ -1,0 +1,18 @@
+sequenceDiagram
+  actor Auteur
+  participant LaTeX
+  participant Biblatex
+  participant PiloteFilm as MovieDriver
+
+  Auteur->>LaTeX: Compiler le document avec footcite Jaeggi_2003
+  LaTeX->>Biblatex: Demander la citation formatée pour Jaeggi_2003
+  Biblatex->>Biblatex: Charger les champs 'medium' et 'extent' du modèle de données
+  Biblatex->>PiloteFilm: Invoquer le pilote Film avec l'entrée Film (MovieEntry)
+
+  PiloteFilm->>PiloteFilm: formaterRéalisateurOuAuteur(EntréeFilm)
+  PiloteFilm->>PiloteFilm: formaterSupport(EntréeFilm) (medium)
+  PiloteFilm->>PiloteFilm: formaterDurée(EntréeFilm) (extent)
+  PiloteFilm-->>Biblatex: Chaîne de citation film formatée
+
+  Biblatex-->>LaTeX: Insérer la note de bas de page formatée
+  LaTeX-->>Auteur: Générer le PDF avec la citation du film
