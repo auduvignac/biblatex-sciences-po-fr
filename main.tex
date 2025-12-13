@@ -66,6 +66,9 @@
 \DeclareFieldFormat[thesis]{pages}{#1} % pagination libre pour les thèses
 \DeclareFieldFormat[movie]{title}{#1} % pas de guillemets pour les films
 \DeclareFieldFormat[online]{title}{#1} % pas de guillemets pour les vidéos en ligne
+\DeclareFieldFormat[online]{volume}{#1} % volume brut pour les articles en ligne
+\DeclareFieldFormat[online]{number}{#1} % numéro brut pour les articles en ligne
+\DeclareFieldFormat[online]{pages}{#1} % pagination brute pour les articles en ligne
 \DeclareFieldFormat[online]{url}{\url{#1}} % conserver la casse/ligatures tout en bénéficiant des retours à la ligne de \url
 \DeclareFieldFormat[online]{pubdate}{\mkbibdatelong{#1}}
 \DeclareFieldFormat[online]{updatedate}{\mkbibdatelong{#1}}
@@ -96,6 +99,20 @@
         \mkbibmonth{\thefield{updatemonth}}\space\printfield{updateyear}%
       }{%
         \printfield{updateday}\space\mkbibmonth{\thefield{updatemonth}}\space\printfield{updateyear}%
+      }%
+    }%
+  }%
+}
+
+\newcommand*{\printonlinepubdateinline}{%
+  \iffieldundef{pubyear}{}{%
+    \iffieldundef{pubmonth}{%
+      \printfield{pubyear}%
+    }{%
+      \iffieldundef{pubday}{%
+        \mkbibmonth{\thefield{pubmonth}}\space\printfield{pubyear}%
+      }{%
+        \printfield{pubday}\space\mkbibmonth{\thefield{pubmonth}}\space\printfield{pubyear}%
       }%
     }%
   }%
@@ -239,14 +256,35 @@
   \printfield{title}%
   \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{video}} }{\space[vidéo en ligne]}{}%
   \setunit{\adddot\space}%
-  \iffieldundef{platform}
-    {\iflistundef{publisher}{}{\printlist{publisher}}}
-    {\printfield{platform}}%
-  \printonlinepubdate%
-  \printonlineupdatedate%
-  \printonlineurldate%
-  \addspace%
-  \printfield{url}%
+  \iffieldundef{journaltitle}{%
+    \iffieldundef{platform}
+      {\iflistundef{publisher}{}{\printlist{publisher}}}
+      {\printfield{platform}}%
+    \printonlinepubdate%
+    \printonlineupdatedate%
+    \printonlineurldate%
+    \addspace%
+    \printfield{url}%
+  }{%
+    \printfield{journaltitle}%
+    \space[en ligne]\adddot\space%
+    \printonlinepubdateinline%
+    \iffieldundef{volume}{}{%
+      \addcomma\space%
+      \printtext{vol.\space\printfield{volume}}}%
+    \iffieldundef{number}{}{%
+      \addcomma\space%
+      \printtext{n\textsuperscript{o}\space\printfield{number}}}%
+    \iffieldundef{urlyear}{}{%
+      \addcomma%
+      \printonlineurldate}%
+    \iffieldundef{pages}{}{%
+      \addcomma\space%
+      \printtext{p.\space\printfield{pages}}}%
+    \adddot\space%
+    \printtext{Disponible sur :\space}%
+    \printfield{url}%
+  }%
   \usebibmacro{finentry}%
 }
 
@@ -303,6 +341,7 @@
 \footcite{Jaeggi:2003} % 15. Film
 \footcite{SciencesPo:2017} % 16. Vidéo en ligne
 \footcite{GlobalWebIndex:2020} % 17. Rapport électronique
+\footcite{RindeRokkan:1959} % 18. Article en ligne
 
 
 \newpage
