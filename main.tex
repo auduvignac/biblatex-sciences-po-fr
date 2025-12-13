@@ -21,6 +21,7 @@
 \addbibresource{bibliographies/articles.bib}
 \addbibresource{bibliographies/livres.bib}
 \addbibresource{bibliographies/theses.bib}
+\addbibresource{bibliographies/films.bib}
 \addbibresource{bibliographies/rapports.bib}
 
 % --- GESTION DU NOMBRE D'AUTEURS (et al.) ---
@@ -48,6 +49,7 @@
 % Utiliser ce format pour tous les auteurs (notes + bibliographie)
 \DeclareNameAlias{author}{labelname}
 \DeclareNameAlias{editor}{labelname}
+\DeclareNameAlias{director}{labelname}
 
 % --- FORMATTAGE DES CHAMPS STANDARDS (pas d'italique, ponctuation) ---
 \DeclareFieldFormat{title}{#1\adddot} 
@@ -60,6 +62,7 @@
 \DeclareFieldFormat{journaltitle}{#1} % revues en romain
 \DeclareFieldFormat[thesis]{title}{#1} % pas de guillemets pour les thèses
 \DeclareFieldFormat[thesis]{pages}{#1} % pagination libre pour les thèses
+\DeclareFieldFormat[movie]{title}{#1} % pas de guillemets pour les films
 
 % --- DRIVER POUR LIVRE (@book) ---
 % Format: AUTEUR, Prénom. Titre. Edition. Lieu de publication : éditeur, année. Pagination.
@@ -138,12 +141,31 @@
   \setunit{\adddot\space}%
   \iffieldundef{type}{}{\printfield{type}\setunit{\addcolon\space}}%
   \iffieldundef{discipline}{}{\printfield{discipline}\setunit{\addcolon\space}}%
-  \iffieldundef{location}{}{\printlist{location}\setunit{\addcolon\space}}%
-  \iffieldundef{institution}{}{\printlist{institution}\setunit{\addcolon\space}}%
+  \iflistundef{location}{}{\printlist{location}\setunit{\addcolon\space}}%
+  \iflistundef{institution}{}{\printlist{institution}\setunit{\addcolon\space}}%
   \printfield{year}\adddot%
   \iffieldundef{pages}{}{%
     \addspace%
     \printfield{pages}}%
+  \usebibmacro{finentry}%
+}
+
+% --- DRIVER POUR FILM (@movie) ---
+% Format: Réalisateur, réal. Titre [support]. Producteur, année. Extent.
+\DeclareBibliographyDriver{movie}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \ifnameundef{director}
+    {\ifnameundef{author}{}{\printnames{author}\addcomma\space\printtext{réal.}}}
+    {\printnames{director}\addcomma\space\printtext{réal.}}%
+  \newunit\newblock%
+  \printfield{title}%
+  \iffieldundef{medium}{}{\space[\printfield{medium}]}%
+  \setunit{\adddot\space}%
+  \iflistundef{publisher}{}{\printlist{publisher}\setunit{\addcomma\space}}%
+  \printfield{year}%
+  \iffieldundef{year}{}{\adddot}%
+  \iffieldundef{extent}{}{\space\printfield{extent}}%
   \usebibmacro{finentry}%
 }
 
@@ -197,6 +219,7 @@
 \footcite{Leca:2001} % 12. Article de revue
 \footcite{Simeant:1993} % 13. Article de revue
 \footcite{Brice:2004} % 14. Thèse
+\footcite{Jaeggi:2003} % 15. Film
 
 
 \newpage
