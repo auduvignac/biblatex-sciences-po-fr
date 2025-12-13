@@ -17,7 +17,7 @@
     autolang=other % Empêche biblatex d'adapter la langue via babel (utile pour ibid./op. cit.)
 ]{biblatex}
 
-% Fichier bibliographique
+% Fichiers bibliographiques
 \addbibresource{bibliographies/livres.bib}
 \addbibresource{bibliographies/rapports.bib}
 
@@ -77,9 +77,9 @@
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \renewcommand*{\newunitpunct}{\adddot\space}%
-  \ifnameundef{author}
-    {\iffieldundef{shortinstitution}{\printlist{institution}}{\printfield{shortinstitution}}}
-    {\printfield{author}}%
+  \iffieldundef{shortinstitution}
+    {\ifnameundef{author}{\printlist{institution}}{\printnames{author}}}
+    {\printfield{shortinstitution}}%
   \setunit{\addperiod\space}%
   \printfield{title}%
   \setunit{\addperiod\space}%
