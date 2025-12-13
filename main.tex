@@ -17,8 +17,9 @@
     autolang=other % Empêche biblatex d'adapter la langue via babel (utile pour ibid./op. cit.)
 ]{biblatex}
 
-% Fichier bibliographique
-\addbibresource{bibliographies/livres.bib} 
+% Fichiers bibliographiques
+\addbibresource{bibliographies/livres.bib}
+\addbibresource{bibliographies/rapports.bib}
 
 % --- GESTION DU NOMBRE D'AUTEURS (et al.) ---
 \AtBeginDocument{%
@@ -34,9 +35,12 @@
 \DeclareNameFormat{labelname}{%
   % Même format pour tous les auteurs : NOM, Prénom.
   \nameparts{#1}%
-  \ifdef\namepartfamily{\MakeUppercase{\namepartfamily}}{}%
-  \addcomma\space%
-  \ifdef\namepartgiven{\namepartgiven}{}%
+  \ifdef\namepartfamily{%
+    \ifblank{\namepartgiven}
+      {\namepartfamily}% cas institution : respecter la casse
+      {\MakeUppercase{\namepartfamily}}%
+  }{}%
+  \ifblank{\namepartgiven}{}{\addcomma\space\namepartgiven}%
   \ifnumless{\value{listcount}}{\value{liststop}}{\addcomma\space}{}%
 }
 % Utiliser ce format pour tous les auteurs (notes + bibliographie)
@@ -67,6 +71,35 @@
   \usebibmacro{finentry}%
 }
 
+% --- DRIVER POUR RAPPORT (@report) ---
+% Format: Auteur/Institution. Titre. Rapport <numéro>. Institution, année. Série.
+\DeclareBibliographyDriver{report}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \renewcommand*{\newunitpunct}{\adddot\space}%
+  \iffieldundef{shortinstitution}
+    {\ifnameundef{author}{\printlist{institution}}{\printnames{author}}}
+    {\printfield{shortinstitution}}%
+  \setunit{\addperiod\space}%
+  \printfield{title}%
+  \setunit{\addperiod\space}%
+  \iffieldundef{type}
+    {\iffieldundef{number}
+       {}% neither type nor number
+       {\printfield{number}}}% only number
+    {\printfield{type}%
+     \iffieldundef{number}
+       {}% only type
+       {\addspace\printfield{number}}}% type and number
+  \setunit{\addperiod\space}%
+  \iffieldundef{organization}{\printlist{institution}}{\printlist{organization}}%
+  \addcomma\space%
+  \printfield{year}%
+  \setunit{\space}%
+  \printtext{\mkbibparens{\printfield{series}}}%
+  \usebibmacro{finentry}%
+}
+
 
 \begin{document}
 
@@ -82,6 +115,8 @@
 \footcite{Fitoussi:1995} % 6. Fitoussi (Devrait être op. cit. / loc. cit.)
 \footcite{Hermet:2000} % 7. Hermet et al. (doit produire et al.)
 \footcite{Lazar:1991} % 8. Lazar et al. (citation complète)
+\footcite{Insee:2020} % 9. Rapport Insee (rapport numéroté)
+\footcite{Insee:2020} % 10. Rapport Insee (rapport numéroté, Devrait être ibid.)
 
 
 \newpage
