@@ -67,24 +67,8 @@
 \DeclareFieldFormat[movie]{title}{#1} % pas de guillemets pour les films
 \DeclareFieldFormat[online]{title}{#1} % pas de guillemets pour les vidéos en ligne
 \DeclareFieldFormat[online]{url}{\url{#1}} % conserver la casse/ligatures tout en bénéficiant des retours à la ligne de \url
-\DeclareFieldFormat[online]{urldate}{\mkbibdatelong{#1}}
 \DeclareFieldFormat[online]{pubdate}{\mkbibdatelong{#1}}
 \DeclareFieldFormat[online]{updatedate}{\mkbibdatelong{#1}}
-
-% Date d'accès aux ressources en ligne (utilise urlday/urlmonth/urlyear)
-\newcommand*{\printonlineaccessdate}{%
-  \iffieldundef{urlyear}{}{%
-    \iffieldundef{urlmonth}{%
-      \printfield{urlyear}%
-    }{%
-      \iffieldundef{urlday}{%
-        \mkbibmonth{\thefield{urlmonth}}\space\printfield{urlyear}%
-      }{%
-        \printfield{urlday}\space\mkbibmonth{\thefield{urlmonth}}\space\printfield{urlyear}%
-      }%
-    }%
-  }%
-}
 
 % Affichages dédiés aux dates de publication/mise à jour des vidéos en ligne
 \newcommand*{\printonlinepubdate}{%
@@ -113,6 +97,18 @@
       }{%
         \printfield{updateday}\space\mkbibmonth{\thefield{updatemonth}}\space\printfield{updateyear}%
       }%
+    }%
+  }%
+}
+
+\newcommand*{\printonlineaccessdate}{%
+  \iffieldundef{urlmonth}{%
+    \printfield{urlyear}%
+  }{%
+    \iffieldundef{urlday}{%
+      \mkbibmonth{\thefield{urlmonth}}\space\printfield{urlyear}%
+    }{%
+      \printfield{urlday}\space\mkbibmonth{\thefield{urlmonth}}\space\printfield{urlyear}%
     }%
   }%
 }
