@@ -45,10 +45,13 @@
 }
 % Utiliser ce format pour tous les auteurs (notes + bibliographie)
 \DeclareNameAlias{author}{labelname}
+\DeclareNameAlias{editor}{labelname}
 
 % --- FORMATTAGE DES CHAMPS STANDARDS (pas d'italique, ponctuation) ---
 \DeclareFieldFormat{title}{#1\adddot} 
 \DeclareFieldFormat{edition}{#1\adddot}
+\DeclareFieldFormat[incollection]{title}{#1} % pas de point ni de guillemets avant "In"
+\DeclareFieldFormat[incollection]{pages}{#1} % conserver la pagination brute pour ajouter "p."
 
 % --- DRIVER POUR LIVRE (@book) ---
 % Format: AUTEUR, Prénom. Titre. Edition. Lieu de publication : éditeur, année. Pagination.
@@ -67,6 +70,32 @@
   \addcomma\space%
   \printfield{year}\adddot%
   \addspace%
+  \printfield{pages}%
+  \usebibmacro{finentry}%
+}
+
+% --- DRIVER POUR CHAPITRE (@incollection) ---
+% Format: Auteur. Titre du chapitre. In Éditeur (dir.). Titre de l’ouvrage collectif. Lieu : éditeur, année. Pagination.
+\DeclareBibliographyDriver{incollection}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \newunit\newblock%
+  \printfield{title}%
+  \newunit\newblock%
+  \printtext{In\space}%
+  \printnames{editor}%
+  \iffieldundef{editortype}{}{\addspace\printfield{editortype}}%
+  \setunit{\addperiod\space}%
+  \printfield{booktitle}%
+  \newunit\newblock%
+  \printlist{location}%
+  \addcolon\space%
+  \printlist{publisher}%
+  \addcomma\space%
+  \printfield{year}\adddot%
+  \addspace%
+  \printtext{p.\addspace}%
   \printfield{pages}%
   \usebibmacro{finentry}%
 }
@@ -117,6 +146,7 @@
 \footcite{Lazar:1991} % 8. Lazar et al. (citation complète)
 \footcite{Insee:2020} % 9. Rapport Insee (rapport numéroté)
 \footcite{Insee:2020} % 10. Rapport Insee (rapport numéroté, Devrait être ibid.)
+\footcite{Hassenteufel:1993} % 11. Chapitre d'ouvrage collectif
 
 
 \newpage
