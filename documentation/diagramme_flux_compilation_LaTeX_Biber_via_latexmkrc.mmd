@@ -1,0 +1,18 @@
+flowchart TD
+  A["Démarrage latexmk main.tex"] --> B["Lire la configuration latexmkrc"]
+  B --> C["Définir pdflatex = pdflatex -interaction=nonstopmode"]
+  C --> D["Définir Biber comme moteur bibliographique"]
+  D --> E["Activer pdf_mode et force_mode"]
+  E --> F["Première exécution de pdflatex ou xelatex sur main.tex"]
+  F --> G{Données bibliographiques requises ?}
+  G -- Oui --> H["Exécuter Biber sur main"]
+  H --> I["Mettre à jour les fichiers bbl et aux"]
+  I --> J["Ré-exécuter pdflatex ou xelatex"]
+  J --> K{Document stable ?}
+  K -- Non --> J
+  K -- Oui --> L["Finaliser la compilation et générer main.pdf"]
+  L --> M{Commande latexmk -C invoquée ?}
+  M -- Non --> N["Conserver les fichiers auxiliaires"]
+  M -- Yes --> O["Nettoyer les extensions (bbl, bcf, run.xml, etc.)"]
+  N --> P["Fin"]
+  O --> P
