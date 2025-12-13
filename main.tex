@@ -83,7 +83,14 @@
   \setunit{\addperiod\space}%
   \printfield{title}%
   \setunit{\addperiod\space}%
-  \printfield{type}\addspace\printfield{number}%
+  \iffieldundef{type}
+    {\iffieldundef{number}
+       {}% neither type nor number
+       {\printfield{number}}}% only number
+    {\printfield{type}%
+     \iffieldundef{number}
+       {}% only type
+       {\addspace\printfield{number}}}% type and number
   \setunit{\addperiod\space}%
   \iffieldundef{organization}{\printlist{institution}}{\printlist{organization}}%
   \addcomma\space%
