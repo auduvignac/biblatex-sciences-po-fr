@@ -74,9 +74,8 @@
 \DeclareFieldFormat[online]{updatedate}{\mkbibdatelong{#1}}
 
 % Affichages dédiés aux dates de publication/mise à jour des vidéos en ligne
-\newcommand*{\printonlinepubdate}{%
+\newcommand*{\printonlinepubdatevalue}{%
   \iffieldundef{pubyear}{}{%
-    \addcomma\space%
     \iffieldundef{pubmonth}{%
       \printfield{pubyear}%
     }{%
@@ -86,6 +85,13 @@
         \printfield{pubday}\space\mkbibmonth{\thefield{pubmonth}}\space\printfield{pubyear}%
       }%
     }%
+  }%
+}
+
+\newcommand*{\printonlinepubdate}{%
+  \iffieldundef{pubyear}{}{%
+    \addcomma\space%
+    \printonlinepubdatevalue%
   }%
 }
 
@@ -105,17 +111,7 @@
 }
 
 \newcommand*{\printonlinepubdateinline}{%
-  \iffieldundef{pubyear}{}{%
-    \iffieldundef{pubmonth}{%
-      \printfield{pubyear}%
-    }{%
-      \iffieldundef{pubday}{%
-        \mkbibmonth{\thefield{pubmonth}}\space\printfield{pubyear}%
-      }{%
-        \printfield{pubday}\space\mkbibmonth{\thefield{pubmonth}}\space\printfield{pubyear}%
-      }%
-    }%
-  }%
+  \printonlinepubdatevalue%
 }
 
 \newcommand*{\printonlineaccessdate}{%
