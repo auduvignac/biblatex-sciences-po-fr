@@ -13,7 +13,8 @@
     hyperref=true,
     pagetracker=true, % Assure le suivi des pages (pour ibid.)
     doi=false,        
-    url=false,
+    url=true,
+    urldate=long, % Dates de consultation en toutes lettres
     autolang=other % Empêche biblatex d'adapter la langue via babel (utile pour ibid./op. cit.)
 ]{biblatex}
 
@@ -23,6 +24,7 @@
 \addbibresource{bibliographies/theses.bib}
 \addbibresource{bibliographies/films.bib}
 \addbibresource{bibliographies/rapports.bib}
+\addbibresource{bibliographies/videos_en_ligne.bib}
 
 % --- GESTION DU NOMBRE D'AUTEURS (et al.) ---
 \AtBeginDocument{%
@@ -63,6 +65,42 @@
 \DeclareFieldFormat[thesis]{title}{#1} % pas de guillemets pour les thèses
 \DeclareFieldFormat[thesis]{pages}{#1} % pagination libre pour les thèses
 \DeclareFieldFormat[movie]{title}{#1} % pas de guillemets pour les films
+\DeclareFieldFormat[online]{title}{#1} % pas de guillemets pour les vidéos en ligne
+\DeclareFieldFormat[online]{url}{\url{#1}} % conserver la casse/ligatures tout en bénéficiant des retours à la ligne de \url
+\DeclareFieldFormat[online]{urldate}{\mkbibbrackets{vue le\space#1}}
+\DeclareFieldFormat[online]{pubdate}{\mkbibdatelong{#1}}
+\DeclareFieldFormat[online]{updatedate}{\mkbibdatelong{#1}}
+
+% Affichages dédiés aux dates de publication/mise à jour des vidéos en ligne
+\newcommand*{\printonlinepubdate}{%
+  \iffieldundef{pubyear}{}{%
+    \addcomma\space%
+    \iffieldundef{pubmonth}{%
+      \printfield{pubyear}%
+    }{%
+      \iffieldundef{pubday}{%
+        \mkbibmonth{\thefield{pubmonth}}\space\printfield{pubyear}%
+      }{%
+        \printfield{pubday}\space\mkbibmonth{\thefield{pubmonth}}\space\printfield{pubyear}%
+      }%
+    }%
+  }%
+}
+
+\newcommand*{\printonlineupdatedate}{%
+  \iffieldundef{updateyear}{}{%
+    \addcomma\space%
+    \iffieldundef{updatemonth}{%
+      \printfield{updateyear}%
+    }{%
+      \iffieldundef{updateday}{%
+        \mkbibmonth{\thefield{updatemonth}}\space\printfield{updateyear}%
+      }{%
+        \printfield{updateday}\space\mkbibmonth{\thefield{updatemonth}}\space\printfield{updateyear}%
+      }%
+    }%
+  }%
+}
 
 % --- DRIVER POUR LIVRE (@book) ---
 % Format: AUTEUR, Prénom. Titre. Edition. Lieu de publication : éditeur, année. Pagination.
@@ -169,6 +207,26 @@
   \usebibmacro{finentry}%
 }
 
+% --- DRIVER POUR VIDÉO EN LIGNE (@online) ---
+% Format: Auteur. Titre [vidéo en ligne]. Plateforme, date de publication, date de maj [vue le <urldate>] URL
+\DeclareBibliographyDriver{online}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \ifnameundef{author}{\printlist{institution}}{\printnames{author}}%
+  \newunit\newblock%
+  \printfield{title}\space[vidéo en ligne]%
+  \setunit{\adddot\space}%
+  \iffieldundef{platform}
+    {\iflistundef{publisher}{}{\printlist{publisher}}}
+    {\printfield{platform}}%
+  \printonlinepubdate%
+  \printonlineupdatedate%
+  \iffieldundef{urlyear}{}{\space\printurldate}%
+  \addspace%
+  \printfield{url}%
+  \usebibmacro{finentry}%
+}
+
 % --- DRIVER POUR RAPPORT (@report) ---
 % Format: Auteur/Institution. Titre. Rapport <numéro>. Institution, année. Série.
 \DeclareBibliographyDriver{report}{%
@@ -220,6 +278,7 @@
 \footcite{Simeant:1993} % 13. Article de revue
 \footcite{Brice:2004} % 14. Thèse
 \footcite{Jaeggi:2003} % 15. Film
+\footcite{SciencesPo:2017} % 16. Vidéo en ligne
 
 
 \newpage
