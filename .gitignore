@@ -1,12 +1,17 @@
 # Fichiers auxiliaires de LaTeX et Biber
 *.aux
-*.log
+*.bbl
+*.bcf
 *.blg
-*.out
-*.toc
-*.lot
+*.fdb_latexmk
+*.fls
 *.lof
-*.bbl        # Le fichier bbl (même si vous le nettoyez, il ne doit pas être suivi)
-*.bcf        # Biber Control File
-*.run.xml    # Fichier temporaire de latexmk/biber
-*.fdb_latexmk # Fichier de base de données de latexmk
+*.log
+*.lot
+*.out
+*.run.xml
+*.toc
+*.xdv
+
+
+
