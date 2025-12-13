@@ -1,0 +1,33 @@
+classDiagram
+  class EntréeBiblio {
+    +clé
+    +titre
+    +année
+  }
+
+  class EntréeRapport {
+    +clé
+    +titre
+    +année
+    +type
+    +numéro
+    +auteur
+    +institution
+    +organisation
+    +institution_courte
+    +série
+  }
+
+  class ModèleDeDonnées {
+    +champs: institution_courte
+    +types_d_entrée: rapport
+  }
+
+  class PiloteRapport {
+    +imprimerRapport(entrée)
+  }
+
+  EntréeBiblio <|-- EntréeRapport : hérite_de
+  ModèleDeDonnées --> EntréeRapport : définit_les_champs_pour
+  ModèleDeDonnées --> PiloteRapport : disponible_pour
+  PiloteRapport --> EntréeRapport : lit_les_champs
