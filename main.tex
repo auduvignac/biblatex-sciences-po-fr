@@ -24,7 +24,7 @@
 \addbibresource{bibliographies/theses.bib}
 \addbibresource{bibliographies/films.bib}
 \addbibresource{bibliographies/rapports.bib}
-\addbibresource{bibliographies/videos_en_ligne.bib}
+\addbibresource{bibliographies/online.bib}
 
 % --- GESTION DU NOMBRE D'AUTEURS (et al.) ---
 \AtBeginDocument{%
@@ -67,9 +67,24 @@
 \DeclareFieldFormat[movie]{title}{#1} % pas de guillemets pour les films
 \DeclareFieldFormat[online]{title}{#1} % pas de guillemets pour les vidéos en ligne
 \DeclareFieldFormat[online]{url}{\url{#1}} % conserver la casse/ligatures tout en bénéficiant des retours à la ligne de \url
-\DeclareFieldFormat[online]{urldate}{\mkbibbrackets{vue le\space#1}}
+\DeclareFieldFormat[online]{urldate}{\mkbibdatelong{#1}}
 \DeclareFieldFormat[online]{pubdate}{\mkbibdatelong{#1}}
 \DeclareFieldFormat[online]{updatedate}{\mkbibdatelong{#1}}
+
+% Date d'accès aux ressources en ligne (utilise urlday/urlmonth/urlyear)
+\newcommand*{\printonlineaccessdate}{%
+  \iffieldundef{urlyear}{}{%
+    \iffieldundef{urlmonth}{%
+      \printfield{urlyear}%
+    }{%
+      \iffieldundef{urlday}{%
+        \mkbibmonth{\thefield{urlmonth}}\space\printfield{urlyear}%
+      }{%
+        \printfield{urlday}\space\mkbibmonth{\thefield{urlmonth}}\space\printfield{urlyear}%
+      }%
+    }%
+  }%
+}
 
 % Affichages dédiés aux dates de publication/mise à jour des vidéos en ligne
 \newcommand*{\printonlinepubdate}{%
@@ -100,6 +115,17 @@
       }%
     }%
   }%
+}
+
+\newcommand*{\printonlineurldate}{%
+  \iffieldundef{urlyear}%
+    {}%
+    {%
+      \space
+      \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{video}} }%
+        {\printtext{\mkbibbrackets{vue le\space\printonlineaccessdate}}}%
+        {\printtext{\mkbibbrackets{consulté le\space\printonlineaccessdate}}}%
+    }%
 }
 
 % --- DRIVER POUR LIVRE (@book) ---
@@ -214,14 +240,15 @@
   \usebibmacro{begentry}%
   \ifnameundef{author}{\printlist{institution}}{\printnames{author}}%
   \newunit\newblock%
-  \printfield{title}\space[vidéo en ligne]%
+  \printfield{title}%
+  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{video}} }{\space[vidéo en ligne]}{}%
   \setunit{\adddot\space}%
   \iffieldundef{platform}
     {\iflistundef{publisher}{}{\printlist{publisher}}}
     {\printfield{platform}}%
   \printonlinepubdate%
   \printonlineupdatedate%
-  \iffieldundef{urlyear}{}{\space\printurldate}%
+  \printonlineurldate%
   \addspace%
   \printfield{url}%
   \usebibmacro{finentry}%
@@ -279,6 +306,7 @@
 \footcite{Brice:2004} % 14. Thèse
 \footcite{Jaeggi:2003} % 15. Film
 \footcite{SciencesPo:2017} % 16. Vidéo en ligne
+\footcite{GlobalWebIndex:2020} % 17. Rapport électronique
 
 
 \newpage
