@@ -254,7 +254,9 @@
   \ifnameundef{author}{\printlist{institution}}{\printnames{author}}%
   \newunit\newblock%
   \printfield{title}%
-  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{video}} }{\space[vidéo en ligne]}{}%
+  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{video}} }%
+    {\space[vidéo en ligne]}%
+    {\iffieldundef{journaltitle}{\space[en ligne]}{}}%
   \setunit{\adddot\space}%
   \iffieldundef{journaltitle}{%
     \iffieldundef{platform}
@@ -340,6 +342,7 @@
 \footcite{SciencesPo:2017} % 16. Vidéo en ligne
 \footcite{GlobalWebIndex:2020} % 17. Rapport électronique
 \footcite{RindeRokkan:1959} % 18. Article en ligne
+\footcite{MemoireDesHommes:2013} % 19. Site web
 
 
 \newpage
