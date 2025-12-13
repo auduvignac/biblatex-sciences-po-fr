@@ -58,6 +58,7 @@
 \DeclareFieldFormat[article]{title}{#1} % pas de guillemets pour les articles
 \DeclareFieldFormat[article]{pages}{#1} % pas de préfixe automatique
 \DeclareFieldFormat{journaltitle}{#1} % revues en romain
+\DeclareFieldFormat[thesis]{title}{#1} % pas de guillemets pour les thèses
 \DeclareFieldFormat[thesis]{pages}{#1} % pagination libre pour les thèses
 
 % --- DRIVER POUR LIVRE (@book) ---
@@ -134,7 +135,7 @@
   \printnames{author}%
   \newunit\newblock%
   \printfield{title}%
-  \newunit\newblock%
+  \setunit{\adddot\space}%
   \printfield{type}%
   \setunit{\addcolon\space}%
   \printfield{discipline}%
