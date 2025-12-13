@@ -256,7 +256,11 @@
   \printfield{title}%
   \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{video}} }%
     {\space[vidéo en ligne]}%
-    {\iffieldundef{journaltitle}{\space[en ligne]}{}}%
+    {%
+      \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
+        {\space[en ligne]}%
+        {}%
+    }%
   \setunit{\adddot\space}%
   \iffieldundef{journaltitle}{%
     \iffieldundef{platform}
