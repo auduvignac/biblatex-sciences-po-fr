@@ -134,7 +134,7 @@
   \iffieldundef{urlyear}%
     {}%
     {%
-      \space
+      \setunit{\addcomma\space}%
       \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{video}} }%
         {\printtext{\mkbibbrackets{vue le\space\printonlineaccessdate}}}%
         {\printtext{\mkbibbrackets{consulté le\space\printonlineaccessdate}}}%
@@ -275,9 +275,7 @@
     \iffieldundef{number}{}{%
       \addcomma\space%
       \printtext{n\textsuperscript{o}\space\printfield{number}}}%
-    \iffieldundef{urlyear}{}{%
-      \addcomma%
-      \printonlineurldate}%
+    \printonlineurldate%
     \iffieldundef{pages}{}{%
       \addcomma\space%
       \printtext{p.\space\printfield{pages}}}%
