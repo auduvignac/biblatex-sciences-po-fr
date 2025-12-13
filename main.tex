@@ -119,15 +119,19 @@
 }
 
 \newcommand*{\printonlineaccessdate}{%
-  \iffieldundef{urlmonth}{%
-    \printfield{urlyear}%
-  }{%
-    \iffieldundef{urlday}{%
-      \mkbibmonth{\thefield{urlmonth}}\space\printfield{urlyear}%
-    }{%
-      \printfield{urlday}\space\mkbibmonth{\thefield{urlmonth}}\space\printfield{urlyear}%
+  \iffieldundef{urlyear}%
+    {}%
+    {%
+      \iffieldundef{urlmonth}{%
+        \printfield{urlyear}%
+      }{%
+        \iffieldundef{urlday}{%
+          \mkbibmonth{\thefield{urlmonth}}\space\printfield{urlyear}%
+        }{%
+          \printfield{urlday}\space\mkbibmonth{\thefield{urlmonth}}\space\printfield{urlyear}%
+        }%
+      }%
     }%
-  }%
 }
 
 \newcommand*{\printonlineurldate}{%
