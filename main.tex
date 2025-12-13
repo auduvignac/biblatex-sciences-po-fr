@@ -18,6 +18,7 @@
 ]{biblatex}
 
 % Fichiers bibliographiques
+\addbibresource{bibliographies/articles.bib}
 \addbibresource{bibliographies/livres.bib}
 \addbibresource{bibliographies/rapports.bib}
 
@@ -53,6 +54,9 @@
 \DeclareFieldFormat[incollection]{title}{#1} % pas de point ni de guillemets avant "In"
 \DeclareFieldFormat[incollection]{booktitle}{#1} % titre d'ouvrage collectif en romain
 \DeclareFieldFormat[incollection]{pages}{#1} % conserver la pagination brute pour ajouter "p."
+\DeclareFieldFormat[article]{title}{#1} % pas de guillemets pour les articles
+\DeclareFieldFormat[article]{pages}{#1} % pas de préfixe automatique
+\DeclareFieldFormat{journaltitle}{#1} % revues en romain
 
 % --- DRIVER POUR LIVRE (@book) ---
 % Format: AUTEUR, Prénom. Titre. Edition. Lieu de publication : éditeur, année. Pagination.
@@ -98,6 +102,25 @@
   \addspace%
   \printtext{p.\addspace}%
   \printfield{pages}%
+  \usebibmacro{finentry}%
+}
+
+% --- DRIVER POUR ARTICLE DE REVUE (@article) ---
+% Format: Auteur. Titre de l’article. Titre de la revue, mois année, vol. <volume>, n° <numéro>, p. <pagination>.
+\DeclareBibliographyDriver{article}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \newunit\newblock%
+  \printfield{title}%
+  \setunit{\adddot\space}%
+  \printfield{journaltitle}%
+  \addcomma\space%
+  \iffieldundef{monthtext}{\printfield{month}\addspace\printfield{year}}{\printfield{monthtext}}%
+  \addcomma\space%
+  \iffieldundef{volume}{}{\printtext{vol.\addspace}\printfield{volume}\addcomma\space}%
+  \iffieldundef{number}{}{\printtext{n\textsuperscript{o}\addspace}\printfield{number}\addcomma\space}%
+  \printtext{p.\addspace}\printfield{pages}%
   \usebibmacro{finentry}%
 }
 
@@ -148,6 +171,8 @@
 \footcite{Insee:2020} % 9. Rapport Insee (rapport numéroté)
 \footcite{Insee:2020} % 10. Rapport Insee (rapport numéroté, Devrait être ibid.)
 \footcite{Hassenteufel:1993} % 11. Chapitre d'ouvrage collectif
+\footcite{Leca:2001} % 12. Article de revue
+\footcite{Simeant:1993} % 13. Article de revue
 
 
 \newpage
