@@ -165,9 +165,11 @@
 \DeclareBibliographyDriver{article}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  % Auteur prioritaire ; sinon acronyme d'institution ; sinon titre seul
+  % Auteur prioritaire ; sinon acronyme d'institution ; sinon institution complète
   \ifnameundef{author}
-    {\iffieldundef{shortinstitution}{}{\printfield{shortinstitution}}}
+    {\iffieldundef{shortinstitution}
+        {\iflistundef{institution}{}{\printlist{institution}}}
+        {\printfield{shortinstitution}}}
     {\printnames{author}}%
   \newunit\newblock%
   \printfield{title}%
