@@ -165,7 +165,10 @@
 \DeclareBibliographyDriver{article}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \printnames{author}%
+  % Auteur prioritaire ; sinon acronyme d'institution ; sinon titre seul
+  \ifnameundef{author}
+    {\iffieldundef{shortinstitution}{}{\printfield{shortinstitution}}}
+    {\printnames{author}}%
   \newunit\newblock%
   \printfield{title}%
   \setunit{\adddot\space}%
@@ -264,9 +267,12 @@
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \renewcommand*{\newunitpunct}{\adddot\space}%
-  \iffieldundef{shortinstitution}
-    {\ifnameundef{author}{\printlist{institution}}{\printnames{author}}}
-    {\printfield{shortinstitution}}%
+  % Auteur prioritaire ; sinon acronyme de l'institution ; sinon nom complet
+  \ifnameundef{author}
+    {\iffieldundef{shortinstitution}
+       {\printlist{institution}}
+       {\printfield{shortinstitution}}}%
+    {\printnames{author}}%
   \setunit{\addperiod\space}%
   \printfield{title}%
   \setunit{\addperiod\space}%
