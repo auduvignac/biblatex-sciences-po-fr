@@ -10,6 +10,10 @@ $biber = 'biber';
 # 3. Spécifier le format de sortie (PDF)
 $pdf_mode = 1;
 
+# 3bis. Répertoires de sortie/auxiliaires
+$out_dir = 'build';
+$aux_dir = 'build';
+
 # 4. Forcer la compilation jusqu'à ce que le fichier soit stable
 $force_mode = 1;
 
