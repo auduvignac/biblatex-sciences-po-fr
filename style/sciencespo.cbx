@@ -3,4 +3,21 @@
 % Style de base pour les citations (ibid./op. cit.)
 \RequireCitationStyle{verbose-trad1}
 
+% Format neutre pour afficher un titre court avec op. cit. (pas d'italique)
+\DeclareFieldFormat{cbx:opcitlabel}{#1}
+
+% Ajoute le titre court avant "op. cit." pour lever les ambiguïtés auteur-identiques
+\renewbibmacro*{cite:opcit}{%
+  \ifboolexpr{ test{\iffieldundef{shorttitle}} and test{\iffieldundef{labeltitle}} }
+    {\printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}
+    {%
+      \printtext[bibhyperlink]{%
+        \iffieldundef{shorttitle}
+          {\printfield[cbx:opcitlabel]{labeltitle}}
+          {\printfield[cbx:opcitlabel]{shorttitle}}}%
+      \setunit{\addcomma\space}%
+      \printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}%
+    }%
+}
+
 \endinput
