@@ -14,5 +14,8 @@
 *.toc
 *.xdv
 
+# Fichiers/répertoires associés à l'IDE
+*.vscode
+
 
 
