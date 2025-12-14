@@ -7,14 +7,37 @@ services:
     
     # Nom du conteneur pour faciliter les commandes manuelles
     container_name: latex_compiler
+
+    # TEXMFHOME pointe vers un arbre TeX local où l'on monte le style biblatex
+    environment:
+      TEXMFHOME: /app/texmf
     
+    # Crée le répertoire de sortie puis lance la compilation
+    command: >
+      bash -lc "
+        mkdir -p /app/build &&
+        latexmk -pdf -xelatex main.tex &&
+        cp /app/build/main.pdf /app/main.pdf &&
+        chown ${UID:-1000}:${GID:-1000} /app/main.pdf
+      "
+
     # Montage de volume:
-    # Le dossier local courant (où se trouve docker-compose.yml) 
-    # est monté dans le répertoire de travail /app du conteneur.
     volumes:
-      - .:/app
-      
-    # Le conteneur s'arrête une fois que la commande CMD est terminée.
-    # Pour lancer la compilation manuellement, utilisez:
-    # command: bash 
-    # puis lancez `latexmk main.tex` à l'intérieur du conteneur.
+      # Sources LaTeX minimales
+      - ./main.tex:/app/main.tex:ro
+      - ./latexmkrc:/app/latexmkrc:ro
+      - ./bibliographies:/app/bibliographies:ro
+
+      # Sorties et fichiers auxiliaires (volume nommé, pas de dossier créé sur l'hôte)
+      - build-cache:/app/build
+
+      # PDF exporté directement à la racine du projet
+      - ./main.pdf:/app/main.pdf
+
+      # Style biblatex SciencesPo directement visible par LaTeX/Biber
+      - ./style/sciencespo.cbx:/app/texmf/tex/latex/biblatex/cbx/sciencespo.cbx:ro
+      - ./style/sciencespo.bbx:/app/texmf/tex/latex/biblatex/bbx/sciencespo.bbx:ro
+      - ./biblatex-dm.cfg:/app/texmf/tex/latex/biblatex/biblatex-dm.cfg:ro
+
+volumes:
+  build-cache:
