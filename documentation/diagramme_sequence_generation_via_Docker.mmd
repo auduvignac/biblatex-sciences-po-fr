@@ -1,0 +1,23 @@
+sequenceDiagram
+    actor Dev as Développeur
+    participant Make as Make
+    participant DC as DockerCompose
+    participant C as Conteneur_LaTeX
+    participant LM as latexmk
+    participant FS as Système_de_fichiers
+
+    Dev->>Make: make pdf
+    Make->>DC: docker compose run --rm latex
+    DC->>C: Démarrer le conteneur avec TEXMFHOME=/app/texmf
+    DC->>C: Monter les volumes (main.tex, latexmkrc, bibliographies,
+    DC->>C: cache de build comme /app/build, main.pdf, fichiers de style)
+
+    C->>FS: mkdir -p /app/build
+    C->>LM: latexmk -pdf -xelatex main.tex
+    LM->>FS: Écrire les fichiers auxiliaires dans /app/build (volume build-cache)
+    LM->>FS: Écrire main.pdf dans /app/build
+
+    C->>FS: cp /app/build/main.pdf /app/main.pdf
+    C->>FS: chown UID:GID /app/main.pdf
+
+    DC-->>Dev: main.pdf disponible sur la racine du projet hôte
