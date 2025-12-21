@@ -1,37 +1,35 @@
 \documentclass{article}
+
+% Langue et typographie
 \usepackage[french]{babel}
 \usepackage{csquotes}
-\usepackage{fontspec} % Utilisation de fontspec pour XeLaTeX
-\usepackage{hyperref}
+\usepackage{fontspec} % XeLaTeX
 \usepackage{geometry}
 \geometry{a4paper, margin=1in}
+
+% Mathématiques et tableaux
 \usepackage{amsmath}
 \usepackage{booktabs}
+
+% Commandes avancées
 \usepackage{xparse}
 
-% Commande dédiée aux exemples de citations en note (sans ibid.)
-\NewDocumentCommand{\footciteexample}{ O{} O{} m }{%
-  \footnote{%
-    \fullcite[#1][#2]{#3}%
-  }%
-}
+% Hyperliens
+\usepackage{hyperref}
 
-% Environnement standardisé pour les rendus d'exemples
-\newenvironment{bibexample}
-  {\begin{refsection}\small}
-  {\end{refsection}}
-
-% Configuration de biblatex (style Sciences Po, gestion des notes)
+% --------------------------------------------------------------------
+% Configuration biblatex (style Sciences Po)
+% --------------------------------------------------------------------
 \usepackage[
     style=sciencespo,
     backend=biber,
     hyperref=true,
-    loccittracker=true, % Assure le suivi des pages (pour Loc. cit.)
-    pagetracker=true, % Assure le suivi des pages (pour ibid.)
+    loccittracker=true, % Autorise loc. cit. (désactivé par défaut en pratique)
+    pagetracker=true,   % Active ibid./op. cit.
     doi=false,
     url=true,
-    urldate=long, % Dates de consultation en toutes lettres
-    autolang=other % Maintient les locutions latines
+    urldate=long,
+    autolang=other      % Maintient les locutions latines
 ]{biblatex}
 
 % Fichiers bibliographiques
@@ -42,6 +40,37 @@
 \addbibresource{bibliographies/rapports.bib}
 \addbibresource{bibliographies/online.bib}
 
+% --------------------------------------------------------------------
+% Commandes pédagogiques pour les exemples de citation
+% --------------------------------------------------------------------
+
+% Commande standard : partage l'historique global
+% (utile pour tester ibid./op. cit.)
+\NewDocumentCommand{\footciteexample}{ O{} O{} m }{%
+  \footnote{%
+    \fullcite[#1][#2]{#3}%
+  }%
+}
+
+% Variante locale : isole chaque citation dans un refsection
+% pour garantir des exemples sans ibid./op. cit.
+\NewDocumentCommand{\footciteexamplelocal}{ O{} O{} m }{%
+  \begin{refsection}%
+    \footnote{%
+      \fullcite[#1][#2]{#3}%
+    }%
+  \end{refsection}%
+}
+
+% Environnement standardisé pour les rendus d'exemples
+% (citations dans le corps du texte, sans interaction entre elles)
+\newenvironment{bibexample}
+  {\begin{refsection}\small}
+  {\end{refsection}}
+
+% --------------------------------------------------------------------
+% Métadonnées du document
+% --------------------------------------------------------------------
 \title{Mode d'emploi du style bibliographique \texttt{sciencespo}}
 \author{Aurélien Duvignac-Rosa}
 \date{Basé sur le Mémorandum Officiel de Sciences Po}
@@ -383,13 +412,13 @@ Cette section teste :
 
 \begin{itemize}
 	\item Sans pagination :
-	      \footciteexample{Boursin:1991}
+	      \footciteexamplelocal{Boursin:1991}
 
 	\item Avec pagination explicite :
-	      \footciteexample[][p.45]{Boursin:1991}
+	      \footciteexamplelocal[][p.45]{Boursin:1991}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][p.45]{Boursin:1991}
+	      \footciteexamplelocal[Voir aussi][p.45]{Boursin:1991}
 \end{itemize}
 
 \subsubsection*{Livre sans mention d'édition explicite\footnote{\emph{L'absence de mention d'édition implique qu'il s'agit de la première édition ou que l'éditeur ne la précise pas explicitement.}}}
@@ -475,13 +504,13 @@ Cette section teste :
 
 \begin{itemize}
 	\item Sans pagination :
-	      \footciteexample{Fitoussi:1995}
+	      \footciteexamplelocal{Fitoussi:1995}
 
 	\item Avec pagination explicite :
-	      \footciteexample[][p.45]{Fitoussi:1995}
+	      \footciteexamplelocal[][p.45]{Fitoussi:1995}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][p.45]{Fitoussi:1995}
+	      \footciteexamplelocal[Voir aussi][p.45]{Fitoussi:1995}
 \end{itemize}
 
 \subsubsection*{Auteurs multiples et \texttt{and others}\footnote{\emph{Lorsque le nombre d'auteurs excède le seuil défini par le style bibliographique, l'utilisation de \texttt{and others} permet d'activer l'abréviation automatique (\emph{et al.}) dans les citations, tout en conservant la liste complète des auteurs dans la bibliographie.}
@@ -570,13 +599,13 @@ Cette section teste :
 
 \begin{itemize}
 	\item Sans pagination :
-	      \footciteexample{Hermet:2000}
+	      \footciteexamplelocal{Hermet:2000}
 
 	\item Avec pagination explicite :
-	      \footciteexample[][p.45]{Hermet:2000}
+	      \footciteexamplelocal[][p.45]{Hermet:2000}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][p.45]{Hermet:2000}
+	      \footciteexamplelocal[Voir aussi][p.45]{Hermet:2000}
 \end{itemize}
 
 \subsubsection*{Ouvrage en langue étrangère\footnote{\emph{Pour les ouvrages en langue étrangère, la langue du titre n'est pas traduite. Les éléments de description bibliographique (lieu, éditeur, pagination) restent conformes aux normes françaises.}}}
@@ -663,13 +692,13 @@ Cette section teste :
 
 \begin{itemize}
 	\item Sans pagination :
-	      \footciteexample{Lazar:1991}
+	      \footciteexamplelocal{Lazar:1991}
 
 	\item Avec pagination explicite :
-	      \footciteexample[][p.45]{Lazar:1991}
+	      \footciteexamplelocal[][p.45]{Lazar:1991}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][p.45]{Lazar:1991}
+	      \footciteexamplelocal[Voir aussi][p.45]{Lazar:1991}
 \end{itemize}
 
 \paragraph{Vérification de la génération des locutions latines}
@@ -813,13 +842,13 @@ Structure : Institution/AUTEUR. Titre. Type/numéro. Institution ou organisation
 
 \begin{itemize}
 	\item Sans pagination :
-	      \footciteexample{Insee:2020}
+	      \footciteexamplelocal{Insee:2020}
 
 	\item Avec pagination explicite :
-	      \footciteexample[][p.~12]{Insee:2020}
+	      \footciteexamplelocal[][p.~12]{Insee:2020}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][p.~12]{Insee:2020}
+	      \footciteexamplelocal[Voir aussi][p.~12]{Insee:2020}
 \end{itemize}
 
 \paragraph{Vérification de la génération des locutions latines pour les rapports institutionnels}
@@ -982,13 +1011,13 @@ Structure : NOM, Prénom. Titre du chapitre. In NOM, Prénom (dir.), Titre de l'
 
 \begin{itemize}
 	\item Sans pagination :
-	      \footciteexample{Hassenteufel:1993}
+	      \footciteexamplelocal{Hassenteufel:1993}
 
 	\item Avec pagination explicite :
-	      \footciteexample[][p.~95]{Hassenteufel:1993}
+	      \footciteexamplelocal[][p.~95]{Hassenteufel:1993}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][p.~95]{Hassenteufel:1993}
+	      \footciteexamplelocal[Voir aussi][p.~95]{Hassenteufel:1993}
 \end{itemize}
 
 \paragraph{Vérification de la génération des locutions latines pour les chapitres d'ouvrage}
@@ -1131,13 +1160,13 @@ Le champ \texttt{monthtext} permet d'indiquer un mois, un intervalle de mois ou 
 
 \begin{itemize}
 	\item Sans pagination :
-	      \footciteexample{Leca:2001}
+	      \footciteexamplelocal{Leca:2001}
 
 	\item Avec pagination explicite :
-	      \footciteexample[][p.~6]{Leca:2001}
+	      \footciteexamplelocal[][p.~6]{Leca:2001}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][p.~6]{Leca:2001}
+	      \footciteexamplelocal[Voir aussi][p.~6]{Leca:2001}
 \end{itemize}
 
 \subsubsection*{Article sans volume, numéros regroupés}
@@ -1224,13 +1253,13 @@ Le champ \texttt{monthtext} permet d'indiquer un mois, un intervalle de mois ou 
 
 \begin{itemize}
 	\item Sans pagination :
-	      \footciteexample{Simeant:1993}
+	      \footciteexamplelocal{Simeant:1993}
 
 	\item Avec pagination explicite :
-	      \footciteexample[][p.~320]{Simeant:1993}
+	      \footciteexamplelocal[][p.~320]{Simeant:1993}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][p.~320]{Simeant:1993}
+	      \footciteexamplelocal[Voir aussi][p.~320]{Simeant:1993}
 \end{itemize}
 
 \paragraph{Vérification de la génération des locutions latines pour les articles}
@@ -1374,13 +1403,13 @@ lieu : établissement : année. Pagination.
 
 \begin{itemize}
 	\item Sans pagination :
-	      \footciteexample{Brice:2004}
+	      \footciteexamplelocal{Brice:2004}
 
 	\item Avec pagination explicite :
-	      \footciteexample[][p.~125]{Brice:2004}
+	      \footciteexamplelocal[][p.~125]{Brice:2004}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][p.~125]{Brice:2004}
+	      \footciteexamplelocal[Voir aussi][p.~125]{Brice:2004}
 \end{itemize}
 
 \paragraph{Vérification de la génération des locutions latines pour les thèses et mémoires}
@@ -1520,13 +1549,13 @@ Structure : NOM, Prénom, réal. \emph{Titre} [support]. Éditeur, année. Descr
 
 \begin{itemize}
 	\item Sans précision :
-	      \footciteexample{Jaeggi:2003}
+	      \footciteexamplelocal{Jaeggi:2003}
 
 	\item Avec minutage explicite :
-	      \footciteexample[][00:12:30--00:14:10]{Jaeggi:2003}
+	      \footciteexamplelocal[][00:12:30--00:14:10]{Jaeggi:2003}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][00:12:30--00:14:10]{Jaeggi:2003}
+	      \footciteexamplelocal[Voir aussi][00:12:30--00:14:10]{Jaeggi:2003}
 \end{itemize}
 
 \paragraph{Vérification de la génération des locutions latines pour les films}
@@ -1670,13 +1699,13 @@ date de publication [date de consultation]. URL.
 
 \begin{itemize}
 	\item Sans précision :
-	      \footciteexample{SciencesPo:2017}
+	      \footciteexamplelocal{SciencesPo:2017}
 
 	\item Avec indication de séquence :
-	      \footciteexample[][à partir de 02:15]{SciencesPo:2017}
+	      \footciteexamplelocal[][à partir de 02:15]{SciencesPo:2017}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][à partir de 02:15]{SciencesPo:2017}
+	      \footciteexamplelocal[Voir aussi][à partir de 02:15]{SciencesPo:2017}
 \end{itemize}
 
 \paragraph{Vérification de la génération des locutions latines pour les vidéos en ligne}
@@ -1834,13 +1863,13 @@ Structure : AUTEUR. Titre [en ligne]. Nom de l'éditeur, date de publication, da
 
 \begin{itemize}
 	\item Sans précision :
-	      \footciteexample{MemoireDesHommes:2013}
+	      \footciteexamplelocal{MemoireDesHommes:2013}
 
 	\item Avec précision contextuelle :
-	      \footciteexample[][base de données nominative]{MemoireDesHommes:2013}
+	      \footciteexamplelocal[][base de données nominative]{MemoireDesHommes:2013}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][base de données nominative]{MemoireDesHommes:2013}
+	      \footciteexamplelocal[Voir aussi][base de données nominative]{MemoireDesHommes:2013}
 \end{itemize}
 
 \paragraph{Vérification des libellés pour les sites web}
@@ -1991,13 +2020,13 @@ Plateforme de diffusion, année de publication [date de consultation]. URL.
 
 \begin{itemize}
 	\item Sans précision :
-	      \footciteexample{GlobalWebIndex:2020}
+	      \footciteexamplelocal{GlobalWebIndex:2020}
 
 	\item Avec précision contextuelle :
-	      \footciteexample[][données comparatives internationales]{GlobalWebIndex:2020}
+	      \footciteexamplelocal[][données comparatives internationales]{GlobalWebIndex:2020}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][données comparatives internationales]{GlobalWebIndex:2020}
+	      \footciteexamplelocal[Voir aussi][données comparatives internationales]{GlobalWebIndex:2020}
 \end{itemize}
 
 \paragraph{Vérification de la génération des locutions latines pour les rapports institutionnels en ligne}
@@ -2145,13 +2174,13 @@ et accès.
 
 \begin{itemize}
 	\item Sans pagination :
-	      \footciteexample{RindeRokkan:1959}
+	      \footciteexamplelocal{RindeRokkan:1959}
 
 	\item Avec pagination explicite :
-	      \footciteexample[][p.~2]{RindeRokkan:1959}
+	      \footciteexamplelocal[][p.~2]{RindeRokkan:1959}
 
 	\item Avec référence explicite :
-	      \footciteexample[Voir aussi][p.~2]{RindeRokkan:1959}
+	      \footciteexamplelocal[Voir aussi][p.~2]{RindeRokkan:1959}
 \end{itemize}
 
 \paragraph{Vérification de la génération des locutions latines pour les articles de revue en ligne}
