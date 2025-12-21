@@ -1,20 +1,37 @@
 \documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[french]{babel} % Charger babel pour la typographie française générale
+\usepackage[french]{babel}
 \usepackage{csquotes}
+\usepackage{fontspec} % Utilisation de fontspec pour XeLaTeX
 \usepackage{hyperref}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{xparse}
 
-% Configuration de biblatex (activation d'ibid./op. cit. pour les notes)
+% Commande dédiée aux exemples de citations en note (sans ibid.)
+\NewDocumentCommand{\footciteexample}{ O{} O{} m }{%
+  \footnote{%
+    \fullcite[#1][#2]{#3}%
+  }%
+}
+
+% Environnement standardisé pour les rendus d'exemples
+\newenvironment{bibexample}
+  {\begin{refsection}\small}
+  {\end{refsection}}
+
+% Configuration de biblatex (style Sciences Po, gestion des notes)
 \usepackage[
     style=sciencespo,
     backend=biber,
     hyperref=true,
+    loccittracker=true, % Assure le suivi des pages (pour Loc. cit.)
     pagetracker=true, % Assure le suivi des pages (pour ibid.)
     doi=false,
     url=true,
     urldate=long, % Dates de consultation en toutes lettres
-    autolang=other % Empêche biblatex d'adapter la langue via babel (utile pour ibid./op. cit.)
+    autolang=other % Maintient les locutions latines
 ]{biblatex}
 
 % Fichiers bibliographiques
@@ -25,32 +42,2179 @@
 \addbibresource{bibliographies/rapports.bib}
 \addbibresource{bibliographies/online.bib}
 
+\title{Mode d'emploi du style bibliographique \texttt{sciencespo}}
+\author{Aurélien Duvignac-Rosa}
+\date{Basé sur le Mémorandum Officiel de Sciences Po}
+
 \begin{document}
+\maketitle
+\tableofcontents
 
-\section*{Textes d'exemple}
+\section{Pourquoi un style \texttt{sciencespo} ?}
 
-\subsection*{Citations}
-% Les citations d'article ont été retirées pour se concentrer uniquement sur les livres
-\footcite{Boursin:1991} % 1. Boursin (Première citation complète)
-\footcite{Fitoussi:1995} % 2. Fitoussi (Première citation complète)
-\footcite{Fitoussi:1995} % 3. Fitoussi (Devrait être ibid.)
-\footcite[][150]{Fitoussi:1995} % 4. Fitoussi, p. 150 (Devrait être ibid., p. 150)
-\footcite{Vernant:2000} % 5. Vernant (Citation complète)
-\footcite{Fitoussi:1995} % 6. Fitoussi (Devrait être op. cit. / loc. cit.)
-\footcite{Hermet:2000} % 7. Hermet et al. (doit produire et al.)
-\footcite{Lazar:1991} % 8. Lazar et al. (citation complète)
-\footcite{Insee:2020} % 9. Rapport Insee (rapport numéroté)
-\footcite{Insee:2020} % 10. Rapport Insee (rapport numéroté, Devrait être ibid.)
-\footcite{Hassenteufel:1993} % 11. Chapitre d'ouvrage collectif
-\footcite{Leca:2001} % 12. Article de revue
-\footcite{Simeant:1993} % 13. Article de revue
-\footcite{Brice:2004} % 14. Thèse
-\footcite{Jaeggi:2003} % 15. Film
-\footcite{SciencesPo:2017} % 16. Vidéo en ligne
-\footcite{GlobalWebIndex:2020} % 17. Rapport électronique
-\footcite{RindeRokkan:1959} % 18. Article en ligne
-\footcite{MemoireDesHommes:2013} % 19. Site web
+Ce style reprend les exigences du mémorandum Sciences Po\footnote{Voir \texttt{documentation/citer-sources-rediger-bibliographie-fr.pdf}.} et s'appuie sur trois fichiers :
+\begin{itemize}
+	\item \texttt{sciencespo.cbx} : gestion des citations en notes (ibid./op. cit., ajout du \texttt{shorttitle}).
+	\item \texttt{sciencespo.bbx} : format de la bibliographie (noms en majuscules, ordre des éléments).
+	\item \texttt{biblatex-dm.cfg} : déclaration des champs additionnels (mois textuel, plateforme vidéo, discipline, etc.).
+\end{itemize}
+Ils sont basés sur \texttt{biblatex} avec \texttt{biber} et couvrent tous les exemples du mémo : livres, rapports, chapitres, articles, thèses, films, vidéos en ligne, articles en ligne et sites web.
 
+\section{Règles générales de citation (rappel du mémo)}
+
+\subsection{Droit d'auteur}
+Respectez la convention de Berne : guillemets pour les citations littérales, mention systématique de l'auteur et du titre, citation courte par rapport au texte original. La paraphrase sans référence est assimilée à du plagiat.
+
+\subsection{Construire la bibliographie}
+\begin{itemize}
+	\item Indiquer auteur, titre, source d'origine (revue, ouvrage collectif), date et pagination.
+	\item Classer la bibliographie par ordre alphabétique des auteurs (ou par thèmes puis auteurs).
+\end{itemize}
+
+\section{Installer et charger le style}
+
+\subsection{Placer les fichiers}
+\begin{enumerate}
+	\item Copier \texttt{style/sciencespo.cbx} dans \texttt{\$TEXMFHOME/tex/latex/biblatex/cbx/}.
+	\item Copier \texttt{style/sciencespo.bbx} dans \texttt{\$TEXMFHOME/tex/latex/biblatex/bbx/}.
+	\item Copier \texttt{style/biblatex-dm.cfg} dans \texttt{\$TEXMFHOME/tex/latex/biblatex/}.
+\end{enumerate}
+Avec Docker/Makefile, ces montages sont faits automatiquement (voir \texttt{docker-compose.yml}).
+
+\subsection{Charger \texttt{biblatex}}
+\begin{verbatim}
+\usepackage[
+    style=sciencespo,
+    backend=biber,
+    hyperref=true,
+    pagetracker=true,
+    doi=false,
+    url=true,
+    urldate=long,
+    autolang=other
+]{biblatex}
+\end{verbatim}
+\textbf{Pourquoi ces options ?}
+\begin{itemize}
+	\item \texttt{pagetracker} active ibid./op. cit. en bas de page.
+	\item \texttt{autolang=other} conserve les locutions latines.
+	\item \texttt{doi=false} et \texttt{url=true} reflètent le mémo (URLs seulement pour les ressources en ligne).
+\end{itemize}
+Ajoutez ensuite vos fichiers \texttt{.bib} via \verb|\addbibresource|.
+
+\section{Citer dans le texte : notes de bas de page}
+
+\subsection{Commandes principales}
+\begin{itemize}
+	\item \verb|\footcite{clé}| : citation courte en note.
+	\item \verb|\footcite[23]{clé}| : ajout d'une page.
+	\item \verb|\footcite[Voir aussi][65]{clé}| : préfixe libre + page.
+	\item \verb|\footfullcite{clé}| : citation complète directement en note (utile pour la première mention dans certains travaux).
+	\item \verb|\fullcite{clé}| : citation complète dans le corps du texte.
+\end{itemize}
+
+\subsection{Gestion automatique des répétitions}
+Le \texttt{.cbx} repose sur \texttt{verbose-trad1} : répétition immédiate $\rightarrow$ ibid.; répétition non immédiate $\rightarrow$ op. cit.; numéros de pages mis à jour automatiquement. Renseignez le champ \texttt{shorttitle} dans vos \texttt{.bib} pour lever toute ambiguïté d'auteur lors d'un op. cit.
+
+\subsection{Exemple complet de notes}
+\begin{enumerate}
+	\item \texttt{\textbackslash footcite[][15]\{Fitoussi:1995\}} \footcite[15]{Fitoussi:1995}
+	\item \texttt{\textbackslash footcite[][15]\{Fitoussi:1995\}} \footcite[15]{Fitoussi:1995}
+	\item \texttt{\textbackslash footcite[150]\{Fitoussi:1995\}} \footcite[150]{Fitoussi:1995}
+	\item \texttt{\textbackslash footcite[][5]\{Leca:2001\}} \footcite[5]{Leca:2001}
+	\item \texttt{\textbackslash footcite[300]\{Fitoussi:1995\}} \footcite[300]{Fitoussi:1995}
+	\item \texttt{\textbackslash footcite[Voir aussi][65]\{Vernant:2000\}} \footcite[Voir aussi][65]{Vernant:2000}
+\end{enumerate}
+\textbf{À tester (notes)} : rejouer cette séquence pour vérifier ibid./op. cit. et les pages ; comparer \verb|\footcite| (forme courte) et \verb|\footfullcite| (forme complète en note) sur une même clé ; ajouter un second titre d'un même auteur avec \texttt{shorttitle} pour observer son affichage avant op. cit.
+
+\section{Champs spécifiques supportés par le style}
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{@{}llp{8cm}@{}}
+		\toprule
+		Type     & Champ                                                   & Utilisation par \texttt{sciencespo}                                                                          \\
+		\midrule
+		Tous     & \texttt{shorttitle}                                     & Affiché avant op. cit. pour distinguer deux titres du même auteur.                                           \\
+		Rapport  & \texttt{shortinstitution}                               & Acronyme prioritaire lorsque l'auteur est absent.                                                            \\
+		Article  & \texttt{monthtext}                                      & Mois/saison libre (ex. \texttt{fév.-avr. 2001}) en lieu et place de \texttt{month+year}.                     \\
+		Chapitre & \texttt{editortype}                                     & Mention \og dir.\fg{} après le nom de l'éditeur scientifique.                                                \\
+		Thèse    & \texttt{discipline}                                     & Discipline affichée après le type de thèse.                                                                  \\
+		Film     & \texttt{medium}, \texttt{extent}                        & Support et durée : \og [cassette vidéo]\fg{}, \og 1 cass. vidéo VHS, 52 min.\fg{}                            \\
+		En ligne & \texttt{platform}                                       & Plateforme (Statista, YouTube...) lorsque \texttt{journaltitle} n'est pas présent.                           \\
+		En ligne & \texttt{pubdate}, \texttt{updatedate}, \texttt{urldate} & Dates de publication, de mise à jour et de consultation (affichées entre crochets).                          \\
+		En ligne & \texttt{entrysubtype}                                   & \texttt{video} $\rightarrow$ \og [vidéo en ligne]\fg{} ; \texttt{website} $\rightarrow$ \og [en ligne]\fg{}. \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\section{Fiches de saisie par type d'entrée}
+Chaque entrée \texttt{.bib} ci-dessous correspond à un exemple du mémo Sciences Po et illustre le rendu \texttt{\textbackslash fullcite}.
+
+\subsection{Principes méthodologiques, typologie des ouvrages et locutions latines}
+
+\paragraph{Principes méthodologiques}
+
+Les exemples de citation présentés dans cette documentation sont encapsulés
+dans des environnements \texttt{refsection} afin d'éviter toute interaction
+avec l'historique global des citations (notamment l'emploi automatique de
+\emph{ibid.}, \emph{idem} ou \emph{op. cit.}). Cette encapsulation garantit
+un rendu stable et reproductible des exemples, indépendamment du contexte
+du document.
+
+La commande \texttt{\textbackslash footciteexample} est réservée aux usages
+pédagogiques illustratifs. Elle ne doit pas être utilisée dans le corps
+analytique du rapport, où les citations doivent recourir exclusivement aux
+commandes standard \texttt{\textbackslash cite},
+\texttt{\textbackslash footcite} ou \texttt{\textbackslash fullcite},
+selon le niveau de détail requis.
+
+\paragraph{Typologie des ouvrages}
+
+Les entrées de type \texttt{@book} couvrent l'ensemble des cas usuels rencontrés
+dans les travaux en sciences humaines et sociales. La présente documentation
+distingue les situations suivantes, sans modifier le type bibliographique,
+les différences étant portées par les champs descriptifs de l'entrée :
+
+\begin{itemize}
+	\item \textbf{Livre (monographie) avec mention d'édition}, lorsque l'éditeur
+	      précise explicitement une édition autre que la première
+	      (champ \texttt{edition}) ;
+	\item \textbf{Livre (monographie) sans mention d'édition explicite}, correspondant
+	      au cas général des ouvrages publiés sans précision d'édition ;
+	\item \textbf{Livre à auteurs multiples}, pour lequel l'abréviation automatique
+	      (\emph{et al.}) peut être activée à l'aide de \texttt{and others} ;
+	\item \textbf{Ouvrage en langue étrangère}, pour lequel le titre n'est pas traduit,
+	      les autres éléments bibliographiques restant conformes aux normes françaises ;
+	\item \textbf{Livre en collection}, identifié par la présence des champs
+	      \texttt{series} et, le cas échéant, \texttt{number}.
+\end{itemize}
+
+Les contributions insérées dans des ouvrages collectifs relèvent du type
+\texttt{@incollection} et font l'objet d'une section distincte.
+
+\paragraph{Locutions latines utilisées dans les citations}
+
+Dans les démonstrations relatives aux ouvrages (livres), certaines locutions
+latines traditionnellement utilisées dans les références bibliographiques
+peuvent apparaître afin d'abréger les citations successives. Leur emploi est
+automatiquement géré par \texttt{biblatex} en fonction de la proximité et de la
+nature des références appelées.
+
+\begin{itemize}
+	\item \emph{Ibid.} (\emph{ibidem}) est employé lorsque deux citations consécutives
+	      renvoient à la même œuvre. La mention de pagination peut alors être ajoutée
+	      ou modifiée (par exemple : \emph{ibid.}, p.~45) ;
+	\item \emph{Id.} / \emph{Ead.} (\emph{idem}, \emph{eadem}) désignent le même auteur
+	      que la référence précédente, lorsqu'il s'agit d'une œuvre différente ;
+	\item \emph{Op. cit.} (\emph{opere citato}) est utilisé pour renvoyer à une œuvre
+	      déjà citée antérieurement, lorsque la citation n'est plus immédiatement
+	      consécutive ;
+	\item \emph{Loc. cit.} (\emph{loco citato}) renvoie à un passage précis d'une œuvre
+	      déjà citée, dans un contexte non consécutif.
+\end{itemize}
+
+\begin{center}
+	\renewcommand{\arraystretch}{1.3}
+	\begin{tabular}{|p{3cm}|p{6.5cm}|p{4.5cm}|}
+		\hline
+		\textbf{Locution}                              &
+		\textbf{Condition d'apparition}                &
+		\textbf{Activation requise / Remarques}          \\
+		\hline
+
+		\emph{Ibid.}                                   &
+		Deux citations consécutives renvoyant à la \textbf{même œuvre}.
+		La pagination peut être identique ou modifiée. &
+		Activée par défaut dans les styles académiques français
+		(\texttt{ibidtracker=true}).                     \\
+		\hline
+
+		\emph{Id.} / \emph{Ead.}                       &
+		Deux citations consécutives renvoyant au \textbf{même auteur}
+		mais à des œuvres différentes.                 &
+		Activée par défaut (\texttt{idemtracker=true}).
+		Dépend du style choisi.                          \\
+		\hline
+
+		\emph{Op. cit.}                                &
+		Retour à une œuvre déjà citée après \textbf{interruption}
+		par une autre référence.                       &
+		Activée par défaut dans les styles classiques
+		(\texttt{opcittracker=true}).                    \\
+		\hline
+
+		\emph{Loc. cit.}                               &
+		Retour à la \textbf{même œuvre et au même passage}
+		dans un contexte non consécutif.               &
+		Désactivée par défaut.
+		Nécessite \texttt{loccittracker=true}.
+		Usage déconseillé en production.                 \\
+		\hline
+	\end{tabular}
+\end{center}
+
+
+
+\subsection{Livres (\texttt{@book})}
+
+Structure attendue (AFNOR / Sciences Po) :
+\textsc{AUTEUR}, Prénom. \emph{Titre}. Édition. Lieu : éditeur, année. Pagination.
+
+\paragraph{Modèle générique}
+
+\begin{verbatim}
+@book{CleUnique:YYYY,
+  author     = {Nom, Prénom and Nom2, Prénom2},
+  title      = {Titre de l'ouvrage},
+  edition    = {2e éd.},
+  publisher  = {Nom de l'éditeur},
+  location   = {Ville},
+  year       = {YYYY},
+  pages      = {xxx p.},
+  series     = {Nom de la collection},
+  number     = {Numéro dans la collection},
+  shorttitle = {Titre court (facultatif, recommandé)}
+}
+\end{verbatim}
+
+\textbf{Champs obligatoires} :
+\texttt{author}, \texttt{title}, \texttt{publisher}, \texttt{location}, \texttt{year}, \texttt{pages}.
+
+\textbf{Champs optionnels} :
+\texttt{edition} (si $\neq$ 1\textsuperscript{re}),
+\texttt{series}/\texttt{number} (collection),
+\texttt{shorttitle} (fortement recommandé pour les références fréquemment rappelées via op. cit.).
+
+\bigskip
+
+
+\paragraph{Tests fonctionnels (livres)}
+Cette section teste :
+\begin{itemize}
+	\item le rendu AFNOR complet (\texttt{\textbackslash fullcite}) ;
+	\item les appels successifs avec ibid. et pagination ;
+	\item l'usage de op. cit. avec et sans ambiguïté ;
+	\item la gestion des auteurs multiples et de \texttt{and others} ;
+	\item les ouvrages en langue étrangère.
+\end{itemize}
+
+\subsubsection*{Livre — monographie avec mention d'édition}
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@book{Boursin:1991,
+  author    = {Boursin, Jean-Louis},
+  title     = {Comprendre la statistique descriptive},
+  edition   = {Nouv. éd.},
+  publisher = {A. Colin},
+  location  = {Paris},
+  year      = {1991},
+  pages     = {168 p.}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\fullcite{Boursin:1991}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{Boursin:1991}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\fullcite[p.45]{Boursin:1991}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[p.45]{Boursin:1991}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][p.45]{Boursin:1991}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][p.45]{Boursin:1991}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\cite{Boursin:1991}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{Boursin:1991}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\cite[p.45]{Boursin:1991}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[p.45]{Boursin:1991}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][p.45]{Boursin:1991}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][p.45]{Boursin:1991}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans pagination :
+	      \footciteexample{Boursin:1991}
+
+	\item Avec pagination explicite :
+	      \footciteexample[][p.45]{Boursin:1991}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][p.45]{Boursin:1991}
+\end{itemize}
+
+\subsubsection*{Livre sans mention d'édition explicite\footnote{\emph{L'absence de mention d'édition implique qu'il s'agit de la première édition ou que l'éditeur ne la précise pas explicitement.}}}
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@book{Fitoussi:1995,
+  author    = {Fitoussi, Jean-Paul},
+  title     = {Le débat interdit : monnaie, Europe, pauvreté},
+  publisher = {Arléa},
+  location  = {Paris},
+  year      = {1995},
+  pages     = {318 p.}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\fullcite{Fitoussi:1995}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{Fitoussi:1995}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\fullcite[p.45]{Fitoussi:1995}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[p.45]{Fitoussi:1995}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][p.45]{Fitoussi:1995}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][p.45]{Fitoussi:1995}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\cite{Fitoussi:1995}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{Fitoussi:1995}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\cite[p.45]{Fitoussi:1995}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[p.45]{Fitoussi:1995}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][p.45]{Fitoussi:1995}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][p.45]{Fitoussi:1995}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans pagination :
+	      \footciteexample{Fitoussi:1995}
+
+	\item Avec pagination explicite :
+	      \footciteexample[][p.45]{Fitoussi:1995}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][p.45]{Fitoussi:1995}
+\end{itemize}
+
+\subsubsection*{Auteurs multiples et \texttt{and others}\footnote{\emph{Lorsque le nombre d'auteurs excède le seuil défini par le style bibliographique, l'utilisation de \texttt{and others} permet d'activer l'abréviation automatique (\emph{et al.}) dans les citations, tout en conservant la liste complète des auteurs dans la bibliographie.}
+	}}
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@book{Hermet:2000,
+  author    = {Hermet, Guy and Badie, Bertrand
+               and Birnbaum, Pierre and others},
+  title     = {Dictionnaire de la science politique
+               et des institutions politiques},
+  publisher = {A. Colin},
+  location  = {Paris},
+  year      = {2000},
+  pages     = {287 p.}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\fullcite{Hermet:2000}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{Hermet:2000}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\fullcite[p.45]{Hermet:2000}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[p.45]{Hermet:2000}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][p.45]{Hermet:2000}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][p.45]{Hermet:2000}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\cite{Hermet:2000}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{Hermet:2000}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\cite[p.45]{Hermet:2000}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[p.45]{Hermet:2000}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][p.45]{Hermet:2000}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][p.45]{Hermet:2000}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans pagination :
+	      \footciteexample{Hermet:2000}
+
+	\item Avec pagination explicite :
+	      \footciteexample[][p.45]{Hermet:2000}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][p.45]{Hermet:2000}
+\end{itemize}
+
+\subsubsection*{Ouvrage en langue étrangère\footnote{\emph{Pour les ouvrages en langue étrangère, la langue du titre n'est pas traduite. Les éléments de description bibliographique (lieu, éditeur, pagination) restent conformes aux normes françaises.}}}
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@book{Lazar:1991,
+  author    = {Lazar, Marc and Waller, Michael and Courtois, Stephane},
+  title     = {Comrades and brothers :
+               communism and trade unions in Europe},
+  publisher = {Cass},
+  location  = {London},
+  year      = {1991},
+  pages     = {VIII--204 p.}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\fullcite{Lazar:1991}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{Lazar:1991}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\fullcite[p.45]{Lazar:1991}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[p.45]{Lazar:1991}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][p.45]{Lazar:1991}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][p.45]{Lazar:1991}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\cite{Lazar:1991}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{Lazar:1991}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\cite[p.45]{Lazar:1991}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[p.45]{Lazar:1991}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][p.45]{Lazar:1991}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][p.45]{Lazar:1991}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans pagination :
+	      \footciteexample{Lazar:1991}
+
+	\item Avec pagination explicite :
+	      \footciteexample[][p.45]{Lazar:1991}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][p.45]{Lazar:1991}
+\end{itemize}
+
+\paragraph{Vérification de la génération des locutions latines}
+
+Le présent paragraphe a pour objectif de vérifier le bon fonctionnement de la
+génération automatique des locutions latines par \texttt{biblatex} dans le cas
+des ouvrages. Contrairement aux démonstrations précédentes, les locutions
+(\emph{ibid.}, \emph{op. cit.}, \emph{loc. cit.}) ne sont ici ni neutralisées ni
+contournées. Les citations sont volontairement enchaînées afin de provoquer leur
+apparition et d'en vérifier le comportement effectif.
+
+\begin{refsection}
+
+	Première citation complète d'un ouvrage :
+
+	\fullcite{Boursin:1991}
+
+	Citation consécutive du même ouvrage avec pagination modifiée
+	(attendu : \emph{ibid.}) :
+
+	\cite[p.~45]{Boursin:1991}
+
+	Interruption par la citation d'un autre ouvrage :
+
+	\cite[p.~12]{Fitoussi:1995}
+
+	Retour à l'ouvrage initial avec pagination différente
+	(attendu : \emph{op. cit.}) :
+
+	\cite[p.~52]{Boursin:1991}
+
+	Nouvelle interruption par une autre référence :
+
+	\cite[p.~18]{Fitoussi:1995}
+
+	Retour au même ouvrage et au même passage que précédemment
+	(cas théorique de \emph{loc. cit.}) :
+
+	\cite[p.~52]{Boursin:1991}
+
+\end{refsection}
+
+\medskip
+
+\emph{Remarque méthodologique : la locution \emph{loc. cit.} est désactivée par
+	défaut dans la majorité des styles \texttt{biblatex}, conformément aux usages
+	académiques contemporains. En l'absence d'activation explicite du
+	\texttt{loccittracker}, ce dernier appel produira généralement
+	\emph{op. cit.}, éventuellement accompagné de la pagination.}
+
+\subsection{Rapports institutionnels (\texttt{@report})}
+
+\emph{Les rapports institutionnels relèvent du type \texttt{@report}. Ils se distinguent des ouvrages par la prééminence de l'institution productrice sur l'auteur individuel, ainsi que par la présence fréquente d'un type, d'un numéro et d'une série.}
+
+\emph{Dans le cas des rapports institutionnels, l'institution fait office d'auteur principal. L'utilisation des champs \texttt{shortinstitution} et \texttt{sortkey} permet d'assurer une forme de citation abrégée cohérente et un classement alphabétique stable dans la bibliographie.}
+
+
+Structure : Institution/AUTEUR. Titre. Type/numéro. Institution ou organisation, année (série).
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@report{Insee:2020,
+  shortinstitution = {Insee},
+  sortkey          = {Insee},
+  title            = {Démographie - Population au début du mois - France
+                      (inclus Mayotte à partir de 2014)},
+  type             = {Rapport},
+  number           = {001641607},
+  institution      = {Institut National de la Statistique et des études économiques},
+  year             = {2020},
+  series           = {Séries chronologiques}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\fullcite{Insee:2020}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{Insee:2020}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\fullcite[p.~12]{Insee:2020}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[p.~12]{Insee:2020}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][p.~12]{Insee:2020}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][p.~12]{Insee:2020}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\cite{Insee:2020}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{Insee:2020}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\cite[p.~12]{Insee:2020}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[p.~12]{Insee:2020}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][p.~12]{Insee:2020}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][p.~12]{Insee:2020}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans pagination :
+	      \footciteexample{Insee:2020}
+
+	\item Avec pagination explicite :
+	      \footciteexample[][p.~12]{Insee:2020}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][p.~12]{Insee:2020}
+\end{itemize}
+
+\paragraph{Vérification de la génération des locutions latines pour les rapports institutionnels}
+
+Le présent paragraphe a pour objectif de vérifier le bon fonctionnement de la
+génération automatique des locutions latines par \texttt{biblatex} dans le cas
+des rapports institutionnels. Contrairement aux démonstrations précédentes, les
+locutions (\emph{ibid.}, \emph{op. cit.}, \emph{loc. cit.}) ne sont ici ni
+neutralisées ni contournées. Les citations sont volontairement enchaînées afin
+de provoquer leur apparition et d'en vérifier le comportement effectif.
+
+\begin{refsection}
+
+	Première citation complète d'un rapport institutionnel :
+
+	\fullcite{Insee:2020}
+
+	Citation consécutive du même rapport avec pagination modifiée
+	(attendu : \emph{ibid.}) :
+
+	\cite[p.~12]{Insee:2020}
+
+	Interruption par la citation d'un autre rapport institutionnel
+	(ou, à défaut, d'un ouvrage) :
+
+	\cite[p.~45]{Fitoussi:1995}
+
+	Retour au rapport initial après interruption
+	(attendu : \emph{op. cit.}) :
+
+	\cite[p.~18]{Insee:2020}
+
+	Nouvelle interruption par une autre référence :
+
+	\cite[p.~52]{Fitoussi:1995}
+
+	Retour au même rapport et au même passage que précédemment
+	(cas théorique de \emph{loc. cit.}) :
+
+	\cite[p.~18]{Insee:2020}
+
+\end{refsection}
+
+\medskip
+
+\emph{Remarque méthodologique : comme pour les ouvrages, la locution
+	\emph{loc. cit.} est désactivée par défaut dans la majorité des styles
+	\texttt{biblatex}. En l'absence d'activation explicite du
+	\texttt{loccittracker}, le dernier appel produira généralement
+	\emph{op. cit.}, éventuellement accompagné de la pagination.}
+
+\subsection{Chapitres d'ouvrage collectif (\texttt{@incollection})}
+
+\emph{Les chapitres d'ouvrage correspondent à des contributions autonomes
+	insérées dans un ouvrage collectif dirigé. Ils relèvent du type
+	\texttt{@incollection} et se distinguent des livres par la présence d'un titre
+	de chapitre et d'un directeur scientifique.}
+
+\textbf{À tester (chapitres)} : vérifier la présence de \og In\fg{}, de l'éditeur scientifique suivi de \texttt{editortype} (\og dir.\fg{}), puis la pagination précédée de \og p.\fg{}
+
+Structure : NOM, Prénom. Titre du chapitre. In NOM, Prénom (dir.), Titre de l'ouvrage collectif. Lieu : Éditeur, année, p. xx-yy.
+
+\paragraph{Modèle générique}
+
+\begin{verbatim}
+@incollection{Cle:YYYY,
+  author     = {Nom, Prénom},
+  title      = {Titre du chapitre},
+  editor     = {Nom, Prénom},
+  editortype = {dir.},
+  booktitle  = {Titre de l'ouvrage collectif},
+  publisher  = {Éditeur},
+  location   = {Lieu},
+  year       = {YYYY},
+  pages      = {xx-yy}
+}
+\end{verbatim}
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@incollection{Hassenteufel:1993,
+  author     = {Hassenteufel, Patrick},
+  title      = {Les automnes infirmiers (1988-1992) : dynamiques d'une mobilisation},
+  editor     = {Fillieule, Olivier},
+  editortype = {dir.},
+  booktitle  = {Sociologie de la protestation},
+  publisher  = {l'Harmattan},
+  location   = {Paris},
+  year       = {1993},
+  pages      = {93-120}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans pagination explicite}
+
+\begin{verbatim}
+\fullcite{Hassenteufel:1993}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{Hassenteufel:1993}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\fullcite[p.~95]{Hassenteufel:1993}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[p.~95]{Hassenteufel:1993}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][p.~95]{Hassenteufel:1993}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][p.~95]{Hassenteufel:1993}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\cite{Hassenteufel:1993}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{Hassenteufel:1993}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\cite[p.~95]{Hassenteufel:1993}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[p.~95]{Hassenteufel:1993}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][p.~95]{Hassenteufel:1993}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][p.~95]{Hassenteufel:1993}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans pagination :
+	      \footciteexample{Hassenteufel:1993}
+
+	\item Avec pagination explicite :
+	      \footciteexample[][p.~95]{Hassenteufel:1993}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][p.~95]{Hassenteufel:1993}
+\end{itemize}
+
+\paragraph{Vérification de la génération des locutions latines pour les chapitres d'ouvrage}
+
+Le présent paragraphe vise à vérifier le bon fonctionnement de la génération
+automatique des locutions latines par \texttt{biblatex} dans le cas des chapitres
+d'ouvrage collectif. Les citations sont volontairement enchaînées afin de
+provoquer l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
+\emph{loc. cit.}
+
+\begin{refsection}
+
+	Première citation complète d'un chapitre :
+
+	\fullcite{Hassenteufel:1993}
+
+	Citation consécutive du même chapitre avec pagination modifiée
+	(attendu : \emph{ibid.}) :
+
+	\cite[p.~95]{Hassenteufel:1993}
+
+	Interruption par la citation d'un autre ouvrage ou chapitre :
+
+	\cite[p.~45]{Fitoussi:1995}
+
+	Retour au chapitre initial après interruption
+	(attendu : \emph{op. cit.}) :
+
+	\cite[p.~97]{Hassenteufel:1993}
+
+	Nouvelle interruption par une autre référence :
+
+	\cite[p.~52]{Fitoussi:1995}
+
+	Retour au même chapitre et au même passage que précédemment
+	(cas théorique de \emph{loc. cit.}) :
+
+	\cite[p.~97]{Hassenteufel:1993}
+
+\end{refsection}
+
+\medskip
+
+\emph{Remarque méthodologique : comme pour les ouvrages et les rapports
+	institutionnels, la locution \emph{loc. cit.} est désactivée par défaut dans la
+	plupart des styles \texttt{biblatex}. En l'absence d'activation explicite du
+	\texttt{loccittracker}, le dernier appel produira généralement
+	\emph{op. cit.}, éventuellement accompagné de la pagination.}
+
+\subsection{Articles de revue (\texttt{@article})}
+
+Structure : NOM, Prénom. Titre de l'article. \emph{Titre de la revue}, mois année, volume, numéro, pagination.
+
+Le champ \texttt{monthtext} permet d'indiquer un mois, un intervalle de mois ou une saison complète.
+
+\textbf{À tester (articles)} : contrôler l'affichage du \texttt{monthtext} (remplace mois+année), du volume/numéro et de la pagination. Modifier temporairement \texttt{monthtext} pour vérifier le rendu libre.
+
+\subsubsection*{Article avec volume et numéro}
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@article{Leca:2001,
+  author       = {Leca, Jean},
+  title        = {Les 50 ans de la RFSP : une relecture cavalière des débuts},
+  journaltitle = {Revue française de science politique},
+  monthtext    = {fév.-avr. 2001},
+  year         = {2001},
+  volume       = {LI},
+  number       = {1-2},
+  pages        = {5-17}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans pagination explicite}
+
+\begin{verbatim}
+\fullcite{Leca:2001}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{Leca:2001}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\fullcite[p.~6]{Leca:2001}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[p.~6]{Leca:2001}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][p.~6]{Leca:2001}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][p.~6]{Leca:2001}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\cite{Leca:2001}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{Leca:2001}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\cite[p.~6]{Leca:2001}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[p.~6]{Leca:2001}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][p.~6]{Leca:2001}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][p.~6]{Leca:2001}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans pagination :
+	      \footciteexample{Leca:2001}
+
+	\item Avec pagination explicite :
+	      \footciteexample[][p.~6]{Leca:2001}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][p.~6]{Leca:2001}
+\end{itemize}
+
+\subsubsection*{Article sans volume, numéros regroupés}
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@article{Simeant:1993,
+  author       = {Sim\'eant, Johanna},
+  title        = {Violence d'un répertoire, les sans-papiers de la grève à la faim},
+  journaltitle = {Cultures et conflits},
+  monthtext    = {print.-été 1993},
+  year         = {1993},
+  number       = {9-10},
+  pages        = {315-338}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans pagination explicite}
+
+\begin{verbatim}
+\fullcite{Simeant:1993}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{Simeant:1993}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\fullcite[p.~320]{Simeant:1993}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[p.~320]{Simeant:1993}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][p.~320]{Simeant:1993}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][p.~320]{Simeant:1993}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\cite{Simeant:1993}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{Simeant:1993}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\cite[p.~320]{Simeant:1993}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[p.~320]{Simeant:1993}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][p.~320]{Simeant:1993}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][p.~320]{Simeant:1993}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans pagination :
+	      \footciteexample{Simeant:1993}
+
+	\item Avec pagination explicite :
+	      \footciteexample[][p.~320]{Simeant:1993}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][p.~320]{Simeant:1993}
+\end{itemize}
+
+\paragraph{Vérification de la génération des locutions latines pour les articles}
+
+Le présent paragraphe vise à vérifier la génération automatique des locutions
+latines (\emph{ibid.}, \emph{op. cit.}, et le cas échéant \emph{loc. cit.}) pour
+les articles de revue. Les citations sont volontairement enchaînées afin de
+provoquer leur apparition.
+
+\begin{refsection}
+
+	Première citation complète d'un article :
+
+	\fullcite{Leca:2001}
+
+	Citation consécutive du même article avec pagination modifiée
+	(attendu : \emph{ibid.}) :
+
+	\cite[p.~6]{Leca:2001}
+
+	Interruption par la citation d'un autre article :
+
+	\cite[p.~320]{Simeant:1993}
+
+	Retour au premier article après interruption
+	(attendu : \emph{op. cit.}) :
+
+	\cite[p.~8]{Leca:2001}
+
+	Nouvelle interruption :
+
+	\cite[p.~322]{Simeant:1993}
+
+	Retour au même article et au même passage que précédemment
+	(cas théorique de \emph{loc. cit.}) :
+
+	\cite[p.~8]{Leca:2001}
+
+\end{refsection}
+
+\medskip
+
+\emph{Remarque méthodologique : la locution \emph{loc. cit.} est généralement
+	désactivée par défaut dans la plupart des styles \texttt{biblatex}. En l'absence
+	d'activation explicite du \texttt{loccittracker}, le dernier appel produira
+	habituellement \emph{op. cit.}, éventuellement accompagné de la pagination.}
+
+\subsection{Thèses ou mémoires (\texttt{@thesis})}
+
+Structure : NOM, Prénom. \emph{Titre}. Niveau du travail : discipline :
+lieu : établissement : année. Pagination.
+
+\emph{Les thèses et mémoires constituent des travaux universitaires non publiés
+	ou diffusés de manière limitée. Ils relèvent du type \texttt{@thesis}, pour lequel
+	le niveau du diplôme et la discipline occupent une place centrale dans la
+	référence bibliographique.}
+
+\textbf{À tester (thèses)} : vérifier l'enchaînement type \textrightarrow{} discipline \textrightarrow{} ville \textrightarrow{} établissement \textrightarrow{} année, puis la pagination.
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@thesis{Brice:2004,
+  author      = {Brice, Catherine},
+  title       = {La monarchie et la construction de l'identité nationale italienne :
+                 1861-1911},
+  type        = {Thèse d'\'Etat},
+  discipline  = {Histoire},
+  location    = {Paris},
+  institution = {Institut d'études politiques},
+  year        = {2004},
+  pages       = {3 vol.}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans pagination explicite}
+
+\begin{verbatim}
+\fullcite{Brice:2004}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{Brice:2004}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\fullcite[p.~125]{Brice:2004}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[p.~125]{Brice:2004}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][p.~125]{Brice:2004}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][p.~125]{Brice:2004}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\cite{Brice:2004}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{Brice:2004}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\cite[p.~125]{Brice:2004}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[p.~125]{Brice:2004}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][p.~125]{Brice:2004}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][p.~125]{Brice:2004}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans pagination :
+	      \footciteexample{Brice:2004}
+
+	\item Avec pagination explicite :
+	      \footciteexample[][p.~125]{Brice:2004}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][p.~125]{Brice:2004}
+\end{itemize}
+
+\paragraph{Vérification de la génération des locutions latines pour les thèses et mémoires}
+
+Le présent paragraphe vise à vérifier le bon fonctionnement de la génération
+automatique des locutions latines par \texttt{biblatex} dans le cas des thèses
+et mémoires. Les citations sont volontairement enchaînées afin de provoquer
+l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant, \emph{loc. cit.}
+
+\begin{refsection}
+
+	Première citation complète d'une thèse :
+
+	\fullcite{Brice:2004}
+
+	Citation consécutive de la même thèse avec pagination modifiée
+	(attendu : \emph{ibid.}) :
+
+	\cite[p.~125]{Brice:2004}
+
+	Interruption par la citation d'un autre travail :
+
+	\cite[p.~320]{Leca:2001}
+
+	Retour à la thèse initiale après interruption
+	(attendu : \emph{op. cit.}) :
+
+	\cite[p.~210]{Brice:2004}
+
+	Nouvelle interruption par une autre référence :
+
+	\cite[p.~322]{Leca:2001}
+
+	Retour à la même thèse et au même passage que précédemment
+	(cas théorique de \emph{loc. cit.}) :
+
+	\cite[p.~210]{Brice:2004}
+
+\end{refsection}
+
+\medskip
+
+\emph{Remarque méthodologique : comme pour les autres types de documents, la
+	locution \emph{loc. cit.} est désactivée par défaut dans la majorité des styles
+	\texttt{biblatex}. En l'absence d'activation explicite du
+	\texttt{loccittracker}, le dernier appel produira généralement
+	\emph{op. cit.}, éventuellement accompagné de la pagination.}
+
+
+\subsection{Films (\texttt{@movie})}
+
+Structure : NOM, Prénom, réal. \emph{Titre} [support]. Éditeur, année. Description matérielle, durée.
+
+\emph{Les films et documents audiovisuels relèvent du type \texttt{@movie}. La
+	référence met en avant le réalisateur (champ \texttt{director}) et précise le
+	support (\texttt{medium}) ainsi que l'étendue matérielle (\texttt{extent}).}
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@movie{Jaeggi:2003,
+  director   = {Jaeggi, Danielle},
+  author     = {Jaeggi, Danielle},
+  title      = {A l'écoute de la terre : voyage scientifique au centre de la terre},
+  medium     = {cassette vidéo},
+  publisher  = {Alcome},
+  year       = {2003},
+  extent     = {1 cass. vidéo VHS, 52 min.}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans précision}
+
+\begin{verbatim}
+\fullcite{Jaeggi:2003}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{Jaeggi:2003}
+\end{bibexample}
+
+\subparagraph{Avec minutage explicite}
+
+\begin{verbatim}
+\fullcite[00:12:30--00:14:10]{Jaeggi:2003}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[00:12:30--00:14:10]{Jaeggi:2003}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][00:12:30--00:14:10]{Jaeggi:2003}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][00:12:30--00:14:10]{Jaeggi:2003}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans précision}
+
+\begin{verbatim}
+\cite{Jaeggi:2003}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{Jaeggi:2003}
+\end{bibexample}
+
+\subparagraph{Avec minutage explicite}
+
+\begin{verbatim}
+\cite[00:12:30--00:14:10]{Jaeggi:2003}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[00:12:30--00:14:10]{Jaeggi:2003}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][00:12:30--00:14:10]{Jaeggi:2003}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][00:12:30--00:14:10]{Jaeggi:2003}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans précision :
+	      \footciteexample{Jaeggi:2003}
+
+	\item Avec minutage explicite :
+	      \footciteexample[][00:12:30--00:14:10]{Jaeggi:2003}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][00:12:30--00:14:10]{Jaeggi:2003}
+\end{itemize}
+
+\paragraph{Vérification de la génération des locutions latines pour les films}
+
+Le présent paragraphe vise à vérifier le bon fonctionnement de la génération
+automatique des locutions latines par \texttt{biblatex} dans le cas des films.
+Les citations sont volontairement enchaînées afin de provoquer l'apparition de
+\emph{ibid.}, \emph{op. cit.} et, le cas échéant, \emph{loc. cit.}
+
+\begin{refsection}
+
+	Première citation complète d'un film :
+
+	\fullcite{Jaeggi:2003}
+
+	Citation consécutive du même film avec minutage modifié
+	(attendu : \emph{ibid.}) :
+
+	\cite[00:12:30--00:14:10]{Jaeggi:2003}
+
+	Interruption par la citation d'une autre référence :
+
+	\cite[p.~12]{Fitoussi:1995}
+
+	Retour au film initial après interruption
+	(attendu : \emph{op. cit.}) :
+
+	\cite[00:20:00--00:21:10]{Jaeggi:2003}
+
+	Nouvelle interruption :
+
+	\cite[p.~18]{Fitoussi:1995}
+
+	Retour au même film et au même minutage que précédemment
+	(cas théorique de \emph{loc. cit.}) :
+
+	\cite[00:20:00--00:21:10]{Jaeggi:2003}
+
+\end{refsection}
+
+\medskip
+
+\emph{Remarque méthodologique : comme pour les autres types de documents, la
+	locution \emph{loc. cit.} est désactivée par défaut dans la majorité des styles
+	\texttt{biblatex}. En l'absence d'activation explicite du
+	\texttt{loccittracker}, le dernier appel produira généralement
+	\emph{op. cit.}, éventuellement accompagné du minutage.}
+
+\subsection{Vidéos en ligne (\texttt{@online})}
+
+Structure : AUTEUR ou institution. \emph{Titre} [vidéo en ligne]. Plateforme,
+date de publication [date de consultation]. URL.
+
+\emph{Les vidéos en ligne relèvent du type \texttt{@online}. Elles se distinguent
+	des films par l'absence de support matériel et par la mention explicite de la
+	plateforme de diffusion ainsi que des dates de publication et de consultation.
+	Le champ \texttt{entrysubtype} permet d'adapter automatiquement le libellé
+	affiché (par exemple \og vidéo en ligne \fg{} ou \og site web \fg{}).}
+
+\textbf{À tester (film/vidéo)} : vérifier la mention \og réal.\fg{}, le support \texttt{medium} entre crochets et la durée \texttt{extent}. Pour la vidéo en ligne, contrôler le libellé \og [vidéo en ligne]\fg{}, la plateforme, la date de publication et la date de consultation entre crochets. Modifier \texttt{entrysubtype} de \texttt{video} à \texttt{website} pour observer le changement de libellé.
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@online{SciencesPo:2017,
+  entrysubtype = {video},
+  institution  = {Sciences Po},
+  title        = {Sciences Po passe le bac : épreuve d'histoire},
+  platform     = {YouTube},
+  pubdate      = {2017-06-12},
+  urldate      = {2017-06-14},
+  url          = {https://www.youtube.com/watch?v=ZvSVkNZzvx4&t}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans précision}
+
+\begin{verbatim}
+\fullcite{SciencesPo:2017}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{SciencesPo:2017}
+\end{bibexample}
+
+\subparagraph{Avec minutage ou indication de séquence}
+
+\begin{verbatim}
+\fullcite[à partir de 02:15]{SciencesPo:2017}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[à partir de 02:15]{SciencesPo:2017}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][à partir de 02:15]{SciencesPo:2017}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][à partir de 02:15]{SciencesPo:2017}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans précision}
+
+\begin{verbatim}
+\cite{SciencesPo:2017}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{SciencesPo:2017}
+\end{bibexample}
+
+\subparagraph{Avec indication de séquence}
+
+\begin{verbatim}
+\cite[à partir de 02:15]{SciencesPo:2017}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[à partir de 02:15]{SciencesPo:2017}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][à partir de 02:15]{SciencesPo:2017}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][à partir de 02:15]{SciencesPo:2017}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans précision :
+	      \footciteexample{SciencesPo:2017}
+
+	\item Avec indication de séquence :
+	      \footciteexample[][à partir de 02:15]{SciencesPo:2017}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][à partir de 02:15]{SciencesPo:2017}
+\end{itemize}
+
+\paragraph{Vérification de la génération des locutions latines pour les vidéos en ligne}
+
+Le présent paragraphe vise à vérifier le bon fonctionnement de la génération
+automatique des locutions latines par \texttt{biblatex} dans le cas des vidéos
+en ligne. Les citations sont volontairement enchaînées afin de provoquer
+l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
+\emph{loc. cit.}
+
+\begin{refsection}
+
+	Première citation complète d'une vidéo en ligne :
+
+	\fullcite{SciencesPo:2017}
+
+	Citation consécutive de la même vidéo avec indication de séquence
+	(attendu : \emph{ibid.}) :
+
+	\cite[à partir de 02:15]{SciencesPo:2017}
+
+	Interruption par la citation d'une autre référence :
+
+	\cite[p.~12]{Fitoussi:1995}
+
+	Retour à la vidéo initiale après interruption
+	(attendu : \emph{op. cit.}) :
+
+	\cite[à partir de 04:10]{SciencesPo:2017}
+
+	Nouvelle interruption :
+
+	\cite[p.~18]{Fitoussi:1995}
+
+	Retour à la même vidéo et à la même séquence que précédemment
+	(cas théorique de \emph{loc. cit.}) :
+
+	\cite[à partir de 04:10]{SciencesPo:2017}
+
+\end{refsection}
+
+\medskip
+
+\emph{Remarque méthodologique : comme pour les autres types de documents, la
+	locution \emph{loc. cit.} est désactivée par défaut dans la majorité des styles
+	\texttt{biblatex}. En l'absence d'activation explicite du
+	\texttt{loccittracker}, le dernier appel produira généralement
+	\emph{op. cit.}, éventuellement accompagné de l'indication de séquence.}
+
+
+\paragraph{Vérification des libellés pour les vidéos en ligne}
+
+La modification du champ \texttt{entrysubtype} permet de faire varier
+automatiquement le libellé affiché dans la référence.
+
+\begin{itemize}
+	\item \texttt{entrysubtype = \{video\}} :
+	      affichage du libellé \og vidéo en ligne \fg{} ;
+	\item \texttt{entrysubtype = \{website\}} :
+	      affichage du libellé \og site web \fg{}.
+\end{itemize}
+
+Ce mécanisme permet d'utiliser le type \texttt{@online} aussi bien pour des
+contenus audiovisuels que pour des pages web institutionnelles.
+
+\subsection{sites web (\texttt{@online})}
+
+Structure : AUTEUR. Titre [en ligne]. Nom de l'éditeur, date de publication, date de mise à jour [date de consultation]. Disponibilité et accès
+
+\emph{Les sites web relèvent du type \texttt{@online}. Ils se distinguent des
+	vidéos en ligne par le libellé \og en ligne \fg{} et par la mise en avant de
+	l'organisme éditeur plutôt que d'une plateforme de diffusion. Le champ
+	\texttt{entrysubtype = \{website\}} permet d'activer automatiquement ce libellé.}
+
+\textbf{À tester (en ligne)} : vérifier l'affichage de la plateforme (ou \texttt{journaltitle} pour un article), des dates \texttt{pubdate}/\texttt{updatedate} si présentes, de la date de consultation \texttt{urldate} entre crochets, puis l'URL. Tester \texttt{pubdate} aux formats \texttt{YYYY}, \texttt{YYYY-MM}, \texttt{YYYY-MM-DD} pour contrôler le rendu.
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@online{MemoireDesHommes:2013,
+  title        = {Mémoire des hommes},
+  entrysubtype = {website},
+  platform     = {France. Ministère de la défense},
+  pubdate      = {2013},
+  urldate      = {2017-06-19},
+  url          = {http://www.memoiredeshommes.sga.defense.gouv.fr/}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans précision}
+
+\begin{verbatim}
+\fullcite{MemoireDesHommes:2013}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{MemoireDesHommes:2013}
+\end{bibexample}
+
+\subparagraph{Avec précision contextuelle}
+
+\begin{verbatim}
+\fullcite[base de données nominative]{MemoireDesHommes:2013}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[base de données nominative]{MemoireDesHommes:2013}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][base de données nominative]{MemoireDesHommes:2013}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][base de données nominative]{MemoireDesHommes:2013}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans précision}
+
+\begin{verbatim}
+\cite{MemoireDesHommes:2013}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{MemoireDesHommes:2013}
+\end{bibexample}
+
+\subparagraph{Avec précision contextuelle}
+
+\begin{verbatim}
+\cite[base de données nominative]{MemoireDesHommes:2013}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[base de données nominative]{MemoireDesHommes:2013}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][base de données nominative]{MemoireDesHommes:2013}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][base de données nominative]{MemoireDesHommes:2013}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans précision :
+	      \footciteexample{MemoireDesHommes:2013}
+
+	\item Avec précision contextuelle :
+	      \footciteexample[][base de données nominative]{MemoireDesHommes:2013}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][base de données nominative]{MemoireDesHommes:2013}
+\end{itemize}
+
+\paragraph{Vérification des libellés pour les sites web}
+
+Le champ \texttt{entrysubtype = \{website\}} permet d'activer le libellé
+\og en ligne \fg{} dans la référence bibliographique. L'organisme responsable
+du site est indiqué à l'aide du champ \texttt{platform}, tandis que la date de
+consultation est fournie par \texttt{urldate}.
+
+La date de publication (\texttt{pubdate}) peut correspondre à l'année de mise
+en ligne initiale ou, à défaut, à l'année de référence retenue par l'éditeur.
+
+\paragraph{Vérification de la génération des locutions latines pour les sites web}
+
+Le présent paragraphe vise à vérifier le bon fonctionnement de la génération
+automatique des locutions latines par \texttt{biblatex} dans le cas des sites
+web. Les citations sont volontairement enchaînées afin de provoquer l'apparition
+de \emph{ibid.}, \emph{op. cit.} et, le cas échéant, \emph{loc. cit.}
+
+\begin{refsection}
+
+	Première citation complète d'un site web :
+
+	\fullcite{MemoireDesHommes:2013}
+
+	Citation consécutive du même site avec précision contextuelle
+	(attendu : \emph{ibid.}) :
+
+	\cite[base de données nominative]{MemoireDesHommes:2013}
+
+	Interruption par la citation d'une autre référence :
+
+	\cite[p.~12]{Fitoussi:1995}
+
+	Retour au site web initial après interruption
+	(attendu : \emph{op. cit.}) :
+
+	\cite[base de données nominative]{MemoireDesHommes:2013}
+
+	Nouvelle interruption :
+
+	\cite[p.~18]{Fitoussi:1995}
+
+	Retour au même site web et au même contexte que précédemment
+	(cas théorique de \emph{loc. cit.}) :
+
+	\cite[base de données nominative]{MemoireDesHommes:2013}
+
+\end{refsection}
+
+\medskip
+
+\emph{Remarque méthodologique : comme pour les autres types de documents en
+	ligne, la locution \emph{loc. cit.} est désactivée par défaut dans la majorité
+	des styles \texttt{biblatex}. En l'absence d'activation explicite du
+	\texttt{loccittracker}, le dernier appel produira généralement
+	\emph{op. cit.}, sans modification du libellé.}
+
+\subsection{Rapports institutionnels en ligne (\texttt{@online})}
+
+Structure : Institution ou auteur institutionnel. Titre [en ligne].
+Plateforme de diffusion, année de publication [date de consultation]. URL.
+
+\emph{Les rapports institutionnels diffusés exclusivement en ligne relèvent du
+	type \texttt{@online}. L'institution productrice fait office d'auteur, tandis
+	que la plateforme de diffusion est indiquée séparément. Ce cas se distingue
+	des rapports institutionnels classiques (\texttt{@report}) par l'absence de
+	support éditorial autonome.}
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@online{GlobalWebIndex:2020,
+  author    = {{Global WebIndex}},
+  title     = {COVID-19 level of concern by country worldwide 2020},
+  platform  = {Statista},
+  pubdate   = {2020},
+  urldate   = {2020-09-01},
+  url       = {https://www-statista-com.acces--distant.sciencespo.fr/statistics/1109124/covid-concern-level-by-country-worldwide/}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans précision}
+
+\begin{verbatim}
+\fullcite{GlobalWebIndex:2020}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{GlobalWebIndex:2020}
+\end{bibexample}
+
+\subparagraph{Avec précision contextuelle}
+
+\begin{verbatim}
+\fullcite[données comparatives internationales]{GlobalWebIndex:2020}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[données comparatives internationales]{GlobalWebIndex:2020}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][données comparatives internationales]{GlobalWebIndex:2020}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][données comparatives internationales]{GlobalWebIndex:2020}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans précision}
+
+\begin{verbatim}
+\cite{GlobalWebIndex:2020}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{GlobalWebIndex:2020}
+\end{bibexample}
+
+\subparagraph{Avec précision contextuelle}
+
+\begin{verbatim}
+\cite[données comparatives internationales]{GlobalWebIndex:2020}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[données comparatives internationales]{GlobalWebIndex:2020}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][données comparatives internationales]{GlobalWebIndex:2020}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][données comparatives internationales]{GlobalWebIndex:2020}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans précision :
+	      \footciteexample{GlobalWebIndex:2020}
+
+	\item Avec précision contextuelle :
+	      \footciteexample[][données comparatives internationales]{GlobalWebIndex:2020}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][données comparatives internationales]{GlobalWebIndex:2020}
+\end{itemize}
+
+\paragraph{Vérification de la génération des locutions latines pour les rapports institutionnels en ligne}
+
+Le présent paragraphe vise à vérifier le bon fonctionnement de la génération
+automatique des locutions latines par \texttt{biblatex} dans le cas des rapports
+institutionnels diffusés en ligne. Les citations sont volontairement enchaînées
+afin de provoquer l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas
+échéant, \emph{loc. cit.}
+
+\begin{refsection}
+
+	Première citation complète d'un rapport institutionnel en ligne :
+
+	\fullcite{GlobalWebIndex:2020}
+
+	Citation consécutive du même rapport avec précision contextuelle
+	(attendu : \emph{ibid.}) :
+
+	\cite{GlobalWebIndex:2020}
+
+	Interruption par la citation d'une autre référence :
+
+	\cite[p.~12]{Fitoussi:1995}
+
+	Retour au rapport institutionnel initial après interruption
+	(attendu : \emph{op. cit.}) :
+
+	\cite[p.~12]{GlobalWebIndex:2020}
+
+	Nouvelle interruption :
+
+	\cite[p.~18]{Fitoussi:1995}
+
+	Retour au même rapport institutionnel et au même contexte que précédemment
+	(cas théorique de \emph{loc. cit.}) :
+
+	\cite[p.~12]{GlobalWebIndex:2020}
+
+\end{refsection}
+
+\medskip
+
+\emph{Remarque méthodologique : comme pour les autres ressources en ligne, la
+	locution \emph{loc. cit.} est désactivée par défaut dans la majorité des styles
+	\texttt{biblatex}. En l'absence d'activation explicite du
+	\texttt{loccittracker}, le dernier appel produira généralement
+	\emph{op. cit.}, sans modification du libellé.}
+
+
+\subsection{Articles de revue consultés en ligne (\texttt{@online})}
+
+Structure : NOM, Prénom. Titre de l'article. Titre de la revue, volume,
+numéro, pagination, date de publication [date de consultation]. Disponibilité
+et accès.
+
+\emph{Les articles de revue consultés exclusivement en ligne relèvent du type
+	\texttt{@online} lorsque l'accès se fait via une plateforme numérique
+	(JSTOR, Cairn, Persée, etc.). Ils conservent toutefois les éléments
+	structurants d'un article de revue (\texttt{journaltitle}, volume, numéro,
+	pagination).}
+
+\paragraph{Source bibliographique (Bib\LaTeX)}
+
+\begin{verbatim}
+@online{RindeRokkan:1959,
+  author       = {Rinde, Erik and Rokkan, Stein},
+  title        = {Toward an International program of research on the handling of conflicts:
+                   Introduction},
+  journaltitle = {The Journal of Conflict Resolution},
+  pubdate      = {1959-03},
+  volume       = {3},
+  number       = {1},
+  pages        = {1-5},
+  urldate      = {2005-04-12},
+  url          = {http://www.jstor.org}
+}
+\end{verbatim}
+
+\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+
+\subparagraph{Sans précision}
+
+\begin{verbatim}
+\fullcite{RindeRokkan:1959}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite{RindeRokkan:1959}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\fullcite[p.~2]{RindeRokkan:1959}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[p.~2]{RindeRokkan:1959}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\fullcite[Voir aussi][p.~2]{RindeRokkan:1959}
+\end{verbatim}
+
+\begin{bibexample}
+	\fullcite[Voir aussi][p.~2]{RindeRokkan:1959}
+\end{bibexample}
+
+\paragraph{Citation simple (\texttt{\textbackslash cite})}
+
+\subparagraph{Sans pagination}
+
+\begin{verbatim}
+\cite{RindeRokkan:1959}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite{RindeRokkan:1959}
+\end{bibexample}
+
+\subparagraph{Avec pagination explicite}
+
+\begin{verbatim}
+\cite[p.~2]{RindeRokkan:1959}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[p.~2]{RindeRokkan:1959}
+\end{bibexample}
+
+\subparagraph{Avec référence explicite}
+
+\begin{verbatim}
+\cite[Voir aussi][p.~2]{RindeRokkan:1959}
+\end{verbatim}
+
+\begin{bibexample}
+	\cite[Voir aussi][p.~2]{RindeRokkan:1959}
+\end{bibexample}
+
+\paragraph{Citation en note de bas de page}
+
+\begin{itemize}
+	\item Sans pagination :
+	      \footciteexample{RindeRokkan:1959}
+
+	\item Avec pagination explicite :
+	      \footciteexample[][p.~2]{RindeRokkan:1959}
+
+	\item Avec référence explicite :
+	      \footciteexample[Voir aussi][p.~2]{RindeRokkan:1959}
+\end{itemize}
+
+\paragraph{Vérification de la génération des locutions latines pour les articles de revue en ligne}
+
+Le présent paragraphe vise à vérifier le bon fonctionnement de la génération
+automatique des locutions latines par \texttt{biblatex} dans le cas des articles
+de revue consultés en ligne. Les citations sont volontairement enchaînées afin
+de provoquer l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
+\emph{loc. cit.}
+
+\begin{refsection}
+
+	Première citation complète d'un article en ligne :
+
+	\fullcite{RindeRokkan:1959}
+
+	Citation consécutive du même article avec pagination modifiée
+	(attendu : \emph{ibid.}) :
+
+	\cite[p.~2]{RindeRokkan:1959}
+
+	Interruption par la citation d'une autre référence :
+
+	\cite[p.~45]{Fitoussi:1995}
+
+	Retour à l'article initial après interruption
+	(attendu : \emph{op. cit.}) :
+
+	\cite[p.~3]{RindeRokkan:1959}
+
+	Nouvelle interruption :
+
+	\cite[p.~52]{Fitoussi:1995}
+
+	Retour au même article et au même passage que précédemment
+	(cas théorique de \emph{loc. cit.}) :
+
+	\cite[p.~3]{RindeRokkan:1959}
+
+\end{refsection}
+
+\medskip
+
+\emph{Remarque méthodologique : comme pour les autres ressources en ligne,
+	la locution \emph{loc. cit.} est désactivée par défaut dans la majorité des
+	styles \texttt{biblatex}. En l'absence d'activation explicite du
+	\texttt{loccittracker}, le dernier appel produira généralement
+	\emph{op. cit.}, éventuellement accompagné de la pagination.}
+
+\section{Compilation}
+
+\subsection{Commande locale}
+\begin{verbatim}
+latexmk -pdf -xelatex main.tex
+\end{verbatim}
+Cette commande enchaîne XeLaTeX et \texttt{biber}, nettoie automatiquement et produit \texttt{build/main.pdf}.
+
+\subsection{Avec Docker/Makefile}
+\begin{verbatim}
+make pdf        % lance docker compose run latex
+make clean      % nettoie via latexmk -C
+\end{verbatim}
+Le \texttt{docker-compose.yml} monte automatiquement les fichiers de style dans \texttt{\$TEXMFHOME}.
 
 \newpage
 \printbibliography[heading=bibintoc, title=Bibliographie]
