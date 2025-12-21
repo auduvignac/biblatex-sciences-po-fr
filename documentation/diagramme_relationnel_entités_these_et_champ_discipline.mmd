@@ -1,0 +1,20 @@
+erDiagram
+  ThesisEntry {
+    string key
+    string author
+    string title
+    string type
+    string discipline
+    string location
+    string institution
+    int year
+    string pages
+  }
+
+  DisciplineField {
+    string name
+    string datatype
+  }
+
+  ThesisEntry ||--|| DisciplineField : uses
+

@@ -1,0 +1,16 @@
+graph TD
+    Dev[Développeur] --> M[Invocation de make]
+
+    M -->|make pdf| Tpdf[cible pdf]
+    M -->|make clean| Tclean[cible clean]
+
+    Tpdf --> CMDpdf[docker compose run --rm latex]
+    CMDpdf --> Cpdf[Exécuter la commande du conteneur
+mkdir -p /app/build
+latexmk -pdf -xelatex main.tex
+cp /app/build/main.pdf /app/main.pdf
+chown UID:GID /app/main.pdf]
+    Cpdf --> Outpdf[main.pdf sur l’hôte]
+
+    Tclean --> CMDclean[docker compose run --rm latex latexmk -C]
+    CMDclean --> CleanOp[Nettoyage des artefacts de build dans le volume build-cache]

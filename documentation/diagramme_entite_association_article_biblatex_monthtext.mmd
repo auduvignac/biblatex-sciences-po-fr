@@ -1,0 +1,34 @@
+erDiagram
+  TYPE_ENTRÉE_ARTICLE {
+    string clé_entrée
+    string auteur
+    string titre
+    string titre_journal
+    string texte_mois
+    integer mois
+    integer année
+    string volume
+    string numéro
+    string pages
+  }
+
+  MODÈLE_DE_DONNÉES_CHAMP {
+    string nom
+    string type
+  }
+
+  MODÈLE_DE_DONNÉES_TYPE_ENTRÉE {
+    string nom
+  }
+
+  MODÈLE_DE_DONNÉES_TYPE_ENTRÉE ||--o{ TYPE_ENTRÉE_ARTICLE : instancie
+
+  MODÈLE_DE_DONNÉES_TYPE_ENTRÉE ||--o{ MODÈLE_DE_DONNÉES_CHAMP : utilise
+
+  MODÈLE_DE_DONNÉES_CHAMP {
+    string institution_courte
+  }
+
+  MODÈLE_DE_DONNÉES_CHAMP {
+    string texte_mois
+  }

@@ -1,0 +1,102 @@
+classDiagram
+class FormatDeChampBiblatex {
+  +nom
+  +typeDEntrée
+  +motif
+}
+
+class FormatTitre {
+  +nom = titre
+  +typeDEntrée = générique
+  +motif = "#1."  
+}
+
+class FormatÉdition {
+  +nom = édition
+  +typeDEntrée = générique
+  +motif = "#1."  
+}
+
+class FormatTitreDansCollection {
+  +nom = titre
+  +typeDEntrée = dans_collection
+  +motif = "#1"  
+}
+
+class FormatTitreOuvrageCollection {
+  +nom = titre_ouvrage
+  +typeDEntrée = dans_collection
+  +motif = "#1"  
+}
+
+class FormatPagesCollection {
+  +nom = pages
+  +typeDEntrée = dans_collection
+  +motif = "#1"  
+}
+
+FormatDeChampBiblatex <|-- FormatTitre
+FormatDeChampBiblatex <|-- FormatÉdition
+FormatDeChampBiblatex <|-- FormatTitreDansCollection
+FormatDeChampBiblatex <|-- FormatTitreOuvrageCollection
+FormatDeChampBiblatex <|-- FormatPagesCollection
+
+class PiloteBibliographie {
+  +typeDEntrée
+  +imprimerNoms_auteur()
+  +imprimerChamp_titre()
+  +imprimerChamp_titreOuvrage()
+  +imprimerNoms_éditeur()
+  +imprimerChamp_typeÉditeur()
+  +imprimerListe_lieu()
+  +imprimerListe_éditeur()
+  +imprimerChamp_année()
+  +imprimerChamp_pages()
+}
+
+class PiloteLivre {
+  +typeDEntrée = livre
+  +imprimerEntréeLivre()
+}
+
+class PiloteDansCollection {
+  +typeDEntrée = dans_collection
+  +imprimerEntréeDansCollection()
+  +imprimerTexte_Dans()
+  +imprimerTexte_p()
+}
+
+PiloteBibliographie <|-- PiloteLivre
+PiloteBibliographie <|-- PiloteDansCollection
+
+class EntréeBiblio {
+  +cléCitation
+  +auteur
+  +titre
+  +éditeur
+  +typeÉditeur
+  +titreOuvrage
+  +éditeur
+  +lieu
+  +année
+  +pages
+}
+
+EntréeBiblio --> PiloteDansCollection : formatée par
+EntréeBiblio --> PiloteLivre : formatée par
+
+class EntréeHassenteufel1993 {
+  +cléCitation = Hassenteufel:1993
+  +type = dans_collection
+  +auteur = "Hassenteufel, Patrick"
+  +titre = "Les automnes infirmiers (1988-1992) : dynamiques d'une mobilisation"
+  +éditeur = "Fillieule, Olivier"
+  +typeÉditeur = "dir."
+  +titreOuvrage = "Sociologie de la protestation"
+  +éditeur = "l'Harmattan"
+  +lieu = "Paris"
+  +année = 1993
+  +pages = "93-120"
+}
+
+EntréeBiblio <|-- EntréeHassenteufel1993

@@ -1,0 +1,31 @@
+sequenceDiagram
+  actor Utilisateur
+  participant Hôte
+  participant Docker
+  participant Conteneur as compilateur_latex
+  participant Latexmk
+  participant Xelatex
+  participant Biber
+
+  Utilisateur->>Hôte: docker compose run latex latexmk main.tex
+  Hôte->>Docker: Démarrer le conteneur compilateur_latex
+  Docker->>Conteneur: Exécuter la commande latexmk -pdf -xelatex main.tex
+  Conteneur->>Latexmk: Exécuter latexmk avec latexmkrc
+
+  loop Première compilation
+    Latexmk->>Xelatex: Invoquer xelatex main.tex
+    Xelatex-->>Latexmk: Écrire les fichiers aux et bcf
+  end
+
+  Latexmk->>Biber: Exécuter biber sur main
+  Biber-->>Latexmk: Produire le fichier bbl
+
+  loop Recompilation jusqu'à stabilité
+    Latexmk->>Xelatex: Réinvoquer xelatex main.tex
+    Xelatex-->>Latexmk: Mettre à jour aux et pdf
+  end
+
+  Latexmk-->>Conteneur: Quitter avec succès
+  Conteneur-->>Docker: Processus terminé
+  Docker-->>Hôte: Conteneur arrêté
+  Hôte-->>Utilisateur: PDF main.pdf disponible dans le répertoire du projet

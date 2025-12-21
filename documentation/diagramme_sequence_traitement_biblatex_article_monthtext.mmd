@@ -1,0 +1,19 @@
+sequenceDiagram
+  actor Utilisateur
+  participant LaTeX
+  participant Biblatex
+  participant Biber
+  participant ArticlesBib as Base_Bib_Articles
+
+  Utilisateur->>LaTeX: exécuter pdflatex sur main.tex
+  LaTeX->>Biblatex: charger le package et les pilotes (drivers)
+  Biblatex->>LaTeX: demander l'exécution du traitement des données bibliographiques
+  LaTeX->>Biber: invoquer biber main
+  Biber->>ArticlesBib: lire les entrées de type @article
+  ArticlesBib-->>Biber: retourner les champs (auteur, titre, titre_journal, texte_mois, année, volume, numéro, pages)
+  Biber-->>Biblatex: transmettre le modèle de données traité incluant le champ texte_mois
+  Utilisateur->>LaTeX: exécuter pdflatex à nouveau
+  LaTeX->>Biblatex: formater les citations et la bibliographie
+  Biblatex->>Biblatex: pour le pilote d'article (article driver)
+  Biblatex->>Biblatex: vérifier si le champ texte_mois est défini
+  Biblatex-->>LaTeX: afficher l'entrée formatée en utilisant texte_mois ou mois + année
