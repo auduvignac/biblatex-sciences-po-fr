@@ -18,6 +18,12 @@
 \usepackage{hyperref}
 
 % --------------------------------------------------------------------
+% Flag pour afficher toute la bibliographie (mode demonstration)
+% --------------------------------------------------------------------
+% Activation via ligne de commande :
+% xelatex "\def\demobib{1}\input{main.tex}"
+
+% --------------------------------------------------------------------
 % Configuration biblatex (style Sciences Po)
 % --------------------------------------------------------------------
 \usepackage[
@@ -287,8 +293,8 @@ nature des références appelées.
 
 \subsection{Livres (\texttt{@book})}
 
-Structure attendue (AFNOR / Sciences Po) :
-\textsc{AUTEUR}, Prénom. \emph{Titre}. Édition. Lieu : éditeur, année. Pagination.
+Structure :
+\textsc{AUTEUR}, Prénom. Titre. Édition. Lieu de publication : éditeur, année. Pagination.
 
 \paragraph{Modèle générique}
 
@@ -2246,6 +2252,9 @@ make clean      % nettoie via latexmk -C
 Le \texttt{docker-compose.yml} monte automatiquement les fichiers de style dans \texttt{\$TEXMFHOME}.
 
 \newpage
+\ifdefined\demobib
+  \nocite{*}
+\fi
 \printbibliography[heading=bibintoc, title=Bibliographie]
 
 \end{document}

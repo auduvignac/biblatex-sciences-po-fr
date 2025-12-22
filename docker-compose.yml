@@ -27,6 +27,7 @@ services:
       - ./main.tex:/app/main.tex:ro
       - ./latexmkrc:/app/latexmkrc:ro
       - ./bibliographies:/app/bibliographies:ro
+      - ./scripts:/app/scripts:ro
 
       # Sorties et fichiers auxiliaires (volume nommé, pas de dossier créé sur l'hôte)
       - build-cache:/app/build
