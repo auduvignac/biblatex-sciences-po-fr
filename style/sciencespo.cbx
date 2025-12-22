@@ -52,14 +52,20 @@
     {\usebibmacro{cite:loccit}}
     {\printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}}
 
+% Titre court pour les rapports sans labelname (hors op./loc. cit.)
+\newbibmacro*{cite:report:title}{%
+  \usebibmacro{cite:report:prefix}%
+  \printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}
+
 % Pour les rapports sans labelname, op./loc. cit. passe par cite:title
 \renewbibmacro*{cite:title}{%
   \ifboolexpr{
     test{\ifentrytype{report}}
     and test{\ifnameundef{labelname}}
-    and (test{\ifloccit} or test{\ifopcit} or test{\ifciteseen})
   }
-    {\usebibmacro{cite:report:opcit}}
+    {\ifboolexpr{ test{\ifloccit} or test{\ifopcit} or test{\ifciteseen} }
+       {\usebibmacro{cite:report:opcit}}
+       {\usebibmacro{cite:report:title}}}
     {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}
 
 \endinput
