@@ -20,4 +20,53 @@
     }%
 }
 
+% Préfixe commun pour identifier un rapport sans auteur
+\newbibmacro*{cite:report:prefix}{%
+  \printtext[bibhyperlink]{%
+    \ifboolexpr{ test{\iffieldundef{shortinstitution}} and test{\iflistundef{institution}} }
+      {%
+        \ifnameundef{author}
+          {\ifnameundef{editor}
+             {\iffieldundef{organization}
+                {}
+                {\printfield{organization}\setunit{\addcomma\space}}}
+             {\printnames{editor}\setunit{\addcomma\space}}}
+          {\printnames{author}\setunit{\addcomma\space}}}
+      {%
+        \iffieldundef{shortinstitution}
+          {\printlist{institution}}
+          {\printfield{shortinstitution}}%
+        \setunit{\addcomma\space}}}}
+
+% Bloc commun pour op./loc. cit. des rapports sans labelname
+\newbibmacro*{cite:report:opcit}{%
+  \usebibmacro{cite:report:prefix}%
+  \ifboolexpr{ test{\iffieldundef{shorttitle}} and test{\iffieldundef{labeltitle}} }
+    {}
+    {%
+      \printtext[bibhyperlink]{%
+        \iffieldundef{shorttitle}
+          {\printfield[cbx:opcitlabel]{labeltitle}}
+          {\printfield[cbx:opcitlabel]{shorttitle}}}%
+      \setunit{\addcomma\space}}%
+  \ifloccit
+    {\usebibmacro{cite:loccit}}
+    {\printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}}
+
+% Titre court pour les rapports sans labelname (hors op./loc. cit.)
+\newbibmacro*{cite:report:title}{%
+  \usebibmacro{cite:report:prefix}%
+  \printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}
+
+% Pour les rapports sans labelname, op./loc. cit. passe par cite:title
+\renewbibmacro*{cite:title}{%
+  \ifboolexpr{
+    test{\ifentrytype{report}}
+    and test{\ifnameundef{labelname}}
+  }
+    {\ifboolexpr{ test{\ifloccit} or test{\ifopcit} or test{\ifciteseen} }
+       {\usebibmacro{cite:report:opcit}}
+       {\usebibmacro{cite:report:title}}}
+    {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}
+
 \endinput
