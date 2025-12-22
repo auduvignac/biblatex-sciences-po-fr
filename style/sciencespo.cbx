@@ -23,7 +23,14 @@
 % Bloc commun pour op./loc. cit. des rapports sans labelname
 \newbibmacro*{cite:report:opcit}{%
   \ifboolexpr{ test{\iffieldundef{shortinstitution}} and test{\iflistundef{institution}} }
-    {}
+    {%
+      \ifnameundef{author}
+        {\ifnameundef{editor}
+           {\iffieldundef{organization}
+              {}
+              {\printfield{organization}\setunit{\addcomma\space}}}
+           {\printnames{editor}\setunit{\addcomma\space}}}
+        {\printnames{author}\setunit{\addcomma\space}}}
     {%
       \iffieldundef{shortinstitution}
         {\printlist{institution}}
