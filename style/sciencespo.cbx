@@ -80,9 +80,11 @@
           {\printfield[cbx:opcitlabel]{labeltitle}}
           {\printfield[cbx:opcitlabel]{shorttitle}}}%
       \setunit{\addcomma\space}}%
-  \ifloccit
-    {\usebibmacro{cite:loccit}}
-    {\printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}}
+  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }
+    {\printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}
+    {\ifloccit
+       {\usebibmacro{cite:loccit}}
+       {\printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}}}
 
 % Titre court pour les rapports sans labelname (hors op./loc. cit.)
 \newbibmacro*{cite:report:title}{%
