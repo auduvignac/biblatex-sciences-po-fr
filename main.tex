@@ -20,13 +20,8 @@
 % --------------------------------------------------------------------
 % Flag pour afficher toute la bibliographie (mode demonstration)
 % --------------------------------------------------------------------
-\newif\ifdemobib
-\demobibfalse % Defaut : pas de \nocite{*}
 % Activation via ligne de commande :
 % xelatex "\def\demobib{1}\input{main.tex}"
-\ifdefined\demobib
-  \demobibtrue
-\fi
 
 % --------------------------------------------------------------------
 % Configuration biblatex (style Sciences Po)
@@ -2257,7 +2252,7 @@ make clean      % nettoie via latexmk -C
 Le \texttt{docker-compose.yml} monte automatiquement les fichiers de style dans \texttt{\$TEXMFHOME}.
 
 \newpage
-\ifdemobib
+\ifdefined\demobib
   \nocite{*}
 \fi
 \printbibliography[heading=bibintoc, title=Bibliographie]
