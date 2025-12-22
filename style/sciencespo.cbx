@@ -8,9 +8,6 @@
 
 % Ajoute le titre court avant "op. cit." pour lever les ambiguïtés auteur-identiques
 \renewbibmacro*{cite:opcit}{%
-  \ifentrytype{report}
-    {\printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}
-    {%
   \ifboolexpr{ test{\iffieldundef{shorttitle}} and test{\iffieldundef{labeltitle}} }
     {\printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}
     {%
@@ -21,49 +18,37 @@
       \setunit{\addcomma\space}%
       \printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}%
     }%
-    }%
 }
 
-% Pour les rapports sans labelname, autorise op./loc. cit. et garde le titre
-\renewbibmacro*{cite}{%
-  \usebibmacro{cite:citepages}%
-  \global\togglefalse{cbx:loccit}%
-  \bibhypertarget{cite\the\value{instcount}}{%
-    \ifciteseen
-      {\iffieldundef{shorthand}
-         {\ifciteibid
-            {\usebibmacro{cite:ibid}}
-            {\ifthenelse{\ifciteidem\AND\NOT\boolean{cbx:noidem}}
-               {\usebibmacro{cite:idem}%
-                \usebibmacro{cite:title}}
-               {\ifnameundef{labelname}
-                  {\ifentrytype{report}
-                     {%
-                       \iffieldundef{shortinstitution}
-                         {\printlist{institution}}
-                         {\printfield{shortinstitution}}%
-                       \ifboolexpr{ test{\iffieldundef{shorttitle}} and test{\iffieldundef{labeltitle}} }
-                         {\setunit{\addcomma\space}}
-                         {%
-                           \setunit{\addcomma\space}%
-                           \printtext[bibhyperlink]{%
-                             \iffieldundef{shorttitle}
-                               {\printfield[cbx:opcitlabel]{labeltitle}}
-                               {\printfield[cbx:opcitlabel]{shorttitle}}}%
-                           \setunit{\addcomma\space}}%
-                       \ifloccit
-                         {\usebibmacro{cite:loccit}}
-                         {\usebibmacro{cite:opcit}}}
-                     {\usebibmacro{cite:title}}}
-                  {\usebibmacro{cite:name}%
-                   \ifopcit
-                     {\ifloccit
-                        {\usebibmacro{cite:loccit}}
-                        {\usebibmacro{cite:opcit}}}
-                     {\usebibmacro{cite:title}}}}}%
-          \usebibmacro{cite:save}}
-         {\usebibmacro{cite:shorthand}}}
-      {\usebibmacro{cite:full}%
-       \usebibmacro{cite:save}}}}
+% Bloc commun pour op./loc. cit. des rapports sans labelname
+\newbibmacro*{cite:report:opcit}{%
+  \ifboolexpr{ test{\iffieldundef{shortinstitution}} and test{\iflistundef{institution}} }
+    {}
+    {%
+      \iffieldundef{shortinstitution}
+        {\printlist{institution}}
+        {\printfield{shortinstitution}}%
+      \setunit{\addcomma\space}}%
+  \ifboolexpr{ test{\iffieldundef{shorttitle}} and test{\iffieldundef{labeltitle}} }
+    {}
+    {%
+      \printtext[bibhyperlink]{%
+        \iffieldundef{shorttitle}
+          {\printfield[cbx:opcitlabel]{labeltitle}}
+          {\printfield[cbx:opcitlabel]{shorttitle}}}%
+      \setunit{\addcomma\space}}%
+  \ifloccit
+    {\usebibmacro{cite:loccit}}
+    {\printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}}
+
+% Pour les rapports sans labelname, op./loc. cit. passe par cite:title
+\renewbibmacro*{cite:title}{%
+  \ifboolexpr{
+    test{\ifentrytype{report}}
+    and test{\ifnameundef{labelname}}
+    and (test{\ifloccit} or test{\ifopcit} or test{\ifciteseen})
+  }
+    {\usebibmacro{cite:report:opcit}}
+    {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}
 
 \endinput
