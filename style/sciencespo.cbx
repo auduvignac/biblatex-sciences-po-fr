@@ -56,6 +56,34 @@
     {\usebibmacro{cite:loccit}}
     {\printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}}
 
+% Préfixe commun pour identifier une ressource en ligne sans auteur
+\newbibmacro*{cite:online:prefix}{%
+  \ifboolexpr{ test{\iffieldundef{shortinstitution}} and test{\iflistundef{institution}} }
+    {%
+      \iffieldundef{organization}
+        {}
+        {\printfield{organization}\setunit{\addcomma\space}}}
+    {%
+      \iffieldundef{shortinstitution}
+        {\printlist{institution}}
+        {\printfield{shortinstitution}}%
+      \setunit{\addcomma\space}}}
+
+% Bloc commun pour op./loc. cit. des ressources en ligne sans labelname
+\newbibmacro*{cite:online:opcit}{%
+  \usebibmacro{cite:online:prefix}%
+  \ifboolexpr{ test{\iffieldundef{shorttitle}} and test{\iffieldundef{labeltitle}} }
+    {}
+    {%
+      \printtext[bibhyperlink]{%
+        \iffieldundef{shorttitle}
+          {\printfield[cbx:opcitlabel]{labeltitle}}
+          {\printfield[cbx:opcitlabel]{shorttitle}}}%
+      \setunit{\addcomma\space}}%
+  \ifloccit
+    {\usebibmacro{cite:loccit}}
+    {\printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}}
+
 % Titre court pour les rapports sans labelname (hors op./loc. cit.)
 \newbibmacro*{cite:report:title}{%
   \usebibmacro{cite:report:prefix}%
@@ -70,6 +98,13 @@
     {\ifboolexpr{ test{\ifloccit} or test{\ifopcit} or test{\ifciteseen} }
        {\usebibmacro{cite:report:opcit}}
        {\usebibmacro{cite:report:title}}}
-    {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}
+    {\ifboolexpr{
+        test{\ifentrytype{online}}
+        and test{\ifnameundef{labelname}}
+      }
+        {\ifboolexpr{ test{\ifloccit} or test{\ifopcit} or test{\ifciteseen} }
+           {\usebibmacro{cite:online:opcit}}
+           {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}
+        {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}}
 
 \endinput
