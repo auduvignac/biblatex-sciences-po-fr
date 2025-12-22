@@ -20,8 +20,8 @@
     }%
 }
 
-% Bloc commun pour op./loc. cit. des rapports sans labelname
-\newbibmacro*{cite:report:opcit}{%
+% Préfixe commun pour identifier un rapport sans auteur
+\newbibmacro*{cite:report:prefix}{%
   \ifboolexpr{ test{\iffieldundef{shortinstitution}} and test{\iflistundef{institution}} }
     {%
       \ifnameundef{author}
@@ -35,7 +35,11 @@
       \iffieldundef{shortinstitution}
         {\printlist{institution}}
         {\printfield{shortinstitution}}%
-      \setunit{\addcomma\space}}%
+      \setunit{\addcomma\space}}}
+
+% Bloc commun pour op./loc. cit. des rapports sans labelname
+\newbibmacro*{cite:report:opcit}{%
+  \usebibmacro{cite:report:prefix}%
   \ifboolexpr{ test{\iffieldundef{shorttitle}} and test{\iffieldundef{labeltitle}} }
     {}
     {%
