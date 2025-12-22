@@ -16,7 +16,7 @@ else
 endif
 
 pdf-demo:
-	$(DOCKER) bash -lc "mkdir -p /app/build && rm -f /app/$(DEMO_TEX) /app/$(DEMO_TEX:.tex=.*) && printf '\\\\def\\\\demobib{1}\\\\input{main.tex}\\\\n' > /app/$(DEMO_TEX) && $(LATEXMK) $(DEMO_TEX) && cp /app/$(DEMO_TEX:.tex=.pdf) /app/main.pdf && chown \$${UID:-1000}:\$${GID:-1000} /app/main.pdf"
+	$(DOCKER) bash -lc "mkdir -p /app/build && rm -f /app/$(DEMO_TEX) /app/$(DEMO_TEX:.tex=.*) && printf '%s\n' '\def\demobib{1}\input{main.tex}' > /app/$(DEMO_TEX) && $(LATEXMK) /app/$(DEMO_TEX) && cp /app/$(DEMO_TEX:.tex=.pdf) /app/main.pdf && chown \$${UID:-1000}:\$${GID:-1000} /app/main.pdf"
 
 clean:
 	$(DOCKER) bash -lc "latexmk -C && rm -f /app/$(DEMO_TEX) /app/$(DEMO_TEX:.tex=.*)"
