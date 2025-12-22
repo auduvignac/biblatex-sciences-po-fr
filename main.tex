@@ -1776,7 +1776,7 @@ contenus audiovisuels que pour des pages web institutionnelles.
 
 \subsection{sites web (\texttt{@online})}
 
-Structure : AUTEUR. Titre [en ligne]. Nom de l'éditeur, date de publication, date de mise à jour [date de consultation]. Disponibilité et accès
+Structure : AUTEUR. Titre [en ligne]. Nom de l'éditeur, date de publication, date de mise à jour [date de consultation]. URL.
 
 \emph{Les sites web relèvent du type \texttt{@online}. Ils se distinguent des
 	vidéos en ligne par le libellé \og en ligne \fg{} et par la mise en avant de
@@ -1889,8 +1889,11 @@ en ligne initiale ou, à défaut, à l'année de référence retenue par l'édit
 
 Le présent paragraphe vise à vérifier le bon fonctionnement de la génération
 automatique des locutions latines par \texttt{biblatex} dans le cas des sites
-web. Les citations sont volontairement enchaînées afin de provoquer l'apparition
-de \emph{ibid.}, \emph{op. cit.} et, le cas échéant, \emph{loc. cit.}
+web.
+
+\textit{Remarque méthodologique :} pour les sites web, on conserve
+généralement op. cit. La locution loc. cit. n'est pas retenue,
+car il n'y a pas de pagination ni de repère stable comparable à une page.
 
 \begin{refsection}
 
@@ -1899,7 +1902,7 @@ de \emph{ibid.}, \emph{op. cit.} et, le cas échéant, \emph{loc. cit.}
 	\fullcite{MemoireDesHommes:2013}
 
 	Citation consécutive du même site avec précision contextuelle
-	(attendu : \emph{ibid.}) :
+	(attendu : ibid.) :
 
 	\cite[base de données nominative]{MemoireDesHommes:2013}
 
@@ -1908,28 +1911,13 @@ de \emph{ibid.}, \emph{op. cit.} et, le cas échéant, \emph{loc. cit.}
 	\cite[p.~12]{Fitoussi:1995}
 
 	Retour au site web initial après interruption
-	(attendu : \emph{op. cit.}) :
-
-	\cite[base de données nominative]{MemoireDesHommes:2013}
-
-	Nouvelle interruption :
-
-	\cite[p.~18]{Fitoussi:1995}
-
-	Retour au même site web et au même contexte que précédemment
-	(cas théorique de \emph{loc. cit.}) :
+	(attendu : op. cit.) :
 
 	\cite[base de données nominative]{MemoireDesHommes:2013}
 
 \end{refsection}
 
 \medskip
-
-\textit{Remarque méthodologique :} comme pour les autres types de documents en
-ligne, la locution loc. cit. est désactivée par défaut dans la majorité
-des styles \texttt{biblatex}. En l'absence d'activation explicite du
-\texttt{loccittracker}, le dernier appel produira généralement
-op. cit., sans modification du libellé.
 
 \subsection{Rapports institutionnels en ligne (\texttt{@online})}
 
