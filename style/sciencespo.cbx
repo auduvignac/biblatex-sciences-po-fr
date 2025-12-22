@@ -89,22 +89,18 @@
   \usebibmacro{cite:report:prefix}%
   \printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}
 
-% Pour les rapports sans labelname, op./loc. cit. passe par cite:title
+% Pour les entrées sans labelname, gestion dédiée pour report/online
 \renewbibmacro*{cite:title}{%
-  \ifboolexpr{
-    test{\ifentrytype{report}}
-    and test{\ifnameundef{labelname}}
-  }
-    {\ifboolexpr{ test{\ifloccit} or test{\ifopcit} or test{\ifciteseen} }
-       {\usebibmacro{cite:report:opcit}}
-       {\usebibmacro{cite:report:title}}}
-    {\ifboolexpr{
-        test{\ifentrytype{online}}
-        and test{\ifnameundef{labelname}}
-      }
-        {\ifboolexpr{ test{\ifloccit} or test{\ifopcit} or test{\ifciteseen} }
-           {\usebibmacro{cite:online:opcit}}
-           {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}
-        {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}}
+  \ifnameundef{labelname}
+    {\ifboolexpr{ test{\ifentrytype{report}} }
+       {\ifboolexpr{ test{\ifloccit} or test{\ifopcit} or test{\ifciteseen} }
+          {\usebibmacro{cite:report:opcit}}
+          {\usebibmacro{cite:report:title}}}
+       {\ifboolexpr{ test{\ifentrytype{online}} }
+          {\ifboolexpr{ test{\ifloccit} or test{\ifopcit} or test{\ifciteseen} }
+             {\usebibmacro{cite:online:opcit}}
+             {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}
+          {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}}
+    {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}
 
 \endinput
