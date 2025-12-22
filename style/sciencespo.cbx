@@ -22,20 +22,21 @@
 
 % Préfixe commun pour identifier un rapport sans auteur
 \newbibmacro*{cite:report:prefix}{%
-  \ifboolexpr{ test{\iffieldundef{shortinstitution}} and test{\iflistundef{institution}} }
-    {%
-      \ifnameundef{author}
-        {\ifnameundef{editor}
-           {\iffieldundef{organization}
-              {}
-              {\printfield{organization}\setunit{\addcomma\space}}}
-           {\printnames{editor}\setunit{\addcomma\space}}}
-        {\printnames{author}\setunit{\addcomma\space}}}
-    {%
-      \iffieldundef{shortinstitution}
-        {\printlist{institution}}
-        {\printfield{shortinstitution}}%
-      \setunit{\addcomma\space}}}
+  \printtext[bibhyperlink]{%
+    \ifboolexpr{ test{\iffieldundef{shortinstitution}} and test{\iflistundef{institution}} }
+      {%
+        \ifnameundef{author}
+          {\ifnameundef{editor}
+             {\iffieldundef{organization}
+                {}
+                {\printfield{organization}\setunit{\addcomma\space}}}
+             {\printnames{editor}\setunit{\addcomma\space}}}
+          {\printnames{author}\setunit{\addcomma\space}}}
+      {%
+        \iffieldundef{shortinstitution}
+          {\printlist{institution}}
+          {\printfield{shortinstitution}}%
+        \setunit{\addcomma\space}}}}
 
 % Bloc commun pour op./loc. cit. des rapports sans labelname
 \newbibmacro*{cite:report:opcit}{%
