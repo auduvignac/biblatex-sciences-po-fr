@@ -17,7 +17,7 @@ else
 endif
 
 pdf-demo:
-	$(DOCKER) bash -lc "chmod +x /app/$(DEMO_SCRIPT) && /app/$(DEMO_SCRIPT)"
+	$(DOCKER) bash -lc "chmod +x /app/$(DEMO_SCRIPT) && DEMO_TEX=$(DEMO_TEX) /app/$(DEMO_SCRIPT)"
 
 clean:
 	$(DOCKER) bash -lc "latexmk -C && rm -f /app/$(DEMO_TEX) /app/$(DEMO_TEX:.tex=.*)"
