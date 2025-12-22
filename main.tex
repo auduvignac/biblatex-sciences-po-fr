@@ -1611,16 +1611,14 @@ op. cit., éventuellement accompagné du minutage.
 
 \subsection{Vidéos en ligne (\texttt{@online})}
 
-Structure : AUTEUR ou institution. \emph{Titre} [vidéo en ligne]. Plateforme,
-date de publication [date de consultation]. URL.
+Structure : AUTEUR ou institution. Titre [vidéo en ligne]. Nom de l'éditeur,
+date de publication [consultée le date de consultation]. URL.
 
 \emph{Les vidéos en ligne relèvent du type \texttt{@online}. Elles se distinguent
 	des films par l'absence de support matériel et par la mention explicite de la
 	plateforme de diffusion ainsi que des dates de publication et de consultation.
 	Le champ \texttt{entrysubtype} permet d'adapter automatiquement le libellé
 	affiché (par exemple \og vidéo en ligne \fg{} ou \og site web \fg{}).}
-
-\textbf{À tester (film/vidéo)} : vérifier la mention \og réal.\fg{}, le support \texttt{medium} entre crochets et la durée \texttt{extent}. Pour la vidéo en ligne, contrôler le libellé \og [vidéo en ligne]\fg{}, la plateforme, la date de publication et la date de consultation entre crochets. Modifier \texttt{entrysubtype} de \texttt{video} à \texttt{website} pour observer le changement de libellé.
 
 \paragraph{Source bibliographique (Bib\LaTeX)}
 
@@ -1718,8 +1716,8 @@ date de publication [date de consultation]. URL.
 Le présent paragraphe vise à vérifier le bon fonctionnement de la génération
 automatique des locutions latines par \texttt{biblatex} dans le cas des vidéos
 en ligne. Les citations sont volontairement enchaînées afin de provoquer
-l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
-\emph{loc. cit.}
+l'apparition de ibid., op. cit. et, le cas échéant,
+loc. cit.
 
 \begin{refsection}
 
@@ -1728,7 +1726,7 @@ l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
 	\fullcite{SciencesPo:2017}
 
 	Citation consécutive de la même vidéo avec indication de séquence
-	(attendu : \emph{ibid.}) :
+	(attendu : ibid.) :
 
 	\cite[à partir de 02:15]{SciencesPo:2017}
 
@@ -1737,7 +1735,7 @@ l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
 	\cite[p.~12]{Fitoussi:1995}
 
 	Retour à la vidéo initiale après interruption
-	(attendu : \emph{op. cit.}) :
+	(attendu : op. cit.) :
 
 	\cite[à partir de 04:10]{SciencesPo:2017}
 
@@ -1746,7 +1744,7 @@ l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
 	\cite[p.~18]{Fitoussi:1995}
 
 	Retour à la même vidéo et à la même séquence que précédemment
-	(cas théorique de \emph{loc. cit.}) :
+	(cas théorique de loc. cit.) :
 
 	\cite[à partir de 04:10]{SciencesPo:2017}
 
