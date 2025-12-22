@@ -4,7 +4,7 @@ DEMO ?= 0
 UID := $(shell id -u)
 GID := $(shell id -g)
 
-DOCKER = UID=$(UID) GID=$(GID) docker compose run --rm -e UID=$(UID) -e GID=$(GID) latex
+DOCKER = docker compose run --rm -e UID=$(UID) -e GID=$(GID) latex
 DEMO_TEX = build/demo.tex
 
 DEMO_SCRIPT = scripts/pdf-demo.sh
