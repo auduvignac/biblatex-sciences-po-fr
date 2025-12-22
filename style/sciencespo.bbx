@@ -22,6 +22,7 @@
       {\MakeUppercase{\namepartfamily}}%
   }{}%
   \ifblank{\namepartgiven}{}{\addcomma\space\namepartgiven}%
+  \usebibmacro{name:andothers}%
   \ifnumless{\value{listcount}}{\value{liststop}}{\addcomma\space}{}%
 }
 \DeclareNameAlias{author}{labelname}
