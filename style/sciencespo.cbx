@@ -99,7 +99,9 @@
 \newbibmacro*{cite:title:nolabelname:online}{%
   \ifboolexpr{ test{\ifloccit} or test{\ifopcit} or test{\ifciteseen} }
     {\usebibmacro{cite:online:opcit}}
-    {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}
+    {%
+      \usebibmacro{cite:online:prefix}%
+      \printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}
 
 % Pour les entrées sans labelname, gestion dédiée pour report/online
 \newbibmacro*{cite:title:nolabelname}{%
