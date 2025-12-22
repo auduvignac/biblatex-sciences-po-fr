@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-demo_tex="${DEMO_TEX:-build/demo.tex}"
+demo_tex="${DEMO_TEX:?DEMO_TEX is required}"
 
 mkdir -p /app/build
 rm -f "/app/${demo_tex}" /app/"${demo_tex%.tex}".*
