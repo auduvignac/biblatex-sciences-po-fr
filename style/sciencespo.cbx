@@ -3,6 +3,9 @@
 % Style de base pour les citations (ibid./op. cit.)
 \RequireCitationStyle{verbose-trad1}
 
+% Locutions latines en romain (non italique)
+\renewcommand*{\mkibid}[1]{#1}
+
 % Format neutre pour afficher un titre court avec op. cit. (pas d'italique)
 \DeclareFieldFormat{cbx:opcitlabel}{#1}
 

@@ -749,11 +749,11 @@ apparition et d'en vérifier le comportement effectif.
 
 \medskip
 
-\emph{Remarque méthodologique : la locution \emph{loc. cit.} est désactivée par
-	défaut dans la majorité des styles \texttt{biblatex}, conformément aux usages
-	académiques contemporains. En l'absence d'activation explicite du
-	\texttt{loccittracker}, ce dernier appel produira généralement
-	\emph{op. cit.}, éventuellement accompagné de la pagination.}
+\textit{Remarque méthodologique :} la locution loc. cit. est désactivée par
+défaut dans la majorité des styles \texttt{biblatex}, conformément aux usages
+académiques contemporains. En l'absence d'activation explicite du
+\texttt{loccittracker}, ce dernier appel produira généralement
+op. cit., éventuellement accompagné de la pagination.
 
 \subsection{Rapports institutionnels (\texttt{@report})}
 
@@ -900,11 +900,11 @@ de provoquer leur apparition et d'en vérifier le comportement effectif.
 
 \medskip
 
-\emph{Remarque méthodologique : comme pour les ouvrages, la locution
-	loc. cit. est désactivée par défaut dans la majorité des styles
-	\texttt{biblatex}. En l'absence d'activation explicite du
-	\texttt{loccittracker}, le dernier appel produira généralement
-	op. cit., éventuellement accompagné de la pagination.}
+\textit{Remarque méthodologique :} comme pour les ouvrages, la locution
+loc. cit. est désactivée par défaut dans la majorité des styles
+\texttt{biblatex}. En l'absence d'activation explicite du
+\texttt{loccittracker}, le dernier appel produira généralement
+op. cit., éventuellement accompagné de la pagination.
 
 \subsection{Chapitres d'ouvrage collectif (\texttt{@incollection})}
 
@@ -915,7 +915,7 @@ de provoquer leur apparition et d'en vérifier le comportement effectif.
 
 \textbf{À tester (chapitres)} : vérifier la présence de \og In\fg{}, de l'éditeur scientifique suivi de \texttt{editortype} (\og dir.\fg{}), puis la pagination précédée de \og p.\fg{}
 
-Structure : NOM, Prénom. Titre du chapitre. In NOM, Prénom (dir.), Titre de l'ouvrage collectif. Lieu : Éditeur, année, p. xx-yy.
+Structure : NOM, Prénom. Titre du chapitre In NOM, Prénom dir. Titre de l'ouvrage collectif. Lieu : éditeur, année. p. xx-yy.
 
 \paragraph{Modèle générique}
 
@@ -1031,8 +1031,7 @@ Structure : NOM, Prénom. Titre du chapitre. In NOM, Prénom (dir.), Titre de l'
 Le présent paragraphe vise à vérifier le bon fonctionnement de la génération
 automatique des locutions latines par \texttt{biblatex} dans le cas des chapitres
 d'ouvrage collectif. Les citations sont volontairement enchaînées afin de
-provoquer l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
-\emph{loc. cit.}
+provoquer l'apparition de ibid., op. cit. et, le cas échéant, loc. cit.
 
 \begin{refsection}
 
@@ -1041,7 +1040,7 @@ provoquer l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
 	\fullcite{Hassenteufel:1993}
 
 	Citation consécutive du même chapitre avec pagination modifiée
-	(attendu : \emph{ibid.}) :
+	(attendu : ibid.) :
 
 	\cite[p.~95]{Hassenteufel:1993}
 
@@ -1050,7 +1049,7 @@ provoquer l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
 	\cite[p.~45]{Fitoussi:1995}
 
 	Retour au chapitre initial après interruption
-	(attendu : \emph{op. cit.}) :
+	(attendu : op. cit.) :
 
 	\cite[p.~97]{Hassenteufel:1993}
 
@@ -1059,7 +1058,7 @@ provoquer l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
 	\cite[p.~52]{Fitoussi:1995}
 
 	Retour au même chapitre et au même passage que précédemment
-	(cas théorique de \emph{loc. cit.}) :
+	(cas théorique de loc. cit.) :
 
 	\cite[p.~97]{Hassenteufel:1993}
 
@@ -1067,11 +1066,11 @@ provoquer l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
 
 \medskip
 
-\emph{Remarque méthodologique : comme pour les ouvrages et les rapports
-	institutionnels, la locution \emph{loc. cit.} est désactivée par défaut dans la
-	plupart des styles \texttt{biblatex}. En l'absence d'activation explicite du
-	\texttt{loccittracker}, le dernier appel produira généralement
-	\emph{op. cit.}, éventuellement accompagné de la pagination.}
+\textit{Remarque méthodologique :} comme pour les ouvrages et les rapports
+institutionnels, la locution loc. cit. est désactivée par défaut dans la
+plupart des styles \texttt{biblatex}. En l'absence d'activation explicite du
+\texttt{loccittracker}, le dernier appel produira généralement
+op. cit., éventuellement accompagné de la pagination.
 
 \subsection{Articles de revue (\texttt{@article})}
 
@@ -1308,10 +1307,10 @@ provoquer leur apparition.
 
 \medskip
 
-\emph{Remarque méthodologique : la locution \emph{loc. cit.} est généralement
-	désactivée par défaut dans la plupart des styles \texttt{biblatex}. En l'absence
-	d'activation explicite du \texttt{loccittracker}, le dernier appel produira
-	habituellement \emph{op. cit.}, éventuellement accompagné de la pagination.}
+\textit{Remarque méthodologique :} la locution loc. cit. est généralement
+désactivée par défaut dans la plupart des styles \texttt{biblatex}. En l'absence
+d'activation explicite du \texttt{loccittracker}, le dernier appel produira
+habituellement op. cit., éventuellement accompagné de la pagination.
 
 \subsection{Thèses ou mémoires (\texttt{@thesis})}
 
@@ -1458,11 +1457,11 @@ l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant, \emph{loc. c
 
 \medskip
 
-\emph{Remarque méthodologique : comme pour les autres types de documents, la
-	locution \emph{loc. cit.} est désactivée par défaut dans la majorité des styles
-	\texttt{biblatex}. En l'absence d'activation explicite du
-	\texttt{loccittracker}, le dernier appel produira généralement
-	\emph{op. cit.}, éventuellement accompagné de la pagination.}
+\textit{Remarque méthodologique :} comme pour les autres types de documents, la
+locution loc. cit. est désactivée par défaut dans la majorité des styles
+\texttt{biblatex}. En l'absence d'activation explicite du
+\texttt{loccittracker}, le dernier appel produira généralement
+op. cit., éventuellement accompagné de la pagination.
 
 
 \subsection{Films (\texttt{@movie})}
@@ -1604,11 +1603,11 @@ Les citations sont volontairement enchaînées afin de provoquer l'apparition de
 
 \medskip
 
-\emph{Remarque méthodologique : comme pour les autres types de documents, la
-	locution \emph{loc. cit.} est désactivée par défaut dans la majorité des styles
-	\texttt{biblatex}. En l'absence d'activation explicite du
-	\texttt{loccittracker}, le dernier appel produira généralement
-	\emph{op. cit.}, éventuellement accompagné du minutage.}
+\textit{Remarque méthodologique :} comme pour les autres types de documents, la
+locution loc. cit. est désactivée par défaut dans la majorité des styles
+\texttt{biblatex}. En l'absence d'activation explicite du
+\texttt{loccittracker}, le dernier appel produira généralement
+op. cit., éventuellement accompagné du minutage.
 
 \subsection{Vidéos en ligne (\texttt{@online})}
 
@@ -1755,11 +1754,11 @@ l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
 
 \medskip
 
-\emph{Remarque méthodologique : comme pour les autres types de documents, la
-	locution \emph{loc. cit.} est désactivée par défaut dans la majorité des styles
-	\texttt{biblatex}. En l'absence d'activation explicite du
-	\texttt{loccittracker}, le dernier appel produira généralement
-	\emph{op. cit.}, éventuellement accompagné de l'indication de séquence.}
+\textit{Remarque méthodologique :} comme pour les autres types de documents, la
+locution loc. cit. est désactivée par défaut dans la majorité des styles
+\texttt{biblatex}. En l'absence d'activation explicite du
+\texttt{loccittracker}, le dernier appel produira généralement
+op. cit., éventuellement accompagné de l'indication de séquence.
 
 
 \paragraph{Vérification des libellés pour les vidéos en ligne}
@@ -1928,11 +1927,11 @@ de \emph{ibid.}, \emph{op. cit.} et, le cas échéant, \emph{loc. cit.}
 
 \medskip
 
-\emph{Remarque méthodologique : comme pour les autres types de documents en
-	ligne, la locution \emph{loc. cit.} est désactivée par défaut dans la majorité
-	des styles \texttt{biblatex}. En l'absence d'activation explicite du
-	\texttt{loccittracker}, le dernier appel produira généralement
-	\emph{op. cit.}, sans modification du libellé.}
+\textit{Remarque méthodologique :} comme pour les autres types de documents en
+ligne, la locution loc. cit. est désactivée par défaut dans la majorité
+des styles \texttt{biblatex}. En l'absence d'activation explicite du
+\texttt{loccittracker}, le dernier appel produira généralement
+op. cit., sans modification du libellé.
 
 \subsection{Rapports institutionnels en ligne (\texttt{@online})}
 
@@ -2076,11 +2075,11 @@ afin de provoquer l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas
 
 \medskip
 
-\emph{Remarque méthodologique : comme pour les autres ressources en ligne, la
-	locution \emph{loc. cit.} est désactivée par défaut dans la majorité des styles
-	\texttt{biblatex}. En l'absence d'activation explicite du
-	\texttt{loccittracker}, le dernier appel produira généralement
-	\emph{op. cit.}, sans modification du libellé.}
+\textit{Remarque méthodologique :} comme pour les autres ressources en ligne, la
+locution loc. cit. est désactivée par défaut dans la majorité des styles
+\texttt{biblatex}. En l'absence d'activation explicite du
+\texttt{loccittracker}, le dernier appel produira généralement
+op. cit., sans modification du libellé.
 
 
 \subsection{Articles de revue consultés en ligne (\texttt{@online})}
@@ -2230,11 +2229,11 @@ de provoquer l'apparition de \emph{ibid.}, \emph{op. cit.} et, le cas échéant,
 
 \medskip
 
-\emph{Remarque méthodologique : comme pour les autres ressources en ligne,
-	la locution \emph{loc. cit.} est désactivée par défaut dans la majorité des
-	styles \texttt{biblatex}. En l'absence d'activation explicite du
-	\texttt{loccittracker}, le dernier appel produira généralement
-	\emph{op. cit.}, éventuellement accompagné de la pagination.}
+\textit{Remarque méthodologique :} comme pour les autres ressources en ligne,
+la locution loc. cit. est désactivée par défaut dans la majorité des
+styles \texttt{biblatex}. En l'absence d'activation explicite du
+\texttt{loccittracker}, le dernier appel produira généralement
+op. cit., éventuellement accompagné de la pagination.
 
 \section{Compilation}
 

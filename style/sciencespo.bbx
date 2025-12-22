@@ -155,7 +155,7 @@
   \printnames{author}%
   \newunit\newblock%
   \printfield{title}%
-  \newunit\newblock%
+  {\renewcommand*{\newunitpunct}{\addspace}\newunit}%
   \printtext{In\space}%
   \printnames{editor}%
   \iffieldundef{editortype}{}{\addspace\printfield{editortype}}%
