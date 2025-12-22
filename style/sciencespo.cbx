@@ -89,18 +89,29 @@
   \usebibmacro{cite:report:prefix}%
   \printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}
 
+% Dispatch op./loc. cit. pour reports sans labelname
+\newbibmacro*{cite:title:nolabelname:report}{%
+  \ifboolexpr{ test{\ifloccit} or test{\ifopcit} or test{\ifciteseen} }
+    {\usebibmacro{cite:report:opcit}}
+    {\usebibmacro{cite:report:title}}}
+
+% Dispatch op./loc. cit. pour online sans labelname
+\newbibmacro*{cite:title:nolabelname:online}{%
+  \ifboolexpr{ test{\ifloccit} or test{\ifopcit} or test{\ifciteseen} }
+    {\usebibmacro{cite:online:opcit}}
+    {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}
+
 % Pour les entrées sans labelname, gestion dédiée pour report/online
+\newbibmacro*{cite:title:nolabelname}{%
+  \ifboolexpr{ test{\ifentrytype{report}} }
+    {\usebibmacro{cite:title:nolabelname:report}}
+    {\ifboolexpr{ test{\ifentrytype{online}} }
+       {\usebibmacro{cite:title:nolabelname:online}}
+       {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}}
+
 \renewbibmacro*{cite:title}{%
   \ifnameundef{labelname}
-    {\ifboolexpr{ test{\ifentrytype{report}} }
-       {\ifboolexpr{ test{\ifloccit} or test{\ifopcit} or test{\ifciteseen} }
-          {\usebibmacro{cite:report:opcit}}
-          {\usebibmacro{cite:report:title}}}
-       {\ifboolexpr{ test{\ifentrytype{online}} }
-          {\ifboolexpr{ test{\ifloccit} or test{\ifopcit} or test{\ifciteseen} }
-             {\usebibmacro{cite:online:opcit}}
-             {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}
-          {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}}
+    {\usebibmacro{cite:title:nolabelname}}
     {\printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}}}
 
 \endinput
