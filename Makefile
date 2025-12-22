@@ -8,6 +8,8 @@ DOCKER = UID=$(UID) GID=$(GID) docker compose run --rm -e UID=$(UID) -e GID=$(GI
 LATEXMK = latexmk -pdf -xelatex
 DEMO_TEX = build/demo.tex
 
+DEMO_SCRIPT = scripts/pdf-demo.sh
+
 pdf:
 ifeq ($(DEMO),1)
 	$(MAKE) pdf-demo
@@ -16,7 +18,7 @@ else
 endif
 
 pdf-demo:
-	$(DOCKER) bash -lc "mkdir -p /app/build && rm -f /app/$(DEMO_TEX) /app/$(DEMO_TEX:.tex=.*) && printf '%s\n' '\def\demobib{1}\input{main.tex}' > /app/$(DEMO_TEX) && $(LATEXMK) /app/$(DEMO_TEX) && cp /app/$(DEMO_TEX:.tex=.pdf) /app/main.pdf && chown \$${UID:-1000}:\$${GID:-1000} /app/main.pdf"
+	$(DOCKER) bash -lc "chmod +x /app/$(DEMO_SCRIPT) && /app/$(DEMO_SCRIPT)"
 
 clean:
 	$(DOCKER) bash -lc "latexmk -C && rm -f /app/$(DEMO_TEX) /app/$(DEMO_TEX:.tex=.*)"
