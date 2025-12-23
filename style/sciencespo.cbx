@@ -3,11 +3,25 @@
 % Style de base pour les citations (ibid./op. cit.)
 \RequireCitationStyle{verbose-trad1}
 
-% Locutions latines en romain (non italique)
-\renewcommand*{\mkibid}[1]{#1}
+% Locutions latines en italique (conforme au CSL)
+\renewcommand*{\mkibid}[1]{\mkbibemph{#1}}
 
-% Format neutre pour afficher un titre court avec op. cit. (pas d'italique)
-\DeclareFieldFormat{cbx:opcitlabel}{#1}
+% Libellés de locutions (capitalisation conforme au CSL)
+\DefineBibliographyStrings{french}{%
+  ibidem = {Ibid\adddot},
+  opcit  = {Op\adddotspace cit\adddot},
+  loccit = {Loc\adddotspace cit\adddot},
+}
+
+% Formatage des titres courts en citations (CSL)
+\DeclareFieldFormat{cbx:opcitlabel}{%
+  \ifboolexpr{ test{\ifentrytype{article}} or test{\ifentrytype{incollection}} }
+    {\mkbibquote{#1}}
+    {\mkbibemph{#1}}}
+\DeclareFieldFormat{citetitle}{%
+  \ifboolexpr{ test{\ifentrytype{article}} or test{\ifentrytype{incollection}} }
+    {\mkbibquote{#1}}
+    {\mkbibemph{#1}}}
 
 % Ajoute le titre court avant "op. cit." pour lever les ambiguïtés auteur-identiques
 \renewbibmacro*{cite:opcit}{%

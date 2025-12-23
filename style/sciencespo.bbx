@@ -6,25 +6,20 @@
 % --- GESTION DU NOMBRE D'AUTEURS (et al.) ---
 \AtBeginDocument{%
     \setcounter{maxnames}{3}
-    \setcounter{minnames}{1}
+    \setcounter{minnames}{3}
 }
 
-% Séparateurs entre auteurs : virgule + espace
+% Séparateurs entre auteurs : virgule + espace, sans virgule avant "et"
 \DeclareDelimFormat{multinamedelim}{\addcomma\space}
-\DeclareDelimFormat{finalnamedelim}{\addcomma\space}
-\DeclareDelimFormat{andothersdelim}{\addnbspace}
+\DeclareDelimFormat{finalnamedelim}{\addspace\bibstring{and}\space}
+\DeclareDelimFormat{andothersdelim}{\addspace}
 
-% --- FORMATTAGE DES NOMS : NOM, Prénom. (avec majuscules) ---
+% --- FORMATTAGE DES NOMS : NOM, Prénom. (petites capitales) ---
 \DeclareNameFormat{labelname}{%
   \nameparts{#1}%
-  \ifdef\namepartfamily{%
-    \ifblank{\namepartgiven}
-      {\namepartfamily}%
-      {\MakeUppercase{\namepartfamily}}%
-  }{}%
+  \ifblank{\namepartfamily}{}{\textsc{\namepartfamily}}%
   \ifblank{\namepartgiven}{}{\addcomma\space\namepartgiven}%
   \usebibmacro{name:andothers}%
-  \ifnumless{\value{listcount}}{\value{liststop}}{\addcomma\space}{}%
 }
 \DeclareNameAlias{author}{labelname}
 \DeclareNameAlias{editor}{labelname}
@@ -40,19 +35,15 @@
     {\printdelim{andothersdelim}\bibstring{andothers}}
     {}}
 
-% --- FORMATTAGE DES CHAMPS STANDARDS ---
-\DeclareFieldFormat{title}{#1\adddot}
+% --- FORMATTAGE DES CHAMPS STANDARDS (conforme au CSL) ---
+\DeclareFieldFormat[book,report,thesis,movie,online]{title}{\mkbibemph{#1}}
+\DeclareFieldFormat[incollection,article]{title}{\mkbibquote{#1}}
+\DeclareFieldFormat[incollection]{booktitle}{\mkbibemph{#1}}
+\DeclareFieldFormat{journaltitle}{\mkbibemph{#1}}
 \DeclareFieldFormat{edition}{#1\adddot}
-\DeclareFieldFormat[incollection]{title}{#1}
-\DeclareFieldFormat[incollection]{booktitle}{#1}
 \DeclareFieldFormat[incollection]{pages}{#1}
-\DeclareFieldFormat[article]{title}{#1}
 \DeclareFieldFormat[article]{pages}{#1}
-\DeclareFieldFormat{journaltitle}{#1}
-\DeclareFieldFormat[thesis]{title}{#1}
 \DeclareFieldFormat[thesis]{pages}{#1}
-\DeclareFieldFormat[movie]{title}{#1}
-\DeclareFieldFormat[online]{title}{#1}
 \DeclareFieldFormat[online]{volume}{#1}
 \DeclareFieldFormat[online]{number}{#1}
 \DeclareFieldFormat[online]{pages}{#1}
@@ -121,10 +112,19 @@
   \iffieldundef{urlyear}%
     {}%
     {%
-      \setunit{\addcomma\space}%
       \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{video}} }%
         {\printtext{\mkbibbrackets{consultée le\space\printonlineaccessdate}}}%
         {\printtext{\mkbibbrackets{consulté le\space\printonlineaccessdate}}}%
+    }%
+}
+
+\newcommand*{\printonlineaccess}{%
+  \iffieldundef{url}%
+    {}%
+    {%
+      \printtext{URL\addcolon\space}%
+      \printfield{url}%
+      \printonlineurldate%
     }%
 }
 
@@ -156,9 +156,9 @@
   \newunit\newblock%
   \printfield{title}%
   {\renewcommand*{\newunitpunct}{\addspace}\newunit}%
-  \printtext{In\space}%
+  \printtext{in\space}%
   \printnames{editor}%
-  \iffieldundef{editortype}{}{\addspace\printfield{editortype}}%
+  \iffieldundef{editortype}{}{\addspace\mkbibparens{\printfield{editortype}}}%
   \setunit{\addperiod\space}%
   \printfield{booktitle}%
   \newunit\newblock%
@@ -252,9 +252,8 @@
       {\printfield{platform}}%
     \printonlinepubdate%
     \printonlineupdatedate%
-    \printonlineurldate%
-    \addspace%
-    \printfield{url}%
+    \adddot\space%
+    \printonlineaccess%
   }{%
     \printfield{journaltitle}%
     \space[en ligne]\adddot\space%
@@ -265,13 +264,11 @@
     \iffieldundef{number}{}{%
       \addcomma\space%
       \printtext{n\textsuperscript{o}\space\printfield{number}}}%
-    \printonlineurldate%
     \iffieldundef{pages}{}{%
       \addcomma\space%
       \printtext{p.\space\printfield{pages}}}%
     \adddot\space%
-    \printtext{Disponible sur :\space}%
-    \printfield{url}%
+    \printonlineaccess%
   }%
   \usebibmacro{finentry}%
 }
@@ -290,14 +287,9 @@
   \setunit{\addperiod\space}%
   \printfield{title}%
   \setunit{\addperiod\space}%
-  \iffieldundef{type}
-    {\iffieldundef{number}
-       {}%
-       {\printfield{number}}}%
-    {\printfield{type}%
-     \iffieldundef{number}
-       {}%
-       {\addspace\printfield{number}}}%
+  \iffieldundef{number}
+    {\iffieldundef{type}{}{\printfield{type}}}%
+    {\printtext{Rapport\addspace}\printfield{number}}%
   \setunit{\addperiod\space}%
   \iffieldundef{organization}{\printlist{institution}}{\printlist{organization}}%
   \addcomma\space%
