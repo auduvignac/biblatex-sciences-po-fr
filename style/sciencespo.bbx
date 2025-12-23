@@ -17,8 +17,11 @@
 % --- FORMATTAGE DES NOMS : NOM, Prénom. (petites capitales) ---
 \DeclareNameFormat{labelname}{%
   \nameparts{#1}%
-  \ifblank{\namepartfamily}{}{\textsc{\namepartfamily}}%
-  \ifblank{\namepartgiven}{}{\addcomma\space\namepartgiven}%
+  \ifblank{\namepartfamily}
+    {\ifblank{\namepartgiven}{}{\namepartgiven}}
+    {%
+      \textsc{\namepartfamily}%
+      \ifblank{\namepartgiven}{}{\addcomma\space\namepartgiven}}%
   \usebibmacro{name:andothers}%
 }
 \DeclareNameAlias{author}{labelname}
