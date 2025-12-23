@@ -287,9 +287,12 @@
   \setunit{\addperiod\space}%
   \printfield{title}%
   \setunit{\addperiod\space}%
-  \iffieldundef{number}
-    {\iffieldundef{type}{}{\printfield{type}}}%
-    {\printtext{Rapport\addspace}\printfield{number}}%
+  \iffieldundef{type}
+    {\iffieldundef{number}
+       {}%
+       {\printtext{Rapport\addspace}\printfield{number}}}%
+    {\printfield{type}%
+     \iffieldundef{number}{}{\addspace\printfield{number}}}%
   \setunit{\addperiod\space}%
   \iffieldundef{organization}{\printlist{institution}}{\printlist{organization}}%
   \addcomma\space%
