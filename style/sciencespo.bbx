@@ -20,7 +20,7 @@
   \ifblank{\namepartfamily}
     {\ifblank{\namepartgiven}{}{\namepartgiven}}
     {%
-      \textsc{\namepartfamily}%
+      \mkbibnamefamily{\namepartfamily}%
       \ifblank{\namepartgiven}{}{\addcomma\space\namepartgiven}}%
   \usebibmacro{name:andothers}%
 }
