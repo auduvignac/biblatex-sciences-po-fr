@@ -14,14 +14,14 @@
 \DeclareDelimFormat{finalnamedelim}{\addspace\bibstring{and}\space}
 \DeclareDelimFormat{andothersdelim}{\addnbspace}
 
-% --- FORMATTAGE DES NOMS : NOM, Prénom. (petites capitales) ---
+% --- FORMATTAGE DES NOMS : Nom, Prénom. ---
 \DeclareNameFormat{labelname}{%
   \nameparts{#1}%
   \ifblank{\namepartfamily}
-    {\ifblank{\namepartgiven}{}{\namepartgiven}}
+    {\ifblank{\namepartgiven}{}{\mkbibnamegiven{\namepartgiven}}}
     {%
       \mkbibnamefamily{\namepartfamily}%
-      \ifblank{\namepartgiven}{}{\addcomma\space\namepartgiven}}%
+      \ifblank{\namepartgiven}{}{\addcomma\space\mkbibnamegiven{\namepartgiven}}}%
   \usebibmacro{name:andothers}%
 }
 \DeclareNameAlias{author}{labelname}
