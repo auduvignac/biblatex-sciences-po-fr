@@ -11,9 +11,9 @@ DEMO_TEX = build/demo.tex
 DEMO_SCRIPT = scripts/pdf-demo.sh
 LATEXMK = latexmk -r latexmkrc -pdf -xelatex
 LATEXMK_CLEAN = latexmk -r latexmkrc -C
-TEXINPUTS = .:./style//:
-BIBINPUTS = .:./bibliographies//:
-BSTINPUTS = .:./style//:
+TEXINPUTS := .:./style//:$(TEXINPUTS)
+BIBINPUTS := .:./bibliographies//:$(BIBINPUTS)
+BSTINPUTS := .:./style//:$(BSTINPUTS)
 LATEX_ENV = TEXINPUTS=$(TEXINPUTS) BIBINPUTS=$(BIBINPUTS) BSTINPUTS=$(BSTINPUTS)
 export LATEXMK LATEXMK_CLEAN
 
