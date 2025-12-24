@@ -22,16 +22,21 @@ ifeq ($(DEMO),1)
 	$(MAKE) pdf-demo
 else
 ifeq ($(USE_DOCKER),1)
+	@if [ -d main.pdf ]; then rm -rf main.pdf; fi
+	@touch main.pdf
 	$(DOCKER)
 else
 	$(LATEX_ENV) $(LATEXMK_CLEAN) main.tex
 	$(LATEX_ENV) $(LATEXMK) main.tex
+	@if [ -d main.pdf ]; then rm -rf main.pdf; fi
 	cp build/main.pdf main.pdf
 endif
 endif
 
 pdf-demo:
 ifeq ($(USE_DOCKER),1)
+	@if [ -d main.pdf ]; then rm -rf main.pdf; fi
+	@touch main.pdf
 	$(DOCKER) bash -lc "DEMO_TEX=\"$(DEMO_TEX)\" /app/$(DEMO_SCRIPT)"
 else
 	$(LATEX_ENV) BASE_DIR="$(CURDIR)" DEMO_TEX="$(DEMO_TEX)" ./$(DEMO_SCRIPT)
