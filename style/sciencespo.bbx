@@ -116,7 +116,6 @@
   \iffieldundef{urlyear}%
     {}%
     {%
-      \space%
       \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{video}} }%
         {\printtext{\mkbibbrackets{consultée le\space\printonlineaccessdate}}}%
         {\printtext{\mkbibbrackets{consulté le\space\printonlineaccessdate}}}%
@@ -131,7 +130,7 @@
       \printfield{url}%
       \iffieldundef{urlyear}%
         {}%
-        {\printonlineurldate}%
+        {\addspace\printonlineurldate}%
     }%
 }
 
