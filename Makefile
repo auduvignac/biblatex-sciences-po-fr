@@ -5,7 +5,7 @@ USE_DOCKER ?= 0
 UID := $(shell id -u)
 GID := $(shell id -g)
 
-DOCKER = docker compose run --rm -e UID=$(UID) -e GID=$(GID) latex
+DOCKER = docker compose run --rm -e UID=$(UID) -e GID=$(GID) -e LATEXMK -e LATEXMK_CLEAN latex
 DEMO_TEX = build/demo.tex
 
 DEMO_SCRIPT = scripts/pdf-demo.sh
