@@ -127,9 +127,11 @@
   \iffieldundef{url}%
     {}%
     {%
-      \printtext{\bibstring{url}\addcolon\space}%
+      \printtext{\bibstring{url}\addcolon\addnbspace}%
       \printfield{url}%
-      \printonlineurldate%
+      \iffieldundef{urlyear}%
+        {}%
+        {\printonlineurldate}%
     }%
 }
 

@@ -13,6 +13,31 @@
 \DeclareFieldFormat{citetitle}{%
   \scpo@titleformat{#1}}
 
+% In fullcite, use a comma before postnotes instead of a trailing period.
+\DeclareCiteCommand{\fullcite}
+  {\usebibmacro{prenote}}
+  {%
+    \iffieldundef{postnote}
+      {\renewcommand*{\finentrypunct}{\addperiod}}
+      {\renewcommand*{\finentrypunct}{}}%
+    \usedriver
+      {\DeclareNameAlias{sortname}{default}}
+      {\thefield{entrytype}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footfullcite}[\mkbibfootnote]
+  {\usebibmacro{prenote}}
+  {%
+    \iffieldundef{postnote}
+      {\renewcommand*{\finentrypunct}{\addperiod}}
+      {\renewcommand*{\finentrypunct}{}}%
+    \usedriver
+      {\DeclareNameAlias{sortname}{default}}
+      {\thefield{entrytype}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
 % Ajoute le titre court avant "op. cit." pour lever les ambiguïtés auteur-identiques
 \renewbibmacro*{cite:opcit}{%
   \ifboolexpr{ test{\iffieldundef{shorttitle}} and test{\iffieldundef{labeltitle}} }
