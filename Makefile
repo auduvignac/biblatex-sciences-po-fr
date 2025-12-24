@@ -5,7 +5,7 @@ USE_DOCKER ?= 0
 UID := $(shell id -u)
 GID := $(shell id -g)
 
-DOCKER = docker compose run --rm -e UID=$(UID) -e GID=$(GID) -e LATEXMK -e LATEXMK_CLEAN latex
+DOCKER = docker compose run --rm -e UID=$(UID) -e GID=$(GID) -e DEMO_TEX -e LATEXMK -e LATEXMK_CLEAN latex
 DEMO_TEX = build/demo.tex
 
 DEMO_SCRIPT = scripts/pdf-demo.sh
@@ -37,14 +37,14 @@ pdf-demo:
 ifeq ($(USE_DOCKER),1)
 	@if [ -d main.pdf ]; then rm -rf main.pdf; fi
 	@touch main.pdf
-	$(DOCKER) bash -lc "DEMO_TEX=\"$(DEMO_TEX)\" /app/$(DEMO_SCRIPT)"
+	$(DOCKER) bash -lc "/app/$(DEMO_SCRIPT)"
 else
 	$(LATEX_ENV) BASE_DIR="$(CURDIR)" DEMO_TEX="$(DEMO_TEX)" ./$(DEMO_SCRIPT)
 endif
 
 clean:
 ifeq ($(USE_DOCKER),1)
-	$(DOCKER) bash -lc "$(LATEXMK_CLEAN) && rm -f /app/$(DEMO_TEX) /app/$(DEMO_TEX:.tex=.*)"
+	$(DOCKER) bash -lc "$$LATEXMK_CLEAN && rm -f /app/$$DEMO_TEX /app/$${DEMO_TEX%.tex}.*"
 else
 	$(LATEX_ENV) $(LATEXMK_CLEAN)
 	rm -f $(DEMO_TEX) $(DEMO_TEX:.tex=.*)
