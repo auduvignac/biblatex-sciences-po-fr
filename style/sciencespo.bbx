@@ -126,11 +126,15 @@
   \iffieldundef{url}%
     {}%
     {%
-      \printtext{\bibstring{url}\addcolon\addnbspace}%
+      \printtext{\bibstring{url}\addcolon\space}%
       \printfield{url}%
       \iffieldundef{urlyear}%
-        {}%
-        {\addspace\printonlineurldate}%
+        {\ifbool{scpo@fullcitepostnote}{}{\adddot}}%
+        {%
+          \space%
+          \printonlineurldate%
+          \ifbool{scpo@fullcitepostnote}{}{\adddot}%
+        }%
     }%
 }
 

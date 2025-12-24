@@ -18,25 +18,81 @@
   {\usebibmacro{prenote}}
   {%
     \iffieldundef{postnote}
-      {\renewcommand*{\finentrypunct}{\addperiod}}
-      {\renewcommand*{\finentrypunct}{}}%
+      {\boolfalse{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{\addperiod}}
+      {\booltrue{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{}}%
     \usedriver
       {\DeclareNameAlias{sortname}{default}}
       {\thefield{entrytype}}}
   {\multicitedelim}
-  {\usebibmacro{postnote}}
+  {\usebibmacro{postnote}\boolfalse{scpo@fullcitepostnote}}
 
 \DeclareCiteCommand{\footfullcite}[\mkbibfootnote]
   {\usebibmacro{prenote}}
   {%
     \iffieldundef{postnote}
-      {\renewcommand*{\finentrypunct}{\addperiod}}
-      {\renewcommand*{\finentrypunct}{}}%
+      {\boolfalse{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{\addperiod}}
+      {\booltrue{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{}}%
     \usedriver
       {\DeclareNameAlias{sortname}{default}}
       {\thefield{entrytype}}}
   {\multicitedelim}
-  {\usebibmacro{postnote}}
+  {\usebibmacro{postnote}\boolfalse{scpo@fullcitepostnote}}
+
+% Apply the same postnote handling for verbose-trad1 cite commands.
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {%
+    \iffieldundef{postnote}
+      {\boolfalse{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{\addperiod}}
+      {\booltrue{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{}}%
+   \usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}\boolfalse{scpo@fullcitepostnote}}
+
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {%
+    \iffieldundef{postnote}
+      {\boolfalse{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{\addperiod}}
+      {\booltrue{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{}}%
+   \usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}\boolfalse{scpo@fullcitepostnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\usebibmacro{prenote}}
+  {%
+    \iffieldundef{postnote}
+      {\boolfalse{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{\addperiod}}
+      {\booltrue{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{}}%
+   \usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}\boolfalse{scpo@fullcitepostnote}}
+
+\DeclareCiteCommand{\footcitetext}[\mkbibfootnotetext]
+  {\usebibmacro{prenote}}
+  {%
+    \iffieldundef{postnote}
+      {\boolfalse{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{\addperiod}}
+      {\booltrue{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{}}%
+   \usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}\boolfalse{scpo@fullcitepostnote}}
+
+\DeclareCiteCommand{\smartcite}[\iffootnote\mkbibparens\mkbibfootnote]
+  {\usebibmacro{prenote}}
+  {%
+    \iffieldundef{postnote}
+      {\boolfalse{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{\addperiod}}
+      {\booltrue{scpo@fullcitepostnote}\renewcommand*{\finentrypunct}{}}%
+   \usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}\boolfalse{scpo@fullcitepostnote}}
 
 % Ajoute le titre court avant "op. cit." pour lever les ambiguïtés auteur-identiques
 \renewbibmacro*{cite:opcit}{%

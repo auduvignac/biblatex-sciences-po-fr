@@ -6,6 +6,9 @@
     {\mkbibquote{#1}}%
     {\mkbibemph{#1}}}
 
+% True when a fullcite postnote should suppress terminal punctuation in drivers.
+\providebool{scpo@fullcitepostnote}
+
 % Libelles francais pour les sorties par defaut.
 \NewBibliographyString{report}
 \DefineBibliographyStrings{french}{%
