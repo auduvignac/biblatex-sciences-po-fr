@@ -12,6 +12,7 @@ DEMO_SCRIPT = scripts/pdf-demo.sh
 LATEXMK = latexmk -r latexmkrc -pdf -xelatex
 LATEXMK_CLEAN = latexmk -r latexmkrc -C
 LATEX_ENV = TEXINPUTS=.:./style//: BIBINPUTS=.:./bibliographies//: BSTINPUTS=.:./style//:
+export LATEXMK LATEXMK_CLEAN LATEX_ENV
 
 pdf:
 ifeq ($(DEMO),1)
@@ -38,4 +39,5 @@ ifeq ($(USE_DOCKER),1)
 else
 	$(LATEX_ENV) $(LATEXMK_CLEAN)
 	rm -f $(DEMO_TEX) $(DEMO_TEX:.tex=).*
+	rm -f main.pdf
 endif
