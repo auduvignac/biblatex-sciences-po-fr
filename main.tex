@@ -2224,13 +2224,13 @@ op. cit., éventuellement accompagné de la pagination.
 
 \subsection{Commande locale}
 \begin{verbatim}
-latexmk -pdf -xelatex main.tex
+make pdf
 \end{verbatim}
-Cette commande enchaîne XeLaTeX et \texttt{biber}, nettoie automatiquement et produit \texttt{build/main.pdf}.
+Cette commande enchaîne XeLaTeX et \texttt{biber}, nettoie automatiquement et produit \texttt{build/main.pdf} ainsi que \texttt{main.pdf} à la racine.
 
 \subsection{Avec Docker/Makefile}
 \begin{verbatim}
-make pdf        % lance docker compose run latex
+make pdf USE_DOCKER=1   % lance docker compose run latex
 make clean      % nettoie via latexmk -C
 \end{verbatim}
 Le \texttt{docker-compose.yml} monte automatiquement les fichiers de style dans \texttt{\$TEXMFHOME}.
