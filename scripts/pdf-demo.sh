@@ -3,7 +3,11 @@ set -euo pipefail
 
 base_dir="${BASE_DIR:-/app}"
 demo_tex="${DEMO_TEX:?DEMO_TEX is required}"
-demo_path="${base_dir}/${demo_tex}"
+if [[ ${demo_tex} = /* ]]; then
+  demo_path="${demo_tex}"
+else
+  demo_path="${base_dir}/${demo_tex}"
+fi
 demo_dir="$(dirname "${demo_path}")"
 main_pdf="${base_dir}/main.pdf"
 
