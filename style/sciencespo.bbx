@@ -15,6 +15,11 @@
 \DeclareDelimFormat{finalnamedelim}{\addspace\bibstring{and}\space}
 \DeclareDelimFormat{andothersdelim}{\addnbspace}
 
+% Libellé "URL" en français (évite "Adresse")
+\DefineBibliographyStrings{french}{%
+  url = {URL},
+}
+
 % --- FORMATTAGE DES NOMS : Nom, Prénom. ---
 \DeclareNameFormat{labelname}{%
   \nameparts{#1}%
@@ -125,7 +130,7 @@
   \iffieldundef{url}%
     {}%
     {%
-      \printtext{URL\addcolon\space}%
+      \printtext{\bibstring{url}\addcolon\space}%
       \printfield{url}%
       \space%
       \printonlineurldate%
@@ -294,7 +299,7 @@
   \iffieldundef{type}
     {\iffieldundef{number}
        {}%
-       {\printtext{Rapport\addspace}\printfield{number}}}%
+       {\printtext{\bibstring{report}\addspace}\printfield{number}}}%
     {\printfield{type}%
      \iffieldundef{number}{}{\addspace\printfield{number}}}%
   \setunit{\addperiod\space}%
