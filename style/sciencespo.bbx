@@ -16,12 +16,11 @@
 
 % --- FORMATTAGE DES NOMS : Nom, Prénom. ---
 \DeclareNameFormat{labelname}{%
-  \nameparts{#1}%
-  \ifblank{\namepartfamily}
-    {\ifblank{\namepartgiven}{}{\mkbibnamegiven{\namepartgiven}}}
-    {%
-      \mkbibnamefamily{\namepartfamily}%
-      \ifblank{\namepartgiven}{}{\addcomma\space\mkbibnamegiven{\namepartgiven}}}%
+  \usebibmacro{name:family-given}%
+    {\namepartfamily}%
+    {\namepartgiven}%
+    {\namepartprefix}%
+    {\namepartsuffix}%
   \usebibmacro{name:andothers}%
 }
 \DeclareNameAlias{author}{labelname}
