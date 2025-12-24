@@ -7,6 +7,7 @@ GID := $(shell id -g)
 
 DOCKER = docker compose run --rm -e UID=$(UID) -e GID=$(GID) -e DEMO_TEX -e LATEXMK -e LATEXMK_CLEAN latex
 DEMO_TEX = build/demo.tex
+export DEMO_TEX
 
 DEMO_SCRIPT = scripts/pdf-demo.sh
 LATEXMK = latexmk -r latexmkrc -pdf -xelatex
@@ -22,7 +23,7 @@ ifeq ($(DEMO),1)
 	$(MAKE) pdf-demo
 else
 ifeq ($(USE_DOCKER),1)
-	@if [ -d main.pdf ]; then rm -rf main.pdf; fi
+	rm -f -- main.pdf
 	@touch main.pdf
 	$(DOCKER)
 else
@@ -35,7 +36,7 @@ endif
 
 pdf-demo:
 ifeq ($(USE_DOCKER),1)
-	@if [ -d main.pdf ]; then rm -rf main.pdf; fi
+	rm -f -- main.pdf
 	@touch main.pdf
 	$(DOCKER) bash -lc "/app/$(DEMO_SCRIPT)"
 else
