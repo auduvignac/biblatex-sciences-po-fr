@@ -30,7 +30,9 @@ fi
 # LATEXMK/LATEXMK_CLEAN are expected as simple space-separated commands.
 read -r -a latexmk_clean_argv <<< "${latexmk_clean}"
 read -r -a latexmk_cmd_argv <<< "${latexmk_cmd}"
-env "${env_args[@]}" "${latexmk_clean_argv[@]}" "${demo_path}" >/dev/null 2>&1 || true
+if ! env "${env_args[@]}" "${latexmk_clean_argv[@]}" "${demo_path}" >/dev/null 2>&1; then
+  printf '%s\n' "warning: latexmk clean failed for ${demo_path}" >&2
+fi
 printf '%s\n' "\\def\\demobib{1}\\input{main.tex}" > "${demo_path}"
 env "${env_args[@]}" "${latexmk_cmd_argv[@]}" "${demo_path}"
 cp "${demo_path%.tex}.pdf" "${main_pdf}"
