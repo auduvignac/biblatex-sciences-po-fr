@@ -7,13 +7,6 @@
 % Locutions latines en italique (conforme au CSL)
 \renewcommand*{\mkibid}[1]{\mkbibemph{#1}}
 
-% Libellés de locutions (capitalisation conforme au CSL)
-\DefineBibliographyStrings{french}{%
-  ibidem = {Ibid\adddot},
-  opcit  = {Op\adddotspace cit\adddot},
-  loccit = {Loc\adddotspace cit\adddot},
-}
-
 % Formatage des titres courts en citations (CSL)
 \DeclareFieldFormat{cbx:opcitlabel}{%
   \scpo@titleformat{#1}}
