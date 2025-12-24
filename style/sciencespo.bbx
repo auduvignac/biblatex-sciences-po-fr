@@ -16,6 +16,7 @@
 
 % --- FORMATTAGE DES NOMS : Nom, Prénom. ---
 \DeclareNameFormat{labelname}{%
+  \nameparts{#1}%
   \usebibmacro{name:family-given}%
     {\namepartfamily}%
     {\namepartgiven}%
