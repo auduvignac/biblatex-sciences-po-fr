@@ -17,13 +17,22 @@ bibinputs="${BIBINPUTS-}"
 bstinputs="${BSTINPUTS-}"
 
 mkdir -p "${demo_dir}"
+env_args=()
+if [[ -n ${texinputs} ]]; then
+  env_args+=("TEXINPUTS=${texinputs}")
+fi
+if [[ -n ${bibinputs} ]]; then
+  env_args+=("BIBINPUTS=${bibinputs}")
+fi
+if [[ -n ${bstinputs} ]]; then
+  env_args+=("BSTINPUTS=${bstinputs}")
+fi
+# LATEXMK/LATEXMK_CLEAN are expected as simple space-separated commands.
 read -r -a latexmk_clean_argv <<< "${latexmk_clean}"
 read -r -a latexmk_cmd_argv <<< "${latexmk_cmd}"
-TEXINPUTS="${texinputs}" BIBINPUTS="${bibinputs}" BSTINPUTS="${bstinputs}" \
-  "${latexmk_clean_argv[@]}" "${demo_path}" >/dev/null 2>&1 || true
+env "${env_args[@]}" "${latexmk_clean_argv[@]}" "${demo_path}" >/dev/null 2>&1 || true
 printf '%s\n' "\\def\\demobib{1}\\input{main.tex}" > "${demo_path}"
-TEXINPUTS="${texinputs}" BIBINPUTS="${bibinputs}" BSTINPUTS="${bstinputs}" \
-  "${latexmk_cmd_argv[@]}" "${demo_path}"
+env "${env_args[@]}" "${latexmk_cmd_argv[@]}" "${demo_path}"
 cp "${demo_path%.tex}.pdf" "${main_pdf}"
 if [ "$(id -u)" -eq 0 ]; then
   chown "${UID:-1000}:${GID:-1000}" "${main_pdf}"
