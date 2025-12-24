@@ -24,6 +24,7 @@ else
 ifeq ($(USE_DOCKER),1)
 	$(DOCKER)
 else
+	$(LATEX_ENV) $(LATEXMK_CLEAN) main.tex
 	$(LATEX_ENV) $(LATEXMK) main.tex
 	cp build/main.pdf main.pdf
 endif
