@@ -2231,7 +2231,7 @@ Cette commande enchaîne XeLaTeX et \texttt{biber}, nettoie automatiquement et p
 \subsection{Avec Docker/Makefile}
 \begin{verbatim}
 make pdf USE_DOCKER=1   % lance docker compose run latex
-make clean      % nettoie via latexmk -C
+make clean USE_DOCKER=1 % nettoie via latexmk -C
 \end{verbatim}
 Le \texttt{docker-compose.yml} monte automatiquement les fichiers de style dans \texttt{\$TEXMFHOME}.
 
