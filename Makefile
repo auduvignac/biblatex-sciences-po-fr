@@ -11,8 +11,11 @@ DEMO_TEX = build/demo.tex
 DEMO_SCRIPT = scripts/pdf-demo.sh
 LATEXMK = latexmk -r latexmkrc -pdf -xelatex
 LATEXMK_CLEAN = latexmk -r latexmkrc -C
-LATEX_ENV = TEXINPUTS=.:./style//: BIBINPUTS=.:./bibliographies//: BSTINPUTS=.:./style//:
-export LATEXMK LATEXMK_CLEAN LATEX_ENV
+TEXINPUTS = .:./style//:
+BIBINPUTS = .:./bibliographies//:
+BSTINPUTS = .:./style//:
+LATEX_ENV = TEXINPUTS=$(TEXINPUTS) BIBINPUTS=$(BIBINPUTS) BSTINPUTS=$(BSTINPUTS)
+export LATEXMK LATEXMK_CLEAN
 
 pdf:
 ifeq ($(DEMO),1)
@@ -30,7 +33,8 @@ pdf-demo:
 ifeq ($(USE_DOCKER),1)
 	$(DOCKER) bash -lc "DEMO_TEX=\"$(DEMO_TEX)\" /app/$(DEMO_SCRIPT)"
 else
-	$(LATEX_ENV) BASE_DIR="$(CURDIR)" DEMO_TEX="$(DEMO_TEX)" ./$(DEMO_SCRIPT)
+	TEXINPUTS="$(TEXINPUTS)" BIBINPUTS="$(BIBINPUTS)" BSTINPUTS="$(BSTINPUTS)" \
+	BASE_DIR="$(CURDIR)" DEMO_TEX="$(DEMO_TEX)" ./$(DEMO_SCRIPT)
 endif
 
 clean:
