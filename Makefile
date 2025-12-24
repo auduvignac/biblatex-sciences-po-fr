@@ -48,6 +48,6 @@ ifeq ($(USE_DOCKER),1)
 	$(DOCKER) bash -lc "$$LATEXMK_CLEAN && rm -f /app/$$DEMO_TEX /app/$${DEMO_TEX%.tex}.*"
 else
 	$(LATEX_ENV) $(LATEXMK_CLEAN)
-	rm -f $(DEMO_TEX) $(DEMO_TEX:.tex=.*)
+	rm -f $(DEMO_TEX) $(basename $(DEMO_TEX)).*
 	rm -f main.pdf
 endif
