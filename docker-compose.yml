@@ -38,6 +38,7 @@ services:
       # Style biblatex SciencesPo directement visible par LaTeX/Biber
       - ./style/sciencespo.cbx:/app/texmf/tex/latex/biblatex/cbx/sciencespo.cbx:ro
       - ./style/sciencespo.bbx:/app/texmf/tex/latex/biblatex/bbx/sciencespo.bbx:ro
+      - ./style/sciencespo-common.def:/app/texmf/tex/latex/biblatex/sciencespo-common.def:ro
       - ./style/biblatex-dm.cfg:/app/texmf/tex/latex/biblatex/biblatex-dm.cfg:ro
 
 volumes:

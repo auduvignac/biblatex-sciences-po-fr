@@ -1,0 +1,20 @@
+\ProvidesFile{sciencespo-common.def}[2025/12/13 Shared helpers for Sciences Po styles]
+
+% Shared title formatting for citations and bibliography.
+\providecommand*{\scpo@titleformat}[1]{%
+  \ifboolexpr{ test{\ifentrytype{article}} or test{\ifentrytype{incollection}} }
+    {\mkbibquote{#1}}%
+    {\mkbibemph{#1}}}
+
+% True when a fullcite postnote should suppress terminal punctuation in drivers.
+\providebool{scpo@fullcitepostnote}
+
+% Libelles francais pour les sorties par defaut.
+\NewBibliographyString{report}
+\DefineBibliographyStrings{french}{%
+  ibidem = {Ibid\adddot},
+  opcit  = {Op\adddotspace cit\adddot},
+  loccit = {Loc\adddotspace cit\adddot},
+  report = {Rapport},
+  url = {URL},
+}
