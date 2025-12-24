@@ -12,13 +12,17 @@ export DEMO_TEX
 DEMO_SCRIPT = scripts/pdf-demo.sh
 LATEXMK = latexmk -r latexmkrc -pdf -xelatex
 LATEXMK_CLEAN = latexmk -r latexmkrc -C
-TEXINPUTS := .:./style//:$(TEXINPUTS)
-BIBINPUTS := .:./bibliographies//:$(BIBINPUTS)
-BSTINPUTS := .:./style//:$(BSTINPUTS)
+TEXINPUTS := .:./style//$(if $(TEXINPUTS),:$(TEXINPUTS),:)
+BIBINPUTS := .:./bibliographies//$(if $(BIBINPUTS),:$(BIBINPUTS),:)
+BSTINPUTS := .:./style//$(if $(BSTINPUTS),:$(BSTINPUTS),:)
 LATEX_ENV = TEXINPUTS=$(TEXINPUTS) BIBINPUTS=$(BIBINPUTS) BSTINPUTS=$(BSTINPUTS)
 export LATEXMK LATEXMK_CLEAN
-define ensure_main_pdf_file
-	rm -f -- main.pdf
+define prepare_main_pdf_mount
+	@if [ -d main.pdf ]; then \
+		rm -rf main.pdf; \
+	else \
+		rm -f -- main.pdf; \
+	fi
 	@touch main.pdf
 endef
 
@@ -27,7 +31,7 @@ ifeq ($(DEMO),1)
 	$(MAKE) pdf-demo
 else
 ifeq ($(USE_DOCKER),1)
-	$(ensure_main_pdf_file)
+	$(prepare_main_pdf_mount)
 	$(DOCKER)
 else
 	$(LATEX_ENV) $(LATEXMK_CLEAN) main.tex
@@ -39,7 +43,7 @@ endif
 
 pdf-demo:
 ifeq ($(USE_DOCKER),1)
-	$(ensure_main_pdf_file)
+	$(prepare_main_pdf_mount)
 	$(DOCKER) bash -lc "/app/$(DEMO_SCRIPT)"
 else
 	$(LATEX_ENV) BASE_DIR="$(CURDIR)" DEMO_TEX="$(DEMO_TEX)" ./$(DEMO_SCRIPT)
