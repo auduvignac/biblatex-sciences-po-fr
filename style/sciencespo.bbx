@@ -2,6 +2,7 @@
 
 % Style de base pour la bibliographie
 \RequireBibliographyStyle{authoryear}
+\input{sciencespo-common.def}
 
 % --- GESTION DU NOMBRE D'AUTEURS (et al.) ---
 \AtBeginDocument{%
@@ -39,8 +40,7 @@
     {}}
 
 % --- FORMATTAGE DES CHAMPS STANDARDS (conforme au CSL) ---
-\DeclareFieldFormat[book,report,thesis,movie,online]{title}{\mkbibemph{#1}}
-\DeclareFieldFormat[incollection,article]{title}{\mkbibquote{#1}}
+\DeclareFieldFormat{title}{\scpo@titleformat{#1}}
 \DeclareFieldFormat[incollection]{booktitle}{\mkbibemph{#1}}
 \DeclareFieldFormat{journaltitle}{\mkbibemph{#1}}
 \DeclareFieldFormat{edition}{#1\adddot}

@@ -2,6 +2,7 @@
 
 % Style de base pour les citations (ibid./op. cit.)
 \RequireCitationStyle{verbose-trad1}
+\input{sciencespo-common.def}
 
 % Locutions latines en italique (conforme au CSL)
 \renewcommand*{\mkibid}[1]{\mkbibemph{#1}}
@@ -15,13 +16,9 @@
 
 % Formatage des titres courts en citations (CSL)
 \DeclareFieldFormat{cbx:opcitlabel}{%
-  \ifboolexpr{ test{\ifentrytype{article}} or test{\ifentrytype{incollection}} }
-    {\mkbibquote{#1}}
-    {\mkbibemph{#1}}}
+  \scpo@titleformat{#1}}
 \DeclareFieldFormat{citetitle}{%
-  \ifboolexpr{ test{\ifentrytype{article}} or test{\ifentrytype{incollection}} }
-    {\mkbibquote{#1}}
-    {\mkbibemph{#1}}}
+  \scpo@titleformat{#1}}
 
 % Ajoute le titre court avant "op. cit." pour lever les ambiguïtés auteur-identiques
 \renewbibmacro*{cite:opcit}{%

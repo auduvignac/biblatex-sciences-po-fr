@@ -1,0 +1,7 @@
+\ProvidesFile{sciencespo-common.def}[2025/12/13 Shared helpers for Sciences Po styles]
+
+% Shared title formatting for citations and bibliography.
+\providecommand*{\scpo@titleformat}[1]{%
+  \ifboolexpr{ test{\ifentrytype{article}} or test{\ifentrytype{incollection}} }
+    {\mkbibquote{#1}}%
+    {\mkbibemph{#1}}}
