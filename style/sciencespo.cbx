@@ -38,6 +38,21 @@
   {\multicitedelim}
   {\usebibmacro{postnote}\boolfalse{scpo@fullcitepostnote}}
 
+% Pour les rapports avec un nombre total de pages, le postnote (p.XX)
+% suit directement "NN p." sans virgule.
+\renewbibmacro*{postnote}{%
+  \iffieldundef{postnote}
+    {}
+    {%
+      \ifboolexpr{
+        test {\ifentrytype{report}}
+        and
+        not test {\iffieldundef{pages}}
+      }
+        {\setunit{\addspace}}%
+        {\setunit{\printdelim{postnotedelim}}}%
+      \printfield{postnote}}}
+
 % Apply the same postnote handling for verbose-trad1 cite commands.
 \DeclareCiteCommand{\cite}
   {\usebibmacro{prenote}}
