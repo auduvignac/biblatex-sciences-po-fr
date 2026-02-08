@@ -165,7 +165,7 @@
   \addspace%
   \printfield{pages}%
   \iffieldundef{series}
-    {\iffieldundef{number}{}{\addspace\printtext{\mkbibparens{\printfield{number}}}}}%
+    {}%
     {\addspace\printtext{\mkbibparens{\printfield{series}%
       \iffieldundef{number}{}{\addcomma\space\printfield{number}}}}}%
   \iffieldundef{url}{}{\newunit\newblock\printonlineaccess}%
