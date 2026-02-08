@@ -595,7 +595,7 @@ nature des références appelées.
   author      = {Nom, Prénom},
   title       = {Titre du rapport},
   subtitle    = {Sous-titre (facultatif)},
-  type        = {Rapport / Working Paper / Annual Report (facultatif)},
+  type        = {Rapport | Working Paper | Annual Report (facultatif, valeurs contrôlées)},
   number      = {Numéro du rapport},
   institution = {Nom de l'institution / organisme éditeur},
   shortinstitution = {Nom de l'institution / organisme éditeur abrégé},
@@ -609,6 +609,8 @@ nature des références appelées.
   shorttitle  = {Titre court (facultatif, recommandé)}
 }
 \end{verbatim}
+
+\emph{Pour garantir un rendu homogène, limitez \texttt{type} à un jeu contrôlé de libellés (\texttt{Rapport}, \texttt{Working Paper}, \texttt{Annual Report}) et évitez les variantes libres (orthographe, casse, langue).}
 
 \subsubsection{Rapport statistique institutionnel (sans auteur)}
 
@@ -645,6 +647,8 @@ Dans l'exemple proposé, \texttt{shortinstitution} remplace l'auteur institution
 \begin{verbatim}
 @report{EC:2022:AAR,
   author      = {{European Commission}},
+  shortinstitution = {European Commission},
+  sortkey          = {European Commission},
   title       = {2021 Annual Activity Report},
   institution = {European External Action Service -- European Union},
   number      = {(2022) 5064306},
