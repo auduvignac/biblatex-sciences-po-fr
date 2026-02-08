@@ -68,6 +68,24 @@
   \end{refsection}%
 }
 
+% Structure commune : sections "sans pagination / avec pagination / avec référence explicite".
+\NewDocumentCommand{\threemodesections}{ m m m }{%
+  \subparagraph{Sans pagination}\par\smallskip%
+  #1%
+  \subparagraph{Avec pagination explicite}\par\smallskip%
+  #2%
+  \subparagraph{Avec référence explicite}\par\smallskip%
+  #3%
+}
+
+% Rendu standard d'un exemple de commande dans un bloc isole.
+\NewDocumentCommand{\bibexamplecommand}{ m m }{%
+  \begin{bibexample}
+    \texttt{\detokenize{#1}}\par\smallskip
+    #2
+  \end{bibexample}
+}
+
 % Tests standardises des locutions latines pour un couple de references.
 \NewDocumentCommand{\locutiontests}{ m m }{%
   \paragraph{Locutions latines}%
@@ -81,56 +99,55 @@ apparition et d'en vérifier le comportement effectif.
   automatiquement par le style, selon l'historique des citations et la pagination
   fournie. Pour contrôler le rendu dans chaque mode, utilisez les séquences suivantes :%
 
-  \subparagraph{Sans pagination}\par\smallskip%
-  \begin{itemize}%
-    \item \emph{Ibid.} :%
-      \citereset%
-      \begin{enumerate}
-        \item \texttt{\detokenize{\cite{#1}}} : \cite{#1}%
-        \item \texttt{\detokenize{\cite{#1}}} : \cite{#1}%
-      \end{enumerate}
-    \item \emph{Op. cit.} :%
-      \citereset%
-          \texttt{\detokenize{\cite{#1}}} : \cite{#1}\\%
-          \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
-          \texttt{\detokenize{\cite{#1}}} : \cite{#1}%
-  \end{itemize}%
-
-  \subparagraph{Avec pagination explicite}\par\smallskip%
-  \begin{itemize}%
-    \item \emph{Ibid.} :%
-      \citereset%
-          \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}\\%
-          \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}%
-    \item \emph{Op. cit.} :%
-      \citereset%
-          \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}\\%
-          \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
-          \texttt{\detokenize{\cite[p.46]{#1}}} : \cite[p.46]{#1}%
-    \item \emph{Loc. cit.} :%
-      \citereset%
-          \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}\\%
-          \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
-          \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}%
-  \end{itemize}%
-
-  \subparagraph{Avec référence explicite}\par\smallskip%
-  \begin{itemize}%
-    \item \emph{Ibid.} :%
-      \citereset%
-          \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}\\%
-          \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}%
-    \item \emph{Op. cit.} :%
-      \citereset%
-          \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}\\%
-          \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
-          \texttt{\detokenize{\cite[Voir aussi][p.46]{#1}}} : \cite[Voir aussi][p.46]{#1}%
-    \item \emph{Loc. cit.} :%
-      \citereset%
-          \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}\\%
-          \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
-          \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}%
-  \end{itemize}%
+  \threemodesections{%
+    \begin{itemize}%
+      \item \emph{Ibid.} :%
+        \citereset%
+        \begin{enumerate}
+          \item \texttt{\detokenize{\cite{#1}}} : \cite{#1}%
+          \item \texttt{\detokenize{\cite{#1}}} : \cite{#1}%
+        \end{enumerate}
+      \item \emph{Op. cit.} :%
+        \citereset%
+            \texttt{\detokenize{\cite{#1}}} : \cite{#1}\\%
+            \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
+            \texttt{\detokenize{\cite{#1}}} : \cite{#1}%
+    \end{itemize}%
+  }{%
+    \begin{itemize}%
+      \item \emph{Ibid.} :%
+        \citereset%
+            \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}\\%
+            \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}%
+      \item \emph{Op. cit.} :%
+        \citereset%
+            \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}\\%
+            \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
+            \texttt{\detokenize{\cite[p.46]{#1}}} : \cite[p.46]{#1}%
+      \item \emph{Loc. cit.} :%
+        \citereset%
+            \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}\\%
+            \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
+            \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}%
+    \end{itemize}%
+  }{%
+    \begin{itemize}%
+      \item \emph{Ibid.} :%
+        \citereset%
+            \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}\\%
+            \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}%
+      \item \emph{Op. cit.} :%
+        \citereset%
+            \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}\\%
+            \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
+            \texttt{\detokenize{\cite[Voir aussi][p.46]{#1}}} : \cite[Voir aussi][p.46]{#1}%
+      \item \emph{Loc. cit.} :%
+        \citereset%
+            \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}\\%
+            \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
+            \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}%
+    \end{itemize}%
+  }%
 }
 
 % Bloc standardise pour les exemples de livres
@@ -149,44 +166,17 @@ apparition et d'en vérifier le comportement effectif.
 \NewDocumentCommand{\citetests}{ m }{%
   \paragraph{Citation complète (\texttt{\textbackslash fullcite})}%
 
-  \subparagraph{Sans pagination}\par\smallskip%
-
-  \begin{bibexample}
-	\texttt{\detokenize{\fullcite{#1}}}\par\smallskip
-	\fullcite{#1}
-  \end{bibexample}
-
-  \subparagraph{Avec pagination explicite}\par\smallskip%
-  \begin{bibexample}
-	\texttt{\detokenize{\fullcite[p.45]{#1}}}\par\smallskip
-	\fullcite[p.45]{#1}
-  \end{bibexample}
-
-  \subparagraph{Avec référence explicite}\par\smallskip%
-  \begin{bibexample}
-	\texttt{\detokenize{\fullcite[Voir aussi][p.45]{#1}}}\par\smallskip
-	\fullcite[Voir aussi][p.45]{#1}
-  \end{bibexample}
+  \threemodesections
+    {\bibexamplecommand{\fullcite{#1}}{\fullcite{#1}}}
+    {\bibexamplecommand{\fullcite[p.45]{#1}}{\fullcite[p.45]{#1}}}
+    {\bibexamplecommand{\fullcite[Voir aussi][p.45]{#1}}{\fullcite[Voir aussi][p.45]{#1}}}
 
   \paragraph{Citation simple (\texttt{\textbackslash cite})}%
 
-  \subparagraph{Sans pagination}\par\smallskip%
-  \begin{bibexample}
-	\texttt{\detokenize{\cite{#1}}}\par\smallskip
-	\cite{#1}
-  \end{bibexample}
-
-  \subparagraph{Avec pagination explicite}\par\smallskip%
-  \begin{bibexample}
-	\texttt{\detokenize{\cite[p.45]{#1}}}\par\smallskip
-	\cite[p.45]{#1}
-  \end{bibexample}
-
-  \subparagraph{Avec référence explicite}\par\smallskip%
-  \begin{bibexample}
-	\texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}}\par\smallskip
-	\cite[Voir aussi][p.45]{#1}
-  \end{bibexample}
+  \threemodesections
+    {\bibexamplecommand{\cite{#1}}{\cite{#1}}}
+    {\bibexamplecommand{\cite[p.45]{#1}}{\cite[p.45]{#1}}}
+    {\bibexamplecommand{\cite[Voir aussi][p.45]{#1}}{\cite[Voir aussi][p.45]{#1}}}
 
   \paragraph{Citation en note de bas de page}%
 
