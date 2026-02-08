@@ -616,7 +616,11 @@ nature des références appelées.
 
 \emph{Dans le cas des rapports institutionnels, l'institution fait office d'auteur principal. L'utilisation des champs \texttt{shortinstitution} et \texttt{sortkey} permet d'assurer une forme de citation abrégée cohérente et un classement alphabétique stable dans la bibliographie.}
 
-\bookexample{\textsc{Institution}. \textit{Titre du rapport}. Type de document. Numéro. Institution éditrice. Année de publication. (Série)}|
+\emph{Lorsque le champ \texttt{shortinstitution} est utilisé seul, la casse doit être strictement conservée afin de respecter la dénomination officielle de l'organisme.
+Dans l'exemple proposé, \texttt{shortinstitution} remplace l'auteur institutionnel et permet de maintenir le formalisme correct ; l'institut doit ainsi être écrit Insee (et non INSEE).
+}
+
+\bookexample{\textsc{Institution} (ou Institution abrégée). \textit{Titre du rapport}. Type de document. Numéro. Institution éditrice. Année de publication. (Série)}|
 \begin{verbatim}
 @report{Insee:2020,
   shortinstitution = {Insee},
