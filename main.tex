@@ -586,7 +586,7 @@ nature des références appelées.
 
 \subsubsection{Structure générale}
 
-\textsc{Nom}, Prénom. \textit{Titre de l'ouvrage}. Rapport : N° du rapport. Institution. Année de publication. Nombre de pages.
+\textsc{Nom}, Prénom. \textit{Titre de l'ouvrage}. Rapport n° Numéro du rapport. Institution. Année de publication. Nombre de pages.
 
 \subsubsection{Modèle générique}
 
@@ -599,6 +599,7 @@ nature des références appelées.
   number      = {Numéro du rapport},
   institution = {Nom de l'institution / organisme éditeur},
   shortinstitution = {Nom de l'institution / organisme éditeur abrégé},
+  sortkey     = {Nom de l'institution / organisme éditeur pour le tri},
   year        = {YYYY},
   pages       = {xxx},
   series      = {Nom de la série (facultatif)},
@@ -620,7 +621,7 @@ nature des références appelées.
 Dans l'exemple proposé, \texttt{shortinstitution} remplace l'auteur institutionnel et permet de maintenir le formalisme correct ; l'institut doit ainsi être écrit Insee (et non INSEE).
 }
 
-\bookexample{\textsc{Institution} (ou Institution abrégée). \textit{Titre du rapport}. Type de document. Numéro. Institution éditrice. Année de publication. (Série)}|
+\bookexample{\textsc{Institution} (ou Institution abrégée). \textit{Titre du rapport}. Type de document. Numéro. Institution éditrice. Année de publication. (Série). Nombre de pages.}|
 \begin{verbatim}
 @report{Insee:2020,
   shortinstitution = {Insee},
@@ -630,7 +631,8 @@ Dans l'exemple proposé, \texttt{shortinstitution} remplace l'auteur institution
   number           = {001641607},
   institution      = {Institut National de la Statistique et des études économiques},
   year             = {2020},
-  series           = {Séries chronologiques}
+  series           = {Séries chronologiques},
+  pages            = {150}
 }
 \end{verbatim}
 |{Insee:2020}{Fitoussi:1995}
@@ -639,7 +641,7 @@ Dans l'exemple proposé, \texttt{shortinstitution} remplace l'auteur institution
 
 \emph{Rapports officiels produits par une institution nationale ou supranationale (UE, ministères, agences), rendant compte d'une activité ou d'une politique.}
 
-\bookexample{\textsc{Institution}. \textit{Titre du rapport}. Rapport n° Numéro du rapport. Institution éditrice. Année de publication. Nombre de pages.}|
+\bookexample{\textsc{Institution}. \textit{Titre du rapport}. Rapport n° Numéro Numéro du rapport. Institution éditrice. Année de publication. Nombre de pages.}|
 \begin{verbatim}
 @report{EC:2022:AAR,
   author      = {{European Commission}},
