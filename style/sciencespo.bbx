@@ -48,7 +48,7 @@
 \DeclareFieldFormat[incollection]{pages}{#1}
 \DeclareFieldFormat[article]{pages}{#1}
 \DeclareFieldFormat[thesis]{pages}{#1}
-\DeclareFieldFormat[report]{pages}{#1\addspace p\adddot}
+\DeclareFieldFormat[report]{pages}{#1\addspace\bibstring{pages}}
 \DeclareFieldFormat[online]{volume}{#1}
 \DeclareFieldFormat[online]{number}{#1}
 \DeclareFieldFormat[online]{pages}{#1}
@@ -316,9 +316,9 @@
   \iffieldundef{type}
     {\iffieldundef{number}
        {}%
-       {\printtext{\bibstring{report}\addspace n°\addspace\printfield{number}}}}%
+       {\printtext{\bibstring{report}\addspace\bibstring{number}\addspace\printfield{number}}}}%
     {\printfield{type}%
-     \iffieldundef{number}{}{\addspace n°\addspace\printfield{number}}}%
+     \iffieldundef{number}{}{\addspace\bibstring{number}\addspace\printfield{number}}}%
   \setunit{\adddot\space}%
   \iffieldundef{organization}{\printlist{institution}}{\printlist{organization}}%
   \setunit{\adddot\space}%
