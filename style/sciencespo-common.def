@@ -16,5 +16,6 @@
   opcit  = {Op\adddotspace cit\adddot},
   loccit = {Loc\adddotspace cit\adddot},
   report = {Rapport},
+  bytranslator = {Traduit par},
   url = {URL},
 }

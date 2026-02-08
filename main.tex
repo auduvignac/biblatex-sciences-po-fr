@@ -68,6 +68,130 @@
   \end{refsection}%
 }
 
+% Structure commune : sections "sans pagination / avec pagination / avec référence explicite".
+\NewDocumentCommand{\threemodesections}{ m m m }{%
+  \subparagraph{Sans pagination}\par\smallskip%
+  #1%
+  \subparagraph{Avec pagination explicite}\par\smallskip%
+  #2%
+  \subparagraph{Avec référence explicite}\par\smallskip%
+  #3%
+}
+
+% Rendu standard d'un exemple de commande dans un bloc isole.
+\NewDocumentCommand{\bibexamplecommand}{ m m }{%
+  \begin{bibexample}
+    \texttt{\detokenize{#1}}\par\smallskip
+    #2
+  \end{bibexample}
+}
+
+% Tests standardises des locutions latines pour un couple de references.
+\NewDocumentCommand{\locutiontests}{ m m }{%
+  \paragraph{Locutions latines}%
+  Le présent paragraphe a pour objectif de vérifier le bon fonctionnement de la
+génération automatique des locutions latines par (Bib\LaTeX) dans le cas
+des ouvrages. Contrairement aux démonstrations précédentes, les locutions
+(\emph{Ibid.}, \emph{Op. cit.}, \emph{Loc. cit.}) ne sont ici ni neutralisées ni
+contournées. Les citations sont volontairement enchaînées afin de provoquer leur
+apparition et d'en vérifier le comportement effectif.
+  Les enchaînements \emph{Ibid.}, \emph{Op. cit.} et \emph{Loc. cit.} sont gérés
+  automatiquement par le style, selon l'historique des citations et la pagination
+  fournie. Pour contrôler le rendu dans chaque mode, utilisez les séquences suivantes :%
+
+  \threemodesections{%
+    \begin{itemize}%
+      \item \emph{Ibid.} :%
+        \citereset%
+        \begin{enumerate}
+          \item \texttt{\detokenize{\cite{#1}}} : \cite{#1}%
+          \item \texttt{\detokenize{\cite{#1}}} : \cite{#1}%
+        \end{enumerate}
+      \item \emph{Op. cit.} :%
+        \citereset%
+            \texttt{\detokenize{\cite{#1}}} : \cite{#1}\\%
+            \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
+            \texttt{\detokenize{\cite{#1}}} : \cite{#1}%
+    \end{itemize}%
+  }{%
+    \begin{itemize}%
+      \item \emph{Ibid.} :%
+        \citereset%
+            \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}\\%
+            \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}%
+      \item \emph{Op. cit.} :%
+        \citereset%
+            \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}\\%
+            \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
+            \texttt{\detokenize{\cite[p.46]{#1}}} : \cite[p.46]{#1}%
+      \item \emph{Loc. cit.} :%
+        \citereset%
+            \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}\\%
+            \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
+            \texttt{\detokenize{\cite[p.45]{#1}}} : \cite[p.45]{#1}%
+    \end{itemize}%
+  }{%
+    \begin{itemize}%
+      \item \emph{Ibid.} :%
+        \citereset%
+            \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}\\%
+            \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}%
+      \item \emph{Op. cit.} :%
+        \citereset%
+            \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}\\%
+            \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
+            \texttt{\detokenize{\cite[Voir aussi][p.46]{#1}}} : \cite[Voir aussi][p.46]{#1}%
+      \item \emph{Loc. cit.} :%
+        \citereset%
+            \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}\\%
+            \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
+            \texttt{\detokenize{\cite[Voir aussi][p.45]{#1}}} : \cite[Voir aussi][p.45]{#1}%
+    \end{itemize}%
+  }%
+}
+
+% Bloc standardise pour les exemples de livres
+\NewDocumentCommand{\bookexample}{ m +v m m }{%
+  \paragraph{Structure :}%
+  #1\par\smallskip%
+  \paragraph{Source bibliographique (Bib\LaTeX)}%
+  \begingroup\small\ttfamily\obeylines\obeyspaces%
+  \scantokens{#2}%
+  \endgroup%
+  \citetests{#3}%
+  \locutiontests{#3}{#4}%
+}
+
+% Tests standardises des citations (fullcite/cite/footcite) pour une reference.
+\NewDocumentCommand{\citetests}{ m }{%
+  \paragraph{Citation complète (\texttt{\textbackslash fullcite})}%
+
+  \threemodesections
+    {\bibexamplecommand{\fullcite{#1}}{\fullcite{#1}}}
+    {\bibexamplecommand{\fullcite[p.45]{#1}}{\fullcite[p.45]{#1}}}
+    {\bibexamplecommand{\fullcite[Voir aussi][p.45]{#1}}{\fullcite[Voir aussi][p.45]{#1}}}
+
+  \paragraph{Citation simple (\texttt{\textbackslash cite})}%
+
+  \threemodesections
+    {\bibexamplecommand{\cite{#1}}{\cite{#1}}}
+    {\bibexamplecommand{\cite[p.45]{#1}}{\cite[p.45]{#1}}}
+    {\bibexamplecommand{\cite[Voir aussi][p.45]{#1}}{\cite[Voir aussi][p.45]{#1}}}
+
+  \paragraph{Citation en note de bas de page}%
+
+  \begin{itemize}
+	\item Sans pagination :
+	      \footciteexamplelocal{#1}
+
+	\item Avec pagination explicite :
+	      \footciteexamplelocal[][p.45]{#1}
+
+	\item Avec référence explicite :
+	      \footciteexamplelocal[Voir aussi][p.45]{#1}
+  \end{itemize}%
+}
+
 % Environnement standardisé pour les rendus d'exemples
 % (citations dans le corps du texte, sans interaction entre elles)
 \newenvironment{bibexample}
@@ -80,6 +204,7 @@
 \title{Mode d'emploi du style bibliographique \texttt{sciencespo}}
 \author{Aurélien Duvignac-Rosa}
 \date{Basé sur le Mémorandum Officiel de Sciences Po}
+\setcounter{tocdepth}{3}
 
 \begin{document}
 \maketitle
@@ -291,16 +416,17 @@ nature des références appelées.
 
 
 
-\subsection{Livres (\texttt{@book})}
+\subsection{Livres imprimés ou \textit{e-books} (\texttt{@book})}
 
-Structure :
-\textsc{AUTEUR}, Prénom. Titre. Édition. Lieu de publication : éditeur, année. Pagination.
+\subsubsection{Structure générale}
 
-\paragraph{Modèle générique}
+\textsc{Nom}, Prénom. \textit{Titre de l'ouvrage}. Édition. Ville de publication : Éditeur. Année de publication. Nombre de pages. (Collection)
+
+\subsubsection{Modèle générique}
 
 \begin{verbatim}
 @book{CleUnique:YYYY,
-  author     = {Nom, Prénom and Nom2, Prénom2},
+  author     = {Nom, Prénom},
   title      = {Titre de l'ouvrage},
   edition    = {2e éd.},
   publisher  = {Nom de l'éditeur},
@@ -319,25 +445,11 @@ Structure :
 \textbf{Champs optionnels} :
 \texttt{edition} (si $\neq$ 1\textsuperscript{re}),
 \texttt{series}/\texttt{number} (collection),
-\texttt{shorttitle} (fortement recommandé pour les références fréquemment rappelées via op. cit.).
+\texttt{shorttitle} (fortement recommandé pour les références fréquemment rappelées via \emph{Op. cit.}).
 
-\bigskip
+\subsubsection{Livre avec mention d'édition}
 
-
-\paragraph{Tests fonctionnels (livres)}
-Cette section teste :
-\begin{itemize}
-	\item le rendu AFNOR complet (\texttt{\textbackslash fullcite}) ;
-	\item les appels successifs avec ibid. et pagination ;
-	\item l'usage de op. cit. avec et sans ambiguïté ;
-	\item la gestion des auteurs multiples et de \texttt{and others} ;
-	\item les ouvrages en langue étrangère.
-\end{itemize}
-
-\subsubsection*{Livre — monographie avec mention d'édition}
-
-\paragraph{Source bibliographique (Bib\LaTeX)}
-
+\bookexample{\textsc{Nom}, Prénom. \textit{Titre de l'ouvrage}. Édition. Ville de publication : Éditeur. Année de publication. Nombre de pages.}|
 \begin{verbatim}
 @book{Boursin:1991,
   author    = {Boursin, Jean-Louis},
@@ -349,88 +461,27 @@ Cette section teste :
   pages     = {168 p.}
 }
 \end{verbatim}
+|{Boursin:1991}{Fitoussi:1995}
 
-\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
-
-\subparagraph{Sans pagination}
-
+\bookexample{\textsc{Nom}, Prénom. \textit{Titre de l'ouvrage}. Édition. Ville de publication : Éditeur. Année de publication. Nombre de pages.}|
 \begin{verbatim}
-\fullcite{Boursin:1991}
+@book{Castanet:2023,
+  author    = {Castanet, Victor},
+  title     = {Les fossoyeurs},
+  edition   = {Édition augmentee de 10 chapitres inedits},
+  publisher = {Éditions J'ai lu},
+  location  = {Paris},
+  year      = {2023},
+  pages     = {506 p.}
+}
 \end{verbatim}
+|{Castanet:2023}{Boursin:1991}
 
-\begin{bibexample}
-	\fullcite{Boursin:1991}
-\end{bibexample}
+\subsubsection{Livre sans mention d'édition explicite}
 
-\subparagraph{Avec pagination explicite}
+\emph{L'absence de mention d'édition implique qu'il s'agit de la première édition ou que l'éditeur ne la précise pas explicitement.}
 
-\begin{verbatim}
-\fullcite[p.45]{Boursin:1991}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite[p.45]{Boursin:1991}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\fullcite[Voir aussi][p.45]{Boursin:1991}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite[Voir aussi][p.45]{Boursin:1991}
-\end{bibexample}
-
-\paragraph{Citation simple (\texttt{\textbackslash cite})}
-
-\subparagraph{Sans pagination}
-
-\begin{verbatim}
-\cite{Boursin:1991}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite{Boursin:1991}
-\end{bibexample}
-
-\subparagraph{Avec pagination explicite}
-
-\begin{verbatim}
-\cite[p.45]{Boursin:1991}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[p.45]{Boursin:1991}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\cite[Voir aussi][p.45]{Boursin:1991}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[Voir aussi][p.45]{Boursin:1991}
-\end{bibexample}
-
-\paragraph{Citation en note de bas de page}
-
-\begin{itemize}
-	\item Sans pagination :
-	      \footciteexamplelocal{Boursin:1991}
-
-	\item Avec pagination explicite :
-	      \footciteexamplelocal[][p.45]{Boursin:1991}
-
-	\item Avec référence explicite :
-	      \footciteexamplelocal[Voir aussi][p.45]{Boursin:1991}
-\end{itemize}
-
-\subsubsection*{Livre sans mention d'édition explicite\footnote{\emph{L'absence de mention d'édition implique qu'il s'agit de la première édition ou que l'éditeur ne la précise pas explicitement.}}}
-
-\paragraph{Source bibliographique (Bib\LaTeX)}
-
+\bookexample{\textsc{Nom}, Prénom. \textit{Titre de l'ouvrage}. Ville de publication : Éditeur. Année de publication. Nombre de pages.}|
 \begin{verbatim}
 @book{Fitoussi:1995,
   author    = {Fitoussi, Jean-Paul},
@@ -441,89 +492,46 @@ Cette section teste :
   pages     = {318 p.}
 }
 \end{verbatim}
+|{Fitoussi:1995}{Boursin:1991}
 
-\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+\subsubsection{Livre traduit avec date d'édition originale et collection}
 
-\subparagraph{Sans pagination}
-
+\bookexample{\textsc{Nom}, Prénom. \textit{Titre de l'ouvrage}. Traduit par Prénom \textsc{Nom}. Ville de publication : Éditeur. [Année d'édition originale] Année de publication. Nombre de pages. (Collection, numéro).}|
 \begin{verbatim}
-\fullcite{Fitoussi:1995}
+@book{Benjamin:2018,
+  author       = {Benjamin, Walter},
+  title        = {Le surréalisme : et autres textes},
+  translator   = {Mannoni, Olivier},
+  publisher    = {Payot},
+  location     = {Paris},
+  year         = {2018},
+  origyear     = {1927},
+  pages        = {119 p.},
+  series       = {Petite bibliothèque Payot},
+  number       = {classiques}
+}
 \end{verbatim}
+|{Benjamin:2018}{Fitoussi:1995}
 
-\begin{bibexample}
-	\fullcite{Fitoussi:1995}
-\end{bibexample}
+\subsubsection{Livre à auteurs multiples}
 
-\subparagraph{Avec pagination explicite}
+\emph{Dans l'exemple bibliographique proposé, l'ouvrage comporte des pages liminaires numérotées en chiffres romains (VIII), suivies de 204 pages de texte principal. En l'occurence la référence bibliographique présentée compte 212 pages physiques au total, mais bibliographiquement sont distinguées : VIII + 204 pages, conformément aux usages bibliographiques. Par ailleurs, pour les ouvrages en langue étrangère, le titre n'est pas traduit. Les éléments de description bibliographique (lieu, éditeur, pagination) restent conformes aux normes françaises.}
 
+\bookexample{\textsc{Nom}, Prénom, \textsc{Nom}, Prénom et \textsc{Nom}, Prénom. \textit{Titre de l'ouvrage}. Ville de publication : Éditeur. Année de publication. Nombre de pages liminaires-Nombre de pages.}|
 \begin{verbatim}
-\fullcite[p.45]{Fitoussi:1995}
+@book{Lazar:1991,
+  author    = {Lazar, Marc and Waller, Michael and Courtois, Stephane},
+  title     = {Comrades and brothers : communism and trade unions in Europe},
+  publisher = {Cass},
+  location  = {London},
+  year      = {1991},
+  pages     = {VIII-204 p.}
+}
 \end{verbatim}
+|{Lazar:1991}{Fitoussi:1995}
+\subsubsection{Ouvrage collectif à auteurs multiples}
 
-\begin{bibexample}
-	\fullcite[p.45]{Fitoussi:1995}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\fullcite[Voir aussi][p.45]{Fitoussi:1995}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite[Voir aussi][p.45]{Fitoussi:1995}
-\end{bibexample}
-
-\paragraph{Citation simple (\texttt{\textbackslash cite})}
-
-\subparagraph{Sans pagination}
-
-\begin{verbatim}
-\cite{Fitoussi:1995}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite{Fitoussi:1995}
-\end{bibexample}
-
-\subparagraph{Avec pagination explicite}
-
-\begin{verbatim}
-\cite[p.45]{Fitoussi:1995}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[p.45]{Fitoussi:1995}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\cite[Voir aussi][p.45]{Fitoussi:1995}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[Voir aussi][p.45]{Fitoussi:1995}
-\end{bibexample}
-
-\paragraph{Citation en note de bas de page}
-
-\begin{itemize}
-	\item Sans pagination :
-	      \footciteexamplelocal{Fitoussi:1995}
-
-	\item Avec pagination explicite :
-	      \footciteexamplelocal[][p.45]{Fitoussi:1995}
-
-	\item Avec référence explicite :
-	      \footciteexamplelocal[Voir aussi][p.45]{Fitoussi:1995}
-\end{itemize}
-
-\subsubsection*{Auteurs multiples et \texttt{and others}\footnote{\emph{Lorsque le nombre d'auteurs excède le seuil défini par le style bibliographique, l'utilisation de \texttt{and others} permet d'activer l'abréviation automatique (\emph{et al.}) dans les citations, tout en conservant la liste complète des auteurs dans la bibliographie.}
-	}}
-
-\paragraph{Source bibliographique (Bib\LaTeX)}
-
+\bookexample{\textsc{Nom}, Prénom, \textsc{Nom}, Prénom et al. \textit{Titre de l'ouvrage}. Ville de publication : Éditeur. Année de publication. Nombre de pages.}|
 \begin{verbatim}
 @book{Hermet:2000,
   author    = {Hermet, Guy and Badie, Bertrand
@@ -536,224 +544,42 @@ Cette section teste :
   pages     = {287 p.}
 }
 \end{verbatim}
+|{Hermet:2000}{Fitoussi:1995}
 
-\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+\subsubsection{Livre numérique en langue anglaise avec URL}
 
-\subparagraph{Sans pagination}
-
+\bookexample{\textsc{Nom}, Prénom. \textit{Titre de l'ouvrage}. Ville de publication : Éditeur. Année de publication. Note. Nombre de pages. URL : url [consulté le jour mois année].}|
 \begin{verbatim}
-\fullcite{Hermet:2000}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite{Hermet:2000}
-\end{bibexample}
-
-\subparagraph{Avec pagination explicite}
-
-\begin{verbatim}
-\fullcite[p.45]{Hermet:2000}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite[p.45]{Hermet:2000}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\fullcite[Voir aussi][p.45]{Hermet:2000}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite[Voir aussi][p.45]{Hermet:2000}
-\end{bibexample}
-
-\paragraph{Citation simple (\texttt{\textbackslash cite})}
-
-\subparagraph{Sans pagination}
-
-\begin{verbatim}
-\cite{Hermet:2000}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite{Hermet:2000}
-\end{bibexample}
-
-\subparagraph{Avec pagination explicite}
-
-\begin{verbatim}
-\cite[p.45]{Hermet:2000}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[p.45]{Hermet:2000}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\cite[Voir aussi][p.45]{Hermet:2000}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[Voir aussi][p.45]{Hermet:2000}
-\end{bibexample}
-
-\paragraph{Citation en note de bas de page}
-
-\begin{itemize}
-	\item Sans pagination :
-	      \footciteexamplelocal{Hermet:2000}
-
-	\item Avec pagination explicite :
-	      \footciteexamplelocal[][p.45]{Hermet:2000}
-
-	\item Avec référence explicite :
-	      \footciteexamplelocal[Voir aussi][p.45]{Hermet:2000}
-\end{itemize}
-
-\subsubsection*{Ouvrage en langue étrangère\footnote{\emph{Pour les ouvrages en langue étrangère, la langue du titre n'est pas traduite. Les éléments de description bibliographique (lieu, éditeur, pagination) restent conformes aux normes françaises.}}}
-
-\paragraph{Source bibliographique (Bib\LaTeX)}
-
-\begin{verbatim}
-@book{Lazar:1991,
-  author    = {Lazar, Marc and Waller, Michael and Courtois, Stephane},
-  title     = {Comrades and brothers :
-               communism and trade unions in Europe},
-  publisher = {Cass},
+@book{Pilkington:1998,
+  author    = {Pilkington, Hilary},
+  title     = {Migration, Displacement and Identity in Post-Soviet Russia},
+  publisher = {Taylor \& Francis},
   location  = {London},
-  year      = {1991},
-  pages     = {VIII--204 p.}
+  year      = {1998},
+  pages     = {265 p.},
+  note      = {ProQuest Ebook Central},
+  url       = {https://ebookcentral.proquest.com/lib/sciences-po/detail.action?docID=178630},
+  urldate   = {2023-04-04}
 }
 \end{verbatim}
+|{Pilkington:1998}{Fitoussi:1995}
 
-\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+\subsubsection{Livre en collection/serie}
 
-\subparagraph{Sans pagination}
-
+\bookexample{\textsc{Nom}, Prénom. \textit{Titre de l'ouvrage}. Ville de publication : Éditeur. Année de publication. Nombre de pages. (Collection, numéro)}|
 \begin{verbatim}
-\fullcite{Lazar:1991}
+@book{Vernant:2000,
+  author    = {Vernant, Jean-Pierre},
+  title     = {Entre mythe et politique},
+  publisher = {Seuil},
+  location  = {Paris},
+  year      = {2000},
+  pages     = {658 p.},
+  series    = {Points. Essais},
+  number    = {430}
+}
 \end{verbatim}
-
-\begin{bibexample}
-	\fullcite{Lazar:1991}
-\end{bibexample}
-
-\subparagraph{Avec pagination explicite}
-
-\begin{verbatim}
-\fullcite[p.45]{Lazar:1991}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite[p.45]{Lazar:1991}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\fullcite[Voir aussi][p.45]{Lazar:1991}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite[Voir aussi][p.45]{Lazar:1991}
-\end{bibexample}
-
-\paragraph{Citation simple (\texttt{\textbackslash cite})}
-
-\subparagraph{Sans pagination}
-
-\begin{verbatim}
-\cite{Lazar:1991}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite{Lazar:1991}
-\end{bibexample}
-
-\subparagraph{Avec pagination explicite}
-
-\begin{verbatim}
-\cite[p.45]{Lazar:1991}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[p.45]{Lazar:1991}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\cite[Voir aussi][p.45]{Lazar:1991}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[Voir aussi][p.45]{Lazar:1991}
-\end{bibexample}
-
-\paragraph{Citation en note de bas de page}
-
-\begin{itemize}
-	\item Sans pagination :
-	      \footciteexamplelocal{Lazar:1991}
-
-	\item Avec pagination explicite :
-	      \footciteexamplelocal[][p.45]{Lazar:1991}
-
-	\item Avec référence explicite :
-	      \footciteexamplelocal[Voir aussi][p.45]{Lazar:1991}
-\end{itemize}
-
-\paragraph{Vérification de la génération des locutions latines}
-
-Le présent paragraphe a pour objectif de vérifier le bon fonctionnement de la
-génération automatique des locutions latines par \texttt{biblatex} dans le cas
-des ouvrages. Contrairement aux démonstrations précédentes, les locutions
-(\emph{ibid.}, \emph{op. cit.}, \emph{loc. cit.}) ne sont ici ni neutralisées ni
-contournées. Les citations sont volontairement enchaînées afin de provoquer leur
-apparition et d'en vérifier le comportement effectif.
-
-\begin{refsection}
-
-	Première citation complète d'un ouvrage :
-
-	\fullcite{Boursin:1991}
-
-	Citation consécutive du même ouvrage avec pagination modifiée
-	(attendu : \emph{ibid.}) :
-
-	\cite[p.~45]{Boursin:1991}
-
-	Interruption par la citation d'un autre ouvrage :
-
-	\cite[p.~12]{Fitoussi:1995}
-
-	Retour à l'ouvrage initial avec pagination différente
-	(attendu : \emph{op. cit.}) :
-
-	\cite[p.~52]{Boursin:1991}
-
-	Nouvelle interruption par une autre référence :
-
-	\cite[p.~18]{Fitoussi:1995}
-
-	Retour au même ouvrage et au même passage que précédemment
-	(cas théorique de \emph{loc. cit.}) :
-
-	\cite[p.~52]{Boursin:1991}
-
-\end{refsection}
-
-\medskip
-
-\textit{Remarque méthodologique :} la locution loc. cit. est désactivée par
-défaut dans la majorité des styles \texttt{biblatex}, conformément aux usages
-académiques contemporains. En l'absence d'activation explicite du
-\texttt{loccittracker}, ce dernier appel produira généralement
-op. cit., éventuellement accompagné de la pagination.
+|{Vernant:2000}{Fitoussi:1995}
 
 \subsection{Rapports institutionnels (\texttt{@report})}
 
@@ -2224,14 +2050,14 @@ op. cit., éventuellement accompagné de la pagination.
 
 \subsection{Commande locale}
 \begin{verbatim}
-make pdf
+latexmk -pdf -xelatex main.tex
 \end{verbatim}
-Cette commande enchaîne XeLaTeX et \texttt{biber}, nettoie automatiquement et produit \texttt{build/main.pdf} ainsi que \texttt{main.pdf} à la racine.
+Cette commande enchaîne XeLaTeX et \texttt{biber}, nettoie automatiquement et produit \texttt{build/main.pdf}.
 
 \subsection{Avec Docker/Makefile}
 \begin{verbatim}
-make pdf USE_DOCKER=1   % lance docker compose run latex
-make clean USE_DOCKER=1 % nettoie via latexmk -C
+make pdf        % lance docker compose run latex
+make clean      % nettoie via latexmk -C
 \end{verbatim}
 Le \texttt{docker-compose.yml} monte automatiquement les fichiers de style dans \texttt{\$TEXMFHOME}.
 
