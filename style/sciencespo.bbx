@@ -158,10 +158,11 @@
   \printlist{location}%
   \addcolon\space%
   \printlist{publisher}%
-  \iffieldundef{note}{}{\adddot\space\printfield{note}}%
   \iffieldundef{origyear}
-    {\adddot\space\printfield{year}\adddot}%
-    {\adddot\space\printtext{\mkbibbrackets{\printfield{origyear}}}\space\printfield{year}\adddot}%
+    {\adddot\space\printfield{year}}%
+    {\adddot\space\printtext{\mkbibbrackets{\printfield{origyear}}}\space\printfield{year}}%
+  \iffieldundef{note}{}{\adddot\space\printfield{note}}%
+  \adddot%
   \addspace%
   \printfield{pages}%
   \iffieldundef{series}
