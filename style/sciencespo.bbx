@@ -48,10 +48,18 @@
 \DeclareFieldFormat[incollection]{pages}{#1}
 \DeclareFieldFormat[article]{pages}{#1}
 \DeclareFieldFormat[thesis]{pages}{#1}
+\DeclareFieldFormat[report]{pagetotal}{#1\addspace\bibstring{pages}}
+\DeclareFieldFormat[report]{pages}{%
+  \ifnumeral{#1}
+    {p\adddot\space#1}
+    {\ifnumerals{#1}
+       {pp\adddot\space#1}
+       {p\adddot\space#1}}}
 \DeclareFieldFormat[online]{volume}{#1}
 \DeclareFieldFormat[online]{number}{#1}
 \DeclareFieldFormat[online]{pages}{#1}
 \DeclareFieldFormat[book]{url}{\url{#1}}
+\DeclareFieldFormat[report]{url}{\url{#1}}
 \DeclareFieldFormat[online]{url}{\url{#1}}
 \DeclareFieldFormat[online]{pubdate}{\mkbibdatelong{#1}}
 \DeclareFieldFormat[online]{updatedate}{\mkbibdatelong{#1}}
@@ -302,28 +310,43 @@
 \DeclareBibliographyDriver{report}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \renewcommand*{\newunitpunct}{\adddot\space}%
   % Auteur prioritaire ; sinon acronyme de l'institution ; sinon nom complet
   \ifnameundef{author}
     {\iffieldundef{shortinstitution}
        {\printlist{institution}}
        {\printfield{shortinstitution}}}%
     {\printnames{author}}%
-  \setunit{\addperiod\space}%
+  \setunit{\adddot\space}%
   \printfield{title}%
-  \setunit{\addperiod\space}%
+  \setunit{\adddot\space}%
   \iffieldundef{type}
     {\iffieldundef{number}
        {}%
-       {\printtext{\bibstring{report}\addspace}\printfield{number}}}%
+       {\printtext{\bibstring{report}\addspace\bibstring{number}\addspace\printfield{number}}}}%
     {\printfield{type}%
-     \iffieldundef{number}{}{\addspace\printfield{number}}}%
-  \setunit{\addperiod\space}%
-  \iffieldundef{organization}{\printlist{institution}}{\printlist{organization}}%
-  \addcomma\space%
+     \iffieldundef{number}{}{\addspace\bibstring{number}\addspace\printfield{number}}}%
+  \setunit{\adddot\space}%
+  \iffieldundef{organization}
+    {%
+      \ifboolexpr{
+        test {\ifnameundef{author}}
+        and
+        test {\iffieldundef{shortinstitution}}
+      }
+        {}
+        {\printlist{institution}}%
+    }
+    {\printlist{organization}}%
+  \setunit{\adddot\space}%
   \printfield{year}%
-  \setunit{\space}%
-  \printtext{\mkbibparens{\printfield{series}}}%
+  \iffieldundef{series}{}{\addspace\mkbibparens{\printfield{series}}}%
+  \setunit{\adddot\space}%
+  \printfield{note}%
+  \setunit{\adddot\space}%
+  \iffieldundef{pagetotal}
+    {\printfield{pages}}
+    {\printfield{pagetotal}}%
+  \iffieldundef{url}{}{\newunit\newblock\printonlineaccess}%
   \usebibmacro{finentry}%
 }
 

@@ -24,7 +24,7 @@
       {\DeclareNameAlias{sortname}{default}}
       {\thefield{entrytype}}}
   {\multicitedelim}
-  {\usebibmacro{postnote}\boolfalse{scpo@fullcitepostnote}}
+  {\usebibmacro{scpo:postnote}\boolfalse{scpo@fullcitepostnote}}
 
 \DeclareCiteCommand{\footfullcite}[\mkbibfootnote]
   {\usebibmacro{prenote}}
@@ -36,7 +36,27 @@
       {\DeclareNameAlias{sortname}{default}}
       {\thefield{entrytype}}}
   {\multicitedelim}
-  {\usebibmacro{postnote}\boolfalse{scpo@fullcitepostnote}}
+  {\usebibmacro{scpo:postnote}\boolfalse{scpo@fullcitepostnote}}
+
+% Postnote adapte uniquement dans les flux de citation du style:
+% pour les rapports avec pagination totale, "NN p. p.XX" (sans virgule).
+\newbibmacro*{scpo:postnote}{%
+  \iffieldundef{postnote}
+    {}
+    {%
+      \ifboolexpr{
+        test {\ifentrytype{report}}
+        and not test {\iffieldundef{pagetotal}}
+      }
+        {\setunit{\addspace}}%
+        {\setunit{\printdelim{postnotedelim}}}%
+      \printfield{postnote}}}
+
+% Scope: remplace seulement le segment postnote des commandes cite-like.
+\renewbibmacro*{cite:postnote:ibidpage}{%
+  \iftoggle{cbx:loccit}
+    {}
+    {\usebibmacro{scpo:postnote}}}
 
 % Apply the same postnote handling for verbose-trad1 cite commands.
 \DeclareCiteCommand{\cite}

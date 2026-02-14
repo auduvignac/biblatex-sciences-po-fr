@@ -581,156 +581,130 @@ nature des références appelées.
 \end{verbatim}
 |{Vernant:2000}{Fitoussi:1995}
 
-\subsection{Rapports institutionnels (\texttt{@report})}
 
+\subsection{Rapports (\texttt{@report})}
+
+\subsubsection{Structure générale}
+
+\textsc{Nom}, Prénom. \textit{Titre de l'ouvrage}. Rapport n° Numéro du rapport. Institution. Année de publication. Nombre de pages.
+
+\subsubsection{Modèle générique}
+
+\begin{verbatim}
+@report{CleUnique:YYYY,
+  author      = {Nom, Prénom},
+  title       = {Titre du rapport},
+  subtitle    = {Sous-titre (facultatif)},
+  type        = {Libellé de type (facultatif ; ex. Working Paper, Annual Report)},
+  number      = {Numéro du rapport},
+  institution = {Nom de l'institution / organisme éditeur},
+  shortinstitution = {Nom de l'institution / organisme éditeur abrégé},
+  sortkey     = {Nom de l'institution / organisme éditeur pour le tri},
+  year        = {YYYY},
+  pagetotal   = {xxx},
+  series      = {Nom de la série (facultatif)},
+  url         = {https://... (facultatif)},
+  urldate     = {YYYY-MM-DD (facultatif)},
+  language    = {french}, % ou english (facultatif)
+  shorttitle  = {Titre court (facultatif, recommandé)}
+}
+\end{verbatim}
+
+\emph{Règle de rendu : si \texttt{type} est absent et \texttt{number} est renseigné, le style produit automatiquement \og Rapport n\textsuperscript{o} ...\fg{}. Utilisez \texttt{type} uniquement pour des libellés alternatifs (ex. \texttt{Working Paper}, \texttt{Annual Report}) et sans y inclure \og Rapport\fg{} ni \og n\textsuperscript{o}\fg{}, afin d'éviter les redondances.}
+\emph{Pour \texttt{@report}, utilisez \texttt{pagetotal} pour le nombre total de pages (ex. \texttt{pagetotal = \{134\}}). Réservez \texttt{pages} aux intervalles de pages pour les types qui l'emploient ainsi (articles, chapitres).}
+
+\subsubsection{Rapport statistique institutionnel (sans auteur)}
+
+\emph{Rapports ou séries statistiques produits par un organisme public, sans auteur nominatif, utilisés comme données de référence.}
 \emph{Les rapports institutionnels relèvent du type \texttt{@report}. Ils se distinguent des ouvrages par la prééminence de l'institution productrice sur l'auteur individuel, ainsi que par la présence fréquente d'un type, d'un numéro et d'une série.}
 
 \emph{Dans le cas des rapports institutionnels, l'institution fait office d'auteur principal. L'utilisation des champs \texttt{shortinstitution} et \texttt{sortkey} permet d'assurer une forme de citation abrégée cohérente et un classement alphabétique stable dans la bibliographie.}
 
+\emph{Lorsque le champ \texttt{shortinstitution} est utilisé seul, la casse doit être strictement conservée afin de respecter la dénomination officielle de l'organisme.
+Dans l'exemple proposé, \texttt{shortinstitution} remplace l'auteur institutionnel et permet de maintenir le formalisme correct ; l'institut doit ainsi être écrit Insee (et non INSEE).
+}
 
-Structure : Institution/AUTEUR. Titre. Type/numéro. Institution ou organisation, année (série).
-
-\paragraph{Source bibliographique (Bib\LaTeX)}
-
+\bookexample{Institution (ou Institution abrégée). \textit{Titre du rapport}. Type de document. Numéro. Institution éditrice. Année de publication. (Série). Nombre de pages.}|
 \begin{verbatim}
 @report{Insee:2020,
   shortinstitution = {Insee},
   sortkey          = {Insee},
-  title            = {Démographie - Population au début du mois - France
-                      (inclus Mayotte à partir de 2014)},
-  type             = {Rapport},
+  title            = {Démographie - Population au début du mois - France (inclus Mayotte à partir de 2014)},
   number           = {001641607},
-  institution      = {Institut National de la Statistique et des études économiques},
+  institution      = {Institut national de la statistique et des études économiques},
   year             = {2020},
-  series           = {Séries chronologiques}
+  series           = {Séries chronologiques},
+  pagetotal        = {150}
 }
 \end{verbatim}
+|{Insee:2020}{Fitoussi:1995}
 
-\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+\subsubsection{Rapport statistique institutionnel (sans auteur et sans institution abrégée)}
 
-\subparagraph{Sans pagination}
+\emph{Dans le cas de figure où il n'existe pas de dénomination officielle abrégée pour l'institution éditrice, \texttt{shortinstitution} prendra la même chaîne de caractère que celle placée dans \texttt{institution}.
+Dans l'exemple proposé, le numéro du rapport n'est pas mentionné.}
 
+\bookexample{Institution. \textit{Titre du rapport}. Type de document. Numéro. Année de publication. (Série). Nombre de pages.}|
 \begin{verbatim}
-\fullcite{Insee:2020}
+@report{UNEP:2024:AdaptationGap,
+  shortinstitution = {United Nations Environment Programme},
+  sortkey          = {United Nations Environment Programme},
+  title       = {Adaptation Gap Report 2024},
+  institution = {United Nations Environment Programme},
+  year        = {2024},
+  pagetotal   = {116}
+}
 \end{verbatim}
+|{UNEP:2024:AdaptationGap}{Fitoussi:1995}
 
-\begin{bibexample}
-	\fullcite{Insee:2020}
-\end{bibexample}
+\subsubsection{Rapport institutionnel de politique publique (sans auteur nominatif, avec pagination)}
 
-\subparagraph{Avec pagination explicite}
+\emph{Rapports officiels produits par une institution nationale ou supranationale (UE, ministères, agences), rendant compte d'une activité ou d'une politique.}
 
+\bookexample{Institution. \textit{Titre du rapport}. Rapport n° Numéro du rapport. Institution éditrice. Année de publication. Nombre de pages.}|
 \begin{verbatim}
-\fullcite[p.~12]{Insee:2020}
+@report{EC:2022:AAR,
+  shortinstitution = {European Commission},
+  sortkey          = {European Commission},
+  title       = {2021 Annual Activity Report},
+  institution = {European External Action Service -- European Union},
+  number      = {(2022) 5064306},
+  year        = {2022},
+  pagetotal   = {134}
+}
 \end{verbatim}
+|{EC:2022:AAR}{Insee:2020}
 
-\begin{bibexample}
-	\fullcite[p.~12]{Insee:2020}
-\end{bibexample}
+\subsubsection{Rapport de recherche ou working paper (avec auteur, URL et date de consultation)}
 
-\subparagraph{Avec référence explicite}
+\emph{Rapports académiques, working papers, documents de recherche diffusés par des instituts, universités ou think tanks.}
 
+\bookexample{\textsc{Nom}, Prénom. \textit{Titre du rapport : Sous-titre}. Rapport n°\,Numéro du rapport. Institution éditrice. Année de publication. URL : \url{...} [consulté le jour mois année].}|
 \begin{verbatim}
-\fullcite[Voir aussi][p.~12]{Insee:2020}
+@report{Claeys:2005:PolicyMix,
+  author      = {Claeys, Peter},
+  title       = {Policy Mix and Debt Sustainability : Evidence from Fiscal Policy Rules},
+  institution = {CESifo Group Munich},
+  number      = {1406},
+  year        = {2005},
+  url         = {https://ideas.repec.org/p/ces/ceswps/_1406.html},
+  urldate     = {2017-01-24}
+}
 \end{verbatim}
+|{Claeys:2005:PolicyMix}{Insee:2020}
 
-\begin{bibexample}
-	\fullcite[Voir aussi][p.~12]{Insee:2020}
-\end{bibexample}
+\subsubsection{Exemple de compatibilité avec \texttt{pages}}
 
-\paragraph{Citation simple (\texttt{\textbackslash cite})}
-
-\subparagraph{Sans pagination}
-
+\bookexample{Institution. \textit{Titre du rapport}. Année de publication. pp. xx-yy.}|
 \begin{verbatim}
-\cite{Insee:2020}
+@report{Legacy:Report:Example,
+  title       = {Legacy Report Example},
+  institution = {Example Institution},
+  year        = {2021},
+  pages       = {37-87}
+}
 \end{verbatim}
-
-\begin{bibexample}
-	\cite{Insee:2020}
-\end{bibexample}
-
-\subparagraph{Avec pagination explicite}
-
-\begin{verbatim}
-\cite[p.~12]{Insee:2020}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[p.~12]{Insee:2020}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\cite[Voir aussi][p.~12]{Insee:2020}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[Voir aussi][p.~12]{Insee:2020}
-\end{bibexample}
-
-\paragraph{Citation en note de bas de page}
-
-\begin{itemize}
-	\item Sans pagination :
-	      \footciteexamplelocal{Insee:2020}
-
-	\item Avec pagination explicite :
-	      \footciteexamplelocal[][p.~12]{Insee:2020}
-
-	\item Avec référence explicite :
-	      \footciteexamplelocal[Voir aussi][p.~12]{Insee:2020}
-\end{itemize}
-
-\paragraph{Vérification de la génération des locutions latines pour les rapports institutionnels}
-
-Le présent paragraphe a pour objectif de vérifier le bon fonctionnement de la
-génération automatique des locutions latines par \texttt{biblatex} dans le cas
-des rapports institutionnels. Contrairement aux démonstrations précédentes, les
-locutions (ibid., op. cit., loc. cit.) ne sont ici ni
-neutralisées ni contournées. Les citations sont volontairement enchaînées afin
-de provoquer leur apparition et d'en vérifier le comportement effectif.
-
-\begin{refsection}
-
-	Première citation complète d'un rapport institutionnel :
-
-	\fullcite{Insee:2020}
-
-	Citation consécutive du même rapport avec pagination modifiée
-	(attendu : ibid.) :
-
-	\cite[p.~12]{Insee:2020}
-
-	Interruption par la citation d'un autre rapport institutionnel
-	(ou, à défaut, d'un ouvrage) :
-
-	\cite[p.~45]{Fitoussi:1995}
-
-	Retour au rapport initial après interruption
-	(attendu : op. cit.) :
-
-	\cite[p.~18]{Insee:2020}
-
-	Nouvelle interruption par une autre référence :
-
-	\cite[p.~52]{Fitoussi:1995}
-
-	Retour au même rapport et au même passage que précédemment
-	(cas théorique de loc. cit.) :
-
-	\cite[p.~18]{Insee:2020}
-
-\end{refsection}
-
-\medskip
-
-\textit{Remarque méthodologique :} comme pour les ouvrages, la locution
-loc. cit. est désactivée par défaut dans la majorité des styles
-\texttt{biblatex}. En l'absence d'activation explicite du
-\texttt{loccittracker}, le dernier appel produira généralement
-op. cit., éventuellement accompagné de la pagination.
+|{Legacy:Report:Example}{Insee:2020}
 
 \subsection{Chapitres d'ouvrage collectif (\texttt{@incollection})}
 
