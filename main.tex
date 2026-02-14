@@ -298,7 +298,7 @@ Le \texttt{.cbx} repose sur \texttt{verbose-trad1} : répétition immédiate $\r
 		Tous     & \texttt{shorttitle}                                     & Affiché avant op. cit. pour distinguer deux titres du même auteur.                                           \\
 		Rapport  & \texttt{shortinstitution}                               & Acronyme prioritaire lorsque l'auteur est absent.                                                            \\
 		Article  & \texttt{monthtext}                                      & Mois/saison libre (ex. \texttt{fév.-avr. 2001}) en lieu et place de \texttt{month+year}.                     \\
-		Chapitre & \texttt{editortype}                                     & Mention \og dir.\fg{} après le nom de l'éditeur scientifique.                                                \\
+		Chapitre & \texttt{editortype}                                     & Rôle de l'éditeur scientifique via clé localisable (ex. \texttt{director} \(\rightarrow\) \og dir.\fg{}). \\
 		Thèse    & \texttt{discipline}                                     & Discipline affichée après le type de thèse.                                                                  \\
 		Film     & \texttt{medium}, \texttt{extent}                        & Support et durée : \og [cassette vidéo]\fg{}, \og 1 cass. vidéo VHS, 52 min.\fg{}                            \\
 		En ligne & \texttt{platform}                                       & Plateforme (Statista, YouTube...) lorsque \texttt{journaltitle} n'est pas présent.                           \\
@@ -722,7 +722,7 @@ Structure : \textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom \texts
   author     = {Nom, Prénom},
   title      = {Titre du chapitre},
   editor     = {Nom, Prénom},
-  editortype = {dir.},
+  editortype = {director},
   booktitle  = {Titre de l'ouvrage collectif},
   publisher  = {Éditeur},
   location   = {Lieu},
@@ -739,7 +739,7 @@ Structure : \textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom \texts
   author     = {Hassenteufel, Patrick},
   title      = {Les automnes infirmiers (1988-1992) : dynamiques d'une mobilisation},
   editor     = {Fillieule, Olivier},
-  editortype = {dir.},
+  editortype = {director},
   booktitle  = {Sociologie de la protestation},
   publisher  = {l'Harmattan},
   location   = {Paris},
@@ -757,7 +757,7 @@ Structure : \textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom \texts
   author     = {Blancheton, Bertrand},
   title      = {Chapitre IV - Les spécificités françaises dans les crises des années 1970 et du seuil des années 1980},
   editor     = {Bonin, Hubert and Blancheton, Bertrand},
-  editortype = {dir.},
+  editortype = {director},
   booktitle  = {Crises et batailles boursières en France aux XXe et XXIe siècles},
   publisher  = {Droz},
   location   = {Genève},
@@ -776,7 +776,7 @@ Structure : \textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom \texts
   author     = {Blancheton, Bertrand},
   title      = {Chapitre IV - Les spécificités françaises dans les crises des années 1970 et du seuil des années 1980},
   editor     = {Bonin, Hubert and Blancheton, Bertrand},
-  editortype = {dir.},
+  editortype = {director},
   booktitle  = {Crises et batailles boursières en France aux XXe et XXIe siècles},
   publisher  = {Droz},
   location   = {Genève},

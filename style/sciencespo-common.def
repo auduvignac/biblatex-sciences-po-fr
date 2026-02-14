@@ -11,11 +11,13 @@
 
 % Libelles francais pour les sorties par defaut.
 \NewBibliographyString{report}
+\NewBibliographyString{director}
 \DefineBibliographyStrings{french}{%
   ibidem = {Ibid\adddot},
   opcit  = {Op\adddotspace cit\adddot},
   loccit = {Loc\adddotspace cit\adddot},
   report = {Rapport},
+  director = {dir\adddot},
   bytranslator = {Traduit par},
   url = {URL},
 }

@@ -58,6 +58,10 @@
 \DeclareFieldFormat[online]{volume}{#1}
 \DeclareFieldFormat[online]{number}{#1}
 \DeclareFieldFormat[online]{pages}{#1}
+\DeclareFieldFormat[incollection]{editortype}{%
+  \ifbibstring{#1}
+    {\bibstring{#1}}
+    {#1}}
 \DeclareFieldFormat[incollection]{url}{\url{#1}}
 \DeclareFieldFormat[book]{url}{\url{#1}}
 \DeclareFieldFormat[report]{url}{\url{#1}}
@@ -204,8 +208,8 @@
   \adddot%
   \addspace%
   \iffieldpages{pages}
-    {\printtext{pp.\addspace}}
-    {\printtext{p.\addspace}}%
+    {\printtext{\bibstring{pages}\addspace}}
+    {\printtext{\bibstring{page}\addspace}}%
   \printfield{pages}%
   \iffieldundef{series}
     {}
