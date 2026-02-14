@@ -58,6 +58,19 @@
     {}
     {\usebibmacro{scpo:postnote}}}
 
+% Keep chapter titles visible in loc. cit. output for clarity.
+\renewbibmacro*{cite:loccit}{%
+  \ifentrytype{incollection}
+    {%
+      \printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}%
+      \setunit{\addcomma\space}%
+    }
+    {}%
+  \printtext{%
+    \bibhyperlink{cite\csuse{cbx@lastcite@\thefield{entrykey}}}{%
+      \bibstring[\mkibid]{loccit}}}%
+  \global\toggletrue{cbx:loccit}}
+
 % Apply the same postnote handling for verbose-trad1 cite commands.
 \DeclareCiteCommand{\cite}
   {\usebibmacro{prenote}}

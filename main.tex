@@ -548,7 +548,7 @@ nature des références appelées.
 
 \subsubsection{Livre numérique en langue anglaise avec URL}
 
-\bookexample{\textsc{Nom}, Prénom. \textit{Titre de l'ouvrage}. Ville de publication : Éditeur. Année de publication. Note. Nombre de pages. URL : url [consulté le jour mois année].}|
+\bookexample{\textsc{Nom}, Prénom. \textit{Titre de l'ouvrage}. Ville de publication : Éditeur. Année de publication. Note. Nombre de pages. URL : \url{...} [consulté le jour mois année].}|
 \begin{verbatim}
 @book{Pilkington:1998,
   author    = {Pilkington, Hilary},
@@ -713,9 +713,7 @@ Dans l'exemple proposé, le numéro du rapport n'est pas mentionné.}
 	\texttt{@incollection} et se distinguent des livres par la présence d'un titre
 	de chapitre et d'un directeur scientifique.}
 
-\textbf{À tester (chapitres)} : vérifier la présence de \og In\fg{}, de l'éditeur scientifique suivi de \texttt{editortype} (\og dir.\fg{}), puis la pagination précédée de \og p.\fg{}
-
-Structure : NOM, Prénom. Titre du chapitre In NOM, Prénom dir. Titre de l'ouvrage collectif. Lieu : éditeur, année. p. xx-yy.
+Structure : \textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom NOM (dir.). \textit{Titre de l'ouvrage collectif}. Lieu de publication : Editeur, Année. p. xx-yy. (Collection)
 
 \paragraph{Modèle générique}
 
@@ -733,8 +731,9 @@ Structure : NOM, Prénom. Titre du chapitre In NOM, Prénom dir. Titre de l'ouvr
 }
 \end{verbatim}
 
-\paragraph{Source bibliographique (Bib\LaTeX)}
+\subsubsection{Chapitre d'ouvrage collectif sans collection}
 
+\bookexample{\textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom NOM (dir.). \textit{Titre de l'ouvrage collectif}. Lieu de publication : Editeur, Année. p. xx-yy. (Collection)}|
 \begin{verbatim}
 @incollection{Hassenteufel:1993,
   author     = {Hassenteufel, Patrick},
@@ -748,129 +747,46 @@ Structure : NOM, Prénom. Titre du chapitre In NOM, Prénom dir. Titre de l'ouvr
   pages      = {93-120}
 }
 \end{verbatim}
+|{Hassenteufel:1993}{Fitoussi:1995}
 
-\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+\subsubsection{Chapitre d'ouvrage collectif avec collection}
 
-\subparagraph{Sans pagination explicite}
-
+\bookexample{\textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom NOM (dir.). \textit{Titre de l'ouvrage collectif}. Lieu de publication : Editeur, Année. p. xx-yy. (Collection)}|
 \begin{verbatim}
-\fullcite{Hassenteufel:1993}
+@incollection{Blancheton:2017:Crises,
+  author     = {Blancheton, Bertrand},
+  title      = {Chapitre IV - Les spécificités françaises dans les crises des années ...},
+  editor     = {Bonin, Hubert and Blancheton, Bertrand},
+  editortype = {dir.},
+  booktitle  = {Crises et batailles boursières en France aux XXe et XXIe siècles},
+  publisher  = {Droz},
+  location   = {Genève},
+  year       = {2017},
+  pages      = {103-110},
+  series     = {Publications d'histoire économique et sociale internationale}
+}
 \end{verbatim}
+|{Blancheton:2017:Crises}{Fitoussi:1995}
 
-\begin{bibexample}
-	\fullcite{Hassenteufel:1993}
-\end{bibexample}
+\subsubsection{Chapitre d'ouvrage collectif sans collection, version en ligne}
 
-\subparagraph{Avec pagination explicite}
-
+\bookexample{\textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom NOM (dir.). \textit{Titre de l'ouvrage collectif}. Lieu de publication : Editeur, Année. pp. xx-yy. URL : \url{...} [consulté le jour mois année].}|
 \begin{verbatim}
-\fullcite[p.~95]{Hassenteufel:1993}
+@incollection{Blancheton:2017:Crises:Online,
+  author     = {Blancheton, Bertrand},
+  title      = {Chapitre IV - Les spécificités françaises dans les crises des années ...},
+  editor     = {Bonin, Hubert and Blancheton, Bertrand},
+  editortype = {dir.},
+  booktitle  = {Crises et batailles boursières en France aux XXe et XXIe siècles},
+  publisher  = {Droz},
+  location   = {Genève},
+  year       = {2017},
+  pages      = {103-110},
+  url        = {https://www.cairn.info/crises-et-batailles-boursieres-en-france--9782600057882-p-103.html},
+  urldate    = {2018-11-06}
+}
 \end{verbatim}
-
-\begin{bibexample}
-	\fullcite[p.~95]{Hassenteufel:1993}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\fullcite[Voir aussi][p.~95]{Hassenteufel:1993}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite[Voir aussi][p.~95]{Hassenteufel:1993}
-\end{bibexample}
-
-\paragraph{Citation simple (\texttt{\textbackslash cite})}
-
-\subparagraph{Sans pagination}
-
-\begin{verbatim}
-\cite{Hassenteufel:1993}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite{Hassenteufel:1993}
-\end{bibexample}
-
-\subparagraph{Avec pagination explicite}
-
-\begin{verbatim}
-\cite[p.~95]{Hassenteufel:1993}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[p.~95]{Hassenteufel:1993}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\cite[Voir aussi][p.~95]{Hassenteufel:1993}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[Voir aussi][p.~95]{Hassenteufel:1993}
-\end{bibexample}
-
-\paragraph{Citation en note de bas de page}
-
-\begin{itemize}
-	\item Sans pagination :
-	      \footciteexamplelocal{Hassenteufel:1993}
-
-	\item Avec pagination explicite :
-	      \footciteexamplelocal[][p.~95]{Hassenteufel:1993}
-
-	\item Avec référence explicite :
-	      \footciteexamplelocal[Voir aussi][p.~95]{Hassenteufel:1993}
-\end{itemize}
-
-\paragraph{Vérification de la génération des locutions latines pour les chapitres d'ouvrage}
-
-Le présent paragraphe vise à vérifier le bon fonctionnement de la génération
-automatique des locutions latines par \texttt{biblatex} dans le cas des chapitres
-d'ouvrage collectif. Les citations sont volontairement enchaînées afin de
-provoquer l'apparition de ibid., op. cit. et, le cas échéant, loc. cit.
-
-\begin{refsection}
-
-	Première citation complète d'un chapitre :
-
-	\fullcite{Hassenteufel:1993}
-
-	Citation consécutive du même chapitre avec pagination modifiée
-	(attendu : ibid.) :
-
-	\cite[p.~95]{Hassenteufel:1993}
-
-	Interruption par la citation d'un autre ouvrage ou chapitre :
-
-	\cite[p.~45]{Fitoussi:1995}
-
-	Retour au chapitre initial après interruption
-	(attendu : op. cit.) :
-
-	\cite[p.~97]{Hassenteufel:1993}
-
-	Nouvelle interruption par une autre référence :
-
-	\cite[p.~52]{Fitoussi:1995}
-
-	Retour au même chapitre et au même passage que précédemment
-	(cas théorique de loc. cit.) :
-
-	\cite[p.~97]{Hassenteufel:1993}
-
-\end{refsection}
-
-\medskip
-
-\textit{Remarque méthodologique :} comme pour les ouvrages et les rapports
-institutionnels, la locution loc. cit. est désactivée par défaut dans la
-plupart des styles \texttt{biblatex}. En l'absence d'activation explicite du
-\texttt{loccittracker}, le dernier appel produira généralement
-op. cit., éventuellement accompagné de la pagination.
+|{Blancheton:2017:Crises:Online}{Fitoussi:1995}
 
 \subsection{Articles de revue (\texttt{@article})}
 
