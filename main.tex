@@ -595,7 +595,7 @@ nature des références appelées.
   author      = {Nom, Prénom},
   title       = {Titre du rapport},
   subtitle    = {Sous-titre (facultatif)},
-  type        = {Rapport | Working Paper | Annual Report (facultatif, valeurs contrôlées)},
+  type        = {Libellé de type (facultatif ; ex. Working Paper, Annual Report)},
   number      = {Numéro du rapport},
   institution = {Nom de l'institution / organisme éditeur},
   shortinstitution = {Nom de l'institution / organisme éditeur abrégé},
@@ -610,7 +610,7 @@ nature des références appelées.
 }
 \end{verbatim}
 
-\emph{Pour garantir un rendu homogène, limitez \texttt{type} à un jeu contrôlé de libellés (\texttt{Rapport}, \texttt{Working Paper}, \texttt{Annual Report}) et évitez les variantes libres (orthographe, casse, langue).}
+\emph{Règle de rendu : si \texttt{type} est absent et \texttt{number} est renseigné, le style produit automatiquement \og Rapport n\textsuperscript{o} ...\fg{}. Utilisez \texttt{type} uniquement pour des libellés alternatifs (ex. \texttt{Working Paper}, \texttt{Annual Report}) et sans y inclure \og Rapport\fg{} ni \og n\textsuperscript{o}\fg{}, afin d'éviter les redondances.}
 \emph{Pour \texttt{@report}, utilisez \texttt{pagetotal} pour le nombre total de pages (ex. \texttt{pagetotal = \{134\}}). Réservez \texttt{pages} aux intervalles de pages pour les types qui l'emploient ainsi (articles, chapitres).}
 
 \subsubsection{Rapport statistique institutionnel (sans auteur)}
@@ -630,7 +630,6 @@ Dans l'exemple proposé, \texttt{shortinstitution} remplace l'auteur institution
   shortinstitution = {Insee},
   sortkey          = {Insee},
   title            = {Démographie - Population au début du mois - France (inclus Mayotte à partir de 2014)},
-  type             = {Rapport},
   number           = {001641607},
   institution      = {Institut National de la Statistique et des études économiques},
   year             = {2020},
