@@ -62,8 +62,12 @@
 \renewbibmacro*{cite:loccit}{%
   \ifentrytype{incollection}
     {%
-      \printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}%
-      \setunit{\addcomma\space}%
+      \iffieldundef{labeltitle}
+        {}
+        {%
+          \printtext[bibhyperlink]{\printfield[citetitle]{labeltitle}}%
+          \setunit{\addcomma\space}%
+        }%
     }
     {}%
   \printtext{%
