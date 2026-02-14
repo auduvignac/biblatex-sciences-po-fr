@@ -48,7 +48,13 @@
 \DeclareFieldFormat[incollection]{pages}{#1}
 \DeclareFieldFormat[article]{pages}{#1}
 \DeclareFieldFormat[thesis]{pages}{#1}
-\DeclareFieldFormat[report]{pages}{#1\addspace\bibstring{pages}}
+\DeclareFieldFormat[report]{pagetotal}{#1\addspace\bibstring{pages}}
+\DeclareFieldFormat[report]{pages}{%
+  \ifnumeral{#1}
+    {p\adddot\space#1}
+    {\ifnumerals{#1}
+       {pp\adddot\space#1}
+       {p\adddot\space#1}}}
 \DeclareFieldFormat[online]{volume}{#1}
 \DeclareFieldFormat[online]{number}{#1}
 \DeclareFieldFormat[online]{pages}{#1}
@@ -337,7 +343,9 @@
   \setunit{\adddot\space}%
   \printfield{note}%
   \setunit{\adddot\space}%
-  \printfield{pages}%
+  \iffieldundef{pagetotal}
+    {\printfield{pages}}
+    {\printfield{pagetotal}}%
   \iffieldundef{url}{}{\newunit\newblock\printonlineaccess}%
   \usebibmacro{finentry}%
 }

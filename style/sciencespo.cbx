@@ -39,15 +39,14 @@
   {\usebibmacro{scpo:postnote}\boolfalse{scpo@fullcitepostnote}}
 
 % Postnote adapte uniquement dans les flux de citation du style:
-% pour les rapports avec pages, "NN p. p.XX" (sans virgule).
+% pour les rapports avec pagination totale, "NN p. p.XX" (sans virgule).
 \newbibmacro*{scpo:postnote}{%
   \iffieldundef{postnote}
     {}
     {%
       \ifboolexpr{
         test {\ifentrytype{report}}
-        and
-        not test {\iffieldundef{pages}}
+        and not test {\iffieldundef{pagetotal}}
       }
         {\setunit{\addspace}}%
         {\setunit{\printdelim{postnotedelim}}}%
