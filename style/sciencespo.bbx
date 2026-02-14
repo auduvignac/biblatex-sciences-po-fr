@@ -320,7 +320,17 @@
     {\printfield{type}%
      \iffieldundef{number}{}{\addspace\bibstring{number}\addspace\printfield{number}}}%
   \setunit{\adddot\space}%
-  \iffieldundef{organization}{\printlist{institution}}{\printlist{organization}}%
+  \iffieldundef{organization}
+    {%
+      \ifboolexpr{
+        test {\ifnameundef{author}}
+        and
+        test {\iffieldundef{shortinstitution}}
+      }
+        {}
+        {\printlist{institution}}%
+    }
+    {\printlist{organization}}%
   \setunit{\adddot\space}%
   \printfield{year}%
   \iffieldundef{series}{}{\addspace\mkbibparens{\printfield{series}}}%

@@ -623,7 +623,7 @@ nature des références appelées.
 Dans l'exemple proposé, \texttt{shortinstitution} remplace l'auteur institutionnel et permet de maintenir le formalisme correct ; l'institut doit ainsi être écrit Insee (et non INSEE).
 }
 
-\bookexample{\textsc{Institution} (ou Institution abrégée). \textit{Titre du rapport}. Type de document. Numéro. Institution éditrice. Année de publication. (Série). Nombre de pages.}|
+\bookexample{Institution (ou Institution abrégée). \textit{Titre du rapport}. Type de document. Numéro. Institution éditrice. Année de publication. (Série). Nombre de pages.}|
 \begin{verbatim}
 @report{Insee:2020,
   shortinstitution = {Insee},
@@ -639,14 +639,29 @@ Dans l'exemple proposé, \texttt{shortinstitution} remplace l'auteur institution
 \end{verbatim}
 |{Insee:2020}{Fitoussi:1995}
 
-\subsubsection{Rapport institutionnel de politique publique (avec auteur institutionnel et pagination)}
+\subsubsection{Rapport statistique institutionnel (sans auteur et sans institution abrégée)}
+
+\emph{Dans le cas de figure où il n'existe pas de dénomination officielle abrégée pour l'institution éditrice, \texttt{shortinstitution} prendra la même chaîne de caractère que celle placée dans \texttt{institution}.
+Dans l'exemple proposé, le numéro du rapport n'est pas mentionné.}
+
+\bookexample{Institution. \textit{Titre du rapport}. Type de document. Numéro. Année de publication. (Série). Nombre de pages.}|
+\begin{verbatim}
+@report{UNEP:2024:AdaptationGap,
+  title       = {Adaptation Gap Report 2024},
+  institution = {United Nations Environment Programme},
+  year        = {2024},
+  pages       = {116}
+}
+\end{verbatim}
+|{UNEP:2024:AdaptationGap}{Fitoussi:1995}
+
+\subsubsection{Rapport institutionnel de politique publique (sans auteur nominatif, avec pagination)}
 
 \emph{Rapports officiels produits par une institution nationale ou supranationale (UE, ministères, agences), rendant compte d'une activité ou d'une politique.}
 
-\bookexample{\textsc{Institution}. \textit{Titre du rapport}. Rapport n° Numéro Numéro du rapport. Institution éditrice. Année de publication. Nombre de pages.}|
+\bookexample{Institution. \textit{Titre du rapport}. Rapport n° Numéro Numéro du rapport. Institution éditrice. Année de publication. Nombre de pages.}|
 \begin{verbatim}
 @report{EC:2022:AAR,
-  author      = {{European Commission}},
   shortinstitution = {European Commission},
   sortkey          = {European Commission},
   title       = {2021 Annual Activity Report},
