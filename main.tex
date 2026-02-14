@@ -713,7 +713,7 @@ Dans l'exemple proposé, le numéro du rapport n'est pas mentionné.}
 	\texttt{@incollection} et se distinguent des livres par la présence d'un titre
 	de chapitre et d'un directeur scientifique.}
 
-Structure : \textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom NOM (dir.). \textit{Titre de l'ouvrage collectif}. Lieu de publication : Editeur, Année. p. xx-yy. (Collection)
+Structure : \textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom \textsc{Nom} (dir.). \textit{Titre de l'ouvrage collectif}. Lieu de publication : Éditeur. Année. pp. xx-yy. (Collection)
 
 \paragraph{Modèle générique}
 
@@ -733,7 +733,7 @@ Structure : \textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom NOM (d
 
 \subsubsection{Chapitre d'ouvrage collectif sans collection}
 
-\bookexample{\textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom NOM (dir.). \textit{Titre de l'ouvrage collectif}. Lieu de publication : Editeur, Année. p. xx-yy. (Collection)}|
+\bookexample{\textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom NOM (dir.). \textit{Titre de l'ouvrage collectif}. Lieu de publication : Éditeur. Année. pp. xx-yy.}|
 \begin{verbatim}
 @incollection{Hassenteufel:1993,
   author     = {Hassenteufel, Patrick},
@@ -751,11 +751,11 @@ Structure : \textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom NOM (d
 
 \subsubsection{Chapitre d'ouvrage collectif avec collection}
 
-\bookexample{\textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom NOM (dir.). \textit{Titre de l'ouvrage collectif}. Lieu de publication : Editeur, Année. p. xx-yy. (Collection)}|
+\bookexample{\textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom NOM (dir.). \textit{Titre de l'ouvrage collectif}. Lieu de publication : Éditeur. Année. pp. xx-yy. (Collection)}|
 \begin{verbatim}
 @incollection{Blancheton:2017:Crises,
   author     = {Blancheton, Bertrand},
-  title      = {Chapitre IV - Les spécificités françaises dans les crises des années ...},
+  title      = {Chapitre IV - Les spécificités françaises dans les crises des années 1970 et du seuil des années 1980},
   editor     = {Bonin, Hubert and Blancheton, Bertrand},
   editortype = {dir.},
   booktitle  = {Crises et batailles boursières en France aux XXe et XXIe siècles},
@@ -770,11 +770,11 @@ Structure : \textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom NOM (d
 
 \subsubsection{Chapitre d'ouvrage collectif sans collection, version en ligne}
 
-\bookexample{\textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom NOM (dir.). \textit{Titre de l'ouvrage collectif}. Lieu de publication : Editeur, Année. pp. xx-yy. URL : \url{...} [consulté le jour mois année].}|
+\bookexample{\textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom \textsc{Nom} (dir.). \textit{Titre de l'ouvrage collectif}. Lieu de publication : Éditeur. Année. pp. xx-yy. URL : \url{...} [consulté le jour mois année].}|
 \begin{verbatim}
 @incollection{Blancheton:2017:Crises:Online,
   author     = {Blancheton, Bertrand},
-  title      = {Chapitre IV - Les spécificités françaises dans les crises des années ...},
+  title      = {Chapitre IV - Les spécificités françaises dans les crises des années 1970 et du seuil des années 1980},
   editor     = {Bonin, Hubert and Blancheton, Bertrand},
   editortype = {dir.},
   booktitle  = {Crises et batailles boursières en France aux XXe et XXIe siècles},
