@@ -46,7 +46,12 @@
     {%
       \ifboolexpr{
         test {\ifentrytype{report}}
-        and not test {\iffieldundef{pagetotal}}
+        and
+        (
+          not test {\iffieldundef{pagetotal}}
+          or
+          not test {\iffieldundef{pages}}
+        )
       }
         {\setunit{\addspace}}%
         {\setunit{\printdelim{postnotedelim}}}%
