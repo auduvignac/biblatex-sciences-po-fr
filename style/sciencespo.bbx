@@ -58,6 +58,11 @@
 \DeclareFieldFormat[online]{volume}{#1}
 \DeclareFieldFormat[online]{number}{#1}
 \DeclareFieldFormat[online]{pages}{#1}
+\DeclareFieldFormat[incollection]{editortype}{%
+  \ifbibstring{#1}
+    {\bibstring{#1}}
+    {#1}}
+\DeclareFieldFormat[incollection]{url}{\url{#1}}
 \DeclareFieldFormat[book]{url}{\url{#1}}
 \DeclareFieldFormat[report]{url}{\url{#1}}
 \DeclareFieldFormat[online]{url}{\url{#1}}
@@ -190,7 +195,7 @@
   \printfield{title}%
   {\renewcommand*{\newunitpunct}{\addspace}\newunit}%
   \bibstring{in}\space%
-  \printnames{editor}%
+  \printnames[given-family]{editor}%
   \iffieldundef{editortype}{}{\addspace\mkbibparens{\printfield{editortype}}}%
   \setunit{\addperiod\space}%
   \printfield{booktitle}%
@@ -198,11 +203,19 @@
   \printlist{location}%
   \addcolon\space%
   \printlist{publisher}%
-  \addcomma\space%
-  \printfield{year}\adddot%
+  \adddot\space%
+  \printfield{year}%
+  \adddot%
   \addspace%
-  \printtext{p.\addspace}%
+  \iffieldpages{pages}
+    {\printtext{\bibstring{pages}\addspace}}
+    {\printtext{\bibstring{page}\addspace}}%
   \printfield{pages}%
+  \iffieldundef{series}
+    {}
+    {\adddot\space\mkbibparens{\printfield{series}%
+      \iffieldundef{number}{}{\addcomma\space\printfield{number}}}}%
+  \iffieldundef{url}{}{\adddot\space\printonlineaccess}%
   \usebibmacro{finentry}%
 }
 
