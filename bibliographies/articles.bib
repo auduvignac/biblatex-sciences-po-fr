@@ -1,3 +1,4 @@
+% Article de revue imprime avec volume et numero
 @article{Leca:2001,
   author       = {Leca, Jean},
   title        = {Les 50 ans de la RFSP : une relecture cavalière des débuts},
@@ -9,6 +10,7 @@
   pages        = {5-17}
 }
 
+% Article de revue imprime sans volume (numeros regroupes)
 @article{Simeant:1993,
   author       = {Sim\'eant, Johanna},
   title        = {Violence d'un répertoire, les sans-papiers de la grève à la faim},
@@ -17,4 +19,27 @@
   year         = {1993},
   number       = {9-10},
   pages        = {315-338}
+}
+
+% Metadonnees communes partagees via xdata (base imprimee/en ligne)
+@xdata{Rinde:Rokkan:1959:Common,
+  author       = {Rinde, Erik and Rokkan, Stein},
+  title        = {Toward an International Program of Research on the Handling of Conflicts: Introduction},
+  journaltitle = {The Journal of Conflict Resolution},
+  year         = {1959},
+  volume       = {3},
+  number       = {1},
+  pages        = {1-5}
+}
+
+% Article de revue imprime
+@article{Rinde:Rokkan:1959,
+  xdata        = {Rinde:Rokkan:1959:Common}
+}
+
+% Article de revue en ligne avec URL et date de consultation
+@article{Rinde:Rokkan:1959:Online,
+  xdata        = {Rinde:Rokkan:1959:Common},
+  url          = {http://www.jstor.org/stable/172864},
+  urldate      = {2017-01-24}
 }
