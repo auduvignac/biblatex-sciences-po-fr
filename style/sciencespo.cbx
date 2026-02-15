@@ -60,7 +60,7 @@
 
 % Keep chapter titles visible in loc. cit. output for clarity.
 \renewbibmacro*{cite:loccit}{%
-  \ifentrytype{incollection}
+  \ifboolexpr{ test{\ifentrytype{incollection}} or test{\ifentrytype{article}} }
     {%
       \iffieldundef{labeltitle}
         {}
