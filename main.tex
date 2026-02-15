@@ -788,18 +788,15 @@ Structure : \textsc{Nom}, Prénom. \og Titre du chapitre \fg{} in Prénom \texts
 \end{verbatim}
 |{Blancheton:2017:Crises:Online}{Fitoussi:1995}
 
-\subsection{Articles de revue (\texttt{@article})}
+\subsection{Articles de revue (imprimés ou en ligne)}
 
-Structure : NOM, Prénom. Titre de l'article. Titre de la revue, mois année, volume, numéro, pagination.
+Structure : \textsc{Nom}, Prénom. \og Titre de l'article \fg{}. \textit{Titre de la revue}. Date de publication, volume numéro. Pages
 
-Le champ \texttt{monthtext} permet d'indiquer un mois, un intervalle de mois ou une saison complète.
+\emph{Le champ \texttt{monthtext} permet d'indiquer un mois, un intervalle de mois ou une saison complète.}
 
-\textbf{À tester (articles)} : contrôler l'affichage du \texttt{monthtext} (remplace mois+année), du volume/numéro et de la pagination. Modifier temporairement \texttt{monthtext} pour vérifier le rendu libre.
+\subsubsection{Article de revue imprimé avec volume et numéro}
 
-\subsubsection*{Article avec volume et numéro}
-
-\paragraph{Source bibliographique (Bib\LaTeX)}
-
+\bookexample{\textsc{Nom}, Prénom. \og Titre de l'article \fg{}. \textit{Titre de la revue}, année, vol. x, n\textsuperscript{o} y, pp. xx-yy.}|
 \begin{verbatim}
 @article{Leca:2001,
   author       = {Leca, Jean},
@@ -812,88 +809,11 @@ Le champ \texttt{monthtext} permet d'indiquer un mois, un intervalle de mois ou 
   pages        = {5-17}
 }
 \end{verbatim}
+|{Leca:2001}{Fitoussi:1995}
 
-\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+\subsubsection{Article de revue imprimé sans volume et numéros regroupés}
 
-\subparagraph{Sans pagination explicite}
-
-\begin{verbatim}
-\fullcite{Leca:2001}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite{Leca:2001}
-\end{bibexample}
-
-\subparagraph{Avec pagination explicite}
-
-\begin{verbatim}
-\fullcite[p.~6]{Leca:2001}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite[p.~6]{Leca:2001}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\fullcite[Voir aussi][p.~6]{Leca:2001}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite[Voir aussi][p.~6]{Leca:2001}
-\end{bibexample}
-
-\paragraph{Citation simple (\texttt{\textbackslash cite})}
-
-\subparagraph{Sans pagination}
-
-\begin{verbatim}
-\cite{Leca:2001}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite{Leca:2001}
-\end{bibexample}
-
-\subparagraph{Avec pagination explicite}
-
-\begin{verbatim}
-\cite[p.~6]{Leca:2001}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[p.~6]{Leca:2001}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\cite[Voir aussi][p.~6]{Leca:2001}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[Voir aussi][p.~6]{Leca:2001}
-\end{bibexample}
-
-\paragraph{Citation en note de bas de page}
-
-\begin{itemize}
-	\item Sans pagination :
-	      \footciteexamplelocal{Leca:2001}
-
-	\item Avec pagination explicite :
-	      \footciteexamplelocal[][p.~6]{Leca:2001}
-
-	\item Avec référence explicite :
-	      \footciteexamplelocal[Voir aussi][p.~6]{Leca:2001}
-\end{itemize}
-
-\subsubsection*{Article sans volume, numéros regroupés}
-
-\paragraph{Source bibliographique (Bib\LaTeX)}
-
+\bookexample{\textsc{Nom}, Prénom. \og Titre de l'article \fg{}. \textit{Titre de la revue}, année, n\textsuperscript{o} x-y, pp. xx-yy.}|
 \begin{verbatim}
 @article{Simeant:1993,
   author       = {Sim\'eant, Johanna},
@@ -905,128 +825,57 @@ Le champ \texttt{monthtext} permet d'indiquer un mois, un intervalle de mois ou 
   pages        = {315-338}
 }
 \end{verbatim}
+|{Simeant:1993}{Fitoussi:1995}
 
-\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+\subsubsection{Article de revue imprimé en langue étrangère}
 
-\subparagraph{Sans pagination explicite}
-
+\bookexample{\textsc{Nom}, Prénom. \og Titre de l'article \fg{}. \textit{Titre de la revue}, année, vol. x, n\textsuperscript{o} y, pp. xx-yy.}|
 \begin{verbatim}
-\fullcite{Simeant:1993}
+@article{Rinde:Rokkan:1959,
+  author       = {Rinde, Erik and Rokkan, Stein},
+  title        = {Toward an International Program of Research on the Handling of Conflicts: Introduction},
+  journaltitle = {The Journal of Conflict Resolution},
+  year         = {1959},
+  volume       = {3},
+  number       = {1},
+  pages        = {1-5}
+}
 \end{verbatim}
+|{Rinde:Rokkan:1959}{Fitoussi:1995}
 
-\begin{bibexample}
-	\fullcite{Simeant:1993}
-\end{bibexample}
+\subsubsection{Article de revue imprimé en langue étrangère avec url}
 
-\subparagraph{Avec pagination explicite}
-
+\bookexample{\textsc{Nom}, Prénom. \og Titre de l'article \fg{}. \textit{Titre de la revue}, année, vol. x, n\textsuperscript{o} y, pp. xx-yy. URL : \url{...} [consulté le jour mois année].}|
 \begin{verbatim}
-\fullcite[p.~320]{Simeant:1993}
+@article{Rinde:Rokkan:1959:Online,
+  author       = {Rinde, Erik and Rokkan, Stein},
+  title        = {Toward an International Program of Research on the Handling of Conflicts: Introduction},
+  journaltitle = {The Journal of Conflict Resolution},
+  year         = {1959},
+  volume       = {3},
+  number       = {1},
+  pages        = {1-5},
+  url          = {http://www.jstor.org/stable/172864},
+  urldate      = {2017-01-24}
+}
 \end{verbatim}
+|{Rinde:Rokkan:1959:Online}{Fitoussi:1995}
 
-\begin{bibexample}
-	\fullcite[p.~320]{Simeant:1993}
-\end{bibexample}
+\subsection{Articles de presse (en ligne)}
 
-\subparagraph{Avec référence explicite}
-
+\bookexample{\textsc{Nom}, Prénom. \og Titre de l'article \fg{}. \textit{Titre de presse}. Date de publication. URL : \url{...} [consulté le jour mois année].}|
 \begin{verbatim}
-\fullcite[Voir aussi][p.~320]{Simeant:1993}
+@article{Lechner:2014:Eotone,
+  author       = {Lechner, Marie},
+  title        = {Eotone, concert aux quatre vents},
+  journaltitle = {Libération},
+  monthtext    = {16 septembre 2014},
+  year         = {2014},
+  url          = {https://next.liberation.fr/arts/2014/09/16/eotone-concert-aux-quatre-vents_1101895},
+  urldate      = {2023-04-04}
+}
 \end{verbatim}
-
-\begin{bibexample}
-	\fullcite[Voir aussi][p.~320]{Simeant:1993}
-\end{bibexample}
-
-\paragraph{Citation simple (\texttt{\textbackslash cite})}
-
-\subparagraph{Sans pagination}
-
-\begin{verbatim}
-\cite{Simeant:1993}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite{Simeant:1993}
-\end{bibexample}
-
-\subparagraph{Avec pagination explicite}
-
-\begin{verbatim}
-\cite[p.~320]{Simeant:1993}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[p.~320]{Simeant:1993}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\cite[Voir aussi][p.~320]{Simeant:1993}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[Voir aussi][p.~320]{Simeant:1993}
-\end{bibexample}
-
-\paragraph{Citation en note de bas de page}
-
-\begin{itemize}
-	\item Sans pagination :
-	      \footciteexamplelocal{Simeant:1993}
-
-	\item Avec pagination explicite :
-	      \footciteexamplelocal[][p.~320]{Simeant:1993}
-
-	\item Avec référence explicite :
-	      \footciteexamplelocal[Voir aussi][p.~320]{Simeant:1993}
-\end{itemize}
-
-\paragraph{Vérification de la génération des locutions latines pour les articles}
-
-Le présent paragraphe vise à vérifier la génération automatique des locutions
-latines (ibid., op. cit., et le cas échéant loc. cit.) pour
-les articles de revue. Les citations sont volontairement enchaînées afin de
-provoquer leur apparition.
-
-\begin{refsection}
-
-	Première citation complète d'un article :
-
-	\fullcite{Leca:2001}
-
-	Citation consécutive du même article avec pagination modifiée
-	(attendu : ibid.) :
-
-	\cite[p.~6]{Leca:2001}
-
-	Interruption par la citation d'un autre article :
-
-	\cite[p.~320]{Simeant:1993}
-
-	Retour au premier article après interruption
-	(attendu : op. cit.) :
-
-	\cite[p.~8]{Leca:2001}
-
-	Nouvelle interruption :
-
-	\cite[p.~322]{Simeant:1993}
-
-	Retour au même article et au même passage que précédemment
-	(cas théorique de loc. cit.) :
-
-	\cite[p.~8]{Leca:2001}
-
-\end{refsection}
-
-\medskip
-
-\textit{Remarque méthodologique :} la locution loc. cit. est généralement
-désactivée par défaut dans la plupart des styles \texttt{biblatex}. En l'absence
-d'activation explicite du \texttt{loccittracker}, le dernier appel produira
-habituellement op. cit., éventuellement accompagné de la pagination.
+|{Lechner:2014:Eotone}{Fitoussi:1995}
 
 \subsection{Thèses ou mémoires (\texttt{@thesis})}
 
