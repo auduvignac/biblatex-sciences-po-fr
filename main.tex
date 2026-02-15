@@ -879,18 +879,16 @@ Structure : \textsc{Nom}, Prénom. \og Titre de l'article \fg{}. \textit{Titre d
 
 \subsection{Thèses ou mémoires (\texttt{@thesis})}
 
-Structure : NOM, Prénom. Titre. Niveau du travail : discipline :
-lieu : établissement : année. Pagination.
+Structure : \textsc{Nom}, Prénom. \textit{Titre du document}. Niveau de la thèse. Ville : Établissement de soutenance. Année. Pagination.
 
 \emph{Les thèses et mémoires constituent des travaux universitaires non publiés
 	ou diffusés de manière limitée. Ils relèvent du type \texttt{@thesis}, pour lequel
 	le niveau du diplôme et la discipline occupent une place centrale dans la
 	référence bibliographique.}
 
-\textbf{À tester (thèses)} : vérifier l'enchaînement type \textrightarrow{} discipline \textrightarrow{} ville \textrightarrow{} établissement \textrightarrow{} année, puis la pagination.
+\subsubsection{Thèse avec nombre de volumes}
 
-\paragraph{Source bibliographique (Bib\LaTeX)}
-
+\bookexample{\textsc{Nom}, Prénom. \textit{Titre du document}. Niveau de la thèse. Ville : Établissement de soutenance. Année. Pagination.}|
 \begin{verbatim}
 @thesis{Brice:2004,
   author      = {Brice, Catherine},
@@ -904,129 +902,25 @@ lieu : établissement : année. Pagination.
   pages       = {3 vol.}
 }
 \end{verbatim}
+|{Brice:2004}{Fitoussi:1995}
 
-\paragraph{Citation complète (\texttt{\textbackslash fullcite})}
+\subsubsection{Thèse avec nombre de pages et url}
 
-\subparagraph{Sans pagination explicite}
-
+\bookexample{\textsc{Nom}, Prénom. \textit{Titre du document}. Niveau de la thèse. Ville : Établissement de soutenance. Année. Pagination. URL : \url{...} [consulté le jour mois année].}|
 \begin{verbatim}
-\fullcite{Brice:2004}
+@thesis{Delanoue:2018,
+  author      = {Delanoue, Elsa},
+  title       = {Débats et mobilisations autour de l'élevage : analyse d'une controverse},
+  type        = {Thèse de doctorat},
+  location    = {Rennes},
+  institution = {Rennes 2},
+  year        = {2018},
+  pages       = {489},
+  url         = {http://www.theses.fr/2018REN20040},
+  urldate     = {2018-11-06}
+}
 \end{verbatim}
-
-\begin{bibexample}
-	\fullcite{Brice:2004}
-\end{bibexample}
-
-\subparagraph{Avec pagination explicite}
-
-\begin{verbatim}
-\fullcite[p.~125]{Brice:2004}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite[p.~125]{Brice:2004}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\fullcite[Voir aussi][p.~125]{Brice:2004}
-\end{verbatim}
-
-\begin{bibexample}
-	\fullcite[Voir aussi][p.~125]{Brice:2004}
-\end{bibexample}
-
-\paragraph{Citation simple (\texttt{\textbackslash cite})}
-
-\subparagraph{Sans pagination}
-
-\begin{verbatim}
-\cite{Brice:2004}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite{Brice:2004}
-\end{bibexample}
-
-\subparagraph{Avec pagination explicite}
-
-\begin{verbatim}
-\cite[p.~125]{Brice:2004}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[p.~125]{Brice:2004}
-\end{bibexample}
-
-\subparagraph{Avec référence explicite}
-
-\begin{verbatim}
-\cite[Voir aussi][p.~125]{Brice:2004}
-\end{verbatim}
-
-\begin{bibexample}
-	\cite[Voir aussi][p.~125]{Brice:2004}
-\end{bibexample}
-
-\paragraph{Citation en note de bas de page}
-
-\begin{itemize}
-	\item Sans pagination :
-	      \footciteexamplelocal{Brice:2004}
-
-	\item Avec pagination explicite :
-	      \footciteexamplelocal[][p.~125]{Brice:2004}
-
-	\item Avec référence explicite :
-	      \footciteexamplelocal[Voir aussi][p.~125]{Brice:2004}
-\end{itemize}
-
-\paragraph{Vérification de la génération des locutions latines pour les thèses et mémoires}
-
-Le présent paragraphe vise à vérifier le bon fonctionnement de la génération
-automatique des locutions latines par \texttt{biblatex} dans le cas des thèses
-et mémoires. Les citations sont volontairement enchaînées afin de provoquer
-l'apparition de ibid., op. cit. et, le cas échéant, loc. cit.
-
-\begin{refsection}
-
-	Première citation complète d'une thèse :
-
-	\fullcite{Brice:2004}
-
-	Citation consécutive de la même thèse avec pagination modifiée
-	(attendu : ibid.) :
-
-	\cite[p.~125]{Brice:2004}
-
-	Interruption par la citation d'un autre travail :
-
-	\cite[p.~320]{Leca:2001}
-
-	Retour à la thèse initiale après interruption
-	(attendu : op. cit.) :
-
-	\cite[p.~210]{Brice:2004}
-
-	Nouvelle interruption par une autre référence :
-
-	\cite[p.~322]{Leca:2001}
-
-	Retour à la même thèse et au même passage que précédemment
-	(cas théorique de loc. cit.) :
-
-	\cite[p.~210]{Brice:2004}
-
-\end{refsection}
-
-\medskip
-
-\textit{Remarque méthodologique :} comme pour les autres types de documents, la
-locution loc. cit. est désactivée par défaut dans la majorité des styles
-\texttt{biblatex}. En l'absence d'activation explicite du
-\texttt{loccittracker}, le dernier appel produira généralement
-op. cit., éventuellement accompagné de la pagination.
+|{Delanoue:2018}{Fitoussi:1995}
 
 
 \subsection{Films (\texttt{@movie})}
