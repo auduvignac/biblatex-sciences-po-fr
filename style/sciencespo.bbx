@@ -313,21 +313,35 @@
   \usebibmacro{begentry}%
   \ifnameundef{author}{\printlist{institution}}{\printnames{author}}%
   \newunit\newblock%
-  \printfield{title}%
+  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
+    {\printtext{\mkbibquote{\thefield{title}}.}}%
+    {\printfield{title}}%
   \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{video}} }%
     {\space[vidéo en ligne]}%
-    {\ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
-       {\space[en ligne]}%
-       {}}%
-  \setunit{\adddot\space}%
+    {}%
+  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
+    {\setunit{\addspace}}%
+    {\setunit{\adddot\space}}%
   \iffieldundef{journaltitle}{%
-    \iffieldundef{platform}
-      {\iflistundef{publisher}{}{\printlist{publisher}}}
-      {\printfield{platform}}%
-    \printonlinepubdate%
-    \printonlineupdatedate%
-    \adddot\space%
-    \printonlineaccess%
+    \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
+      {%
+        \iffieldundef{platform}
+          {\iflistundef{publisher}{}{\printlist{publisher}}}
+          {\printfield{platform}}%
+        \iffieldundef{pubyear}{}{\adddot\space\printonlinepubdateinline}%
+        \printonlineupdatedate%
+        \adddot\space%
+        \printonlineaccess%
+      }%
+      {%
+        \iffieldundef{platform}
+          {\iflistundef{publisher}{}{\printlist{publisher}}}
+          {\printfield{platform}}%
+        \printonlinepubdate%
+        \printonlineupdatedate%
+        \adddot\space%
+        \printonlineaccess%
+      }%
   }{%
     \printfield{journaltitle}%
     \space[en ligne]\adddot\space%
