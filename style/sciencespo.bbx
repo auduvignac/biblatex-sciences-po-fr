@@ -63,6 +63,7 @@
     {\bibstring{#1}}
     {#1}}
 \DeclareFieldFormat[incollection]{url}{\url{#1}}
+\DeclareFieldFormat[article]{url}{\url{#1}}
 \DeclareFieldFormat[book]{url}{\url{#1}}
 \DeclareFieldFormat[report]{url}{\url{#1}}
 \DeclareFieldFormat[online]{url}{\url{#1}}
@@ -239,6 +240,7 @@
   \iffieldundef{volume}{}{\printtext{vol.\addspace}\printfield{volume}\addcomma\space}%
   \iffieldundef{number}{}{\printtext{n\textsuperscript{o}\addspace}\printfield{number}\addcomma\space}%
   \iffieldundef{pages}{}{\printtext{p.\addspace}\printfield{pages}}%
+  \iffieldundef{url}{}{\adddot\space\printonlineaccess}%
   \usebibmacro{finentry}%
 }
 
