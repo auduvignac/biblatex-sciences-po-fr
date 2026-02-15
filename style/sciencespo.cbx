@@ -12,6 +12,8 @@
   \scpo@titleformat{#1}}
 \DeclareFieldFormat{citetitle}{%
   \scpo@titleformat{#1}}
+\DeclareFieldFormat[thesis]{citetitle}{%
+  \mkbibemph{#1}}
 
 % In fullcite, use a comma before postnotes instead of a trailing period.
 \DeclareCiteCommand{\fullcite}
@@ -60,7 +62,11 @@
 
 % Keep chapter titles visible in loc. cit. output for clarity.
 \renewbibmacro*{cite:loccit}{%
-  \ifboolexpr{ test{\ifentrytype{incollection}} or test{\ifentrytype{article}} }
+  \ifboolexpr{
+    test{\ifentrytype{incollection}}
+    or test{\ifentrytype{article}}
+    or test{\ifentrytype{thesis}}
+  }
     {%
       \iffieldundef{labeltitle}
         {}
