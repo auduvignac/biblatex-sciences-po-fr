@@ -150,6 +150,22 @@ apparition et d'en vérifier le comportement effectif.
   }%
 }
 
+% Tests ciblés Ibid./Op. cit. pour les entrées en ligne.
+\NewDocumentCommand{\onlineibidopcittests}{ m m }{%
+  \noindent\textbf{Locutions latines (\emph{Ibid.} / \emph{Op. cit.})}\par
+  \begin{itemize}
+    \item \emph{Ibid.} :%
+      \citereset%
+      \texttt{\detokenize{\cite{#1}}} : \cite{#1}\\%
+      \texttt{\detokenize{\cite{#1}}} : \cite{#1}%
+    \item \emph{Op. cit.} :%
+      \citereset%
+      \texttt{\detokenize{\cite{#1}}} : \cite{#1}\\%
+      \texttt{\detokenize{\cite{#2}}} : \cite{#2}\\%
+      \texttt{\detokenize{\cite{#1}}} : \cite{#1}%
+  \end{itemize}%
+}
+
 % Bloc standardise pour les exemples de livres
 \NewDocumentCommand{\bookexample}{ m +v m m }{%
   \paragraph{Structure :}%
@@ -160,6 +176,35 @@ apparition et d'en vérifier le comportement effectif.
   \endgroup%
   \citetests{#3}%
   \locutiontests{#3}{#4}%
+}
+
+% Bloc standardise pour les exemples de ressources en ligne.
+\NewDocumentCommand{\onlineexample}{ m +v m m }{%
+  \paragraph{Structure :}%
+  #1\par\smallskip%
+  \paragraph{Source bibliographique (Bib\LaTeX)}%
+  \begingroup\small\ttfamily\obeylines\obeyspaces%
+  \scantokens{#2}%
+  \endgroup%
+  \noindent\textbf{Citation complète (\texttt{\textbackslash fullcite})}\par
+  \begin{itemize}
+    \item Sans référence explicite :
+      \begin{bibexample}
+        \fullcite{#3}
+      \end{bibexample}
+    \item Avec référence explicite :
+      \begin{bibexample}
+        [Voir aussi]~\fullcite{#3}
+      \end{bibexample}
+  \end{itemize}
+  \paragraph{Citation en note de bas de page}%
+  \begin{itemize}
+    \item Sans référence explicite :
+      \footciteexamplelocal{#3}
+    \item Avec référence explicite :
+      \footciteexamplelocal[Voir aussi]{#3}
+  \end{itemize}%
+  \onlineibidopcittests{#3}{#4}%
 }
 
 % Tests standardises des citations (fullcite/cite/footcite) pour une reference.
@@ -926,7 +971,7 @@ Structure : \textsc{Nom}, Prénom. \textit{Titre du document}. Niveau de la thè
 
 \subsubsection{Pages web avec auteur nominatif}
 
-\bookexample{\textsc{Nom}, Prénom. \og Titre du document \fg{}. Date de publication. URL : \url{...} [consulté le jour mois année].}|
+\onlineexample{\textsc{Nom}, Prénom. \og Titre du document \fg{}. Date de publication. URL : \url{...} [consulté le jour mois année].}|
 \begin{verbatim}
 @online{Mondon:2023:IA,
   author       = {Mondon, Aurélie},
@@ -937,11 +982,11 @@ Structure : \textsc{Nom}, Prénom. \textit{Titre du document}. Niveau de la thè
   url          = {https://www.exemple.fr/comprendre-les-enjeux-de-l-intelligence-artificielle}
 }
 \end{verbatim}
-|{Mondon:2023:IA}{Fitoussi:1995}
+|{Mondon:2023:IA}{PresidenceRepublique:2018:BoutiqueElysee}
 
 \subsubsection{Pages web avec auteur institutionnel}
 
-\bookexample{Institution. \og Titre du document \fg{}. Date de publication. URL : \url{...} [consulté le jour mois année].}|
+\onlineexample{Institution. \og Titre du document \fg{}. Date de publication. URL : \url{...} [consulté le jour mois année].}|
 \begin{verbatim}
 @online{PresidenceRepublique:2018:BoutiqueElysee,
   institution = {{Présidence de la République}},
@@ -952,7 +997,7 @@ Structure : \textsc{Nom}, Prénom. \textit{Titre du document}. Niveau de la thè
   url         = {https://www.elysee.fr/emmanuel-macron/2018/09/24/entrez-dans-la-toute-nouvelle-boutique-del-elysee}
 }
 \end{verbatim}
-|{PresidenceRepublique:2018:BoutiqueElysee}{Fitoussi:1995}
+|{PresidenceRepublique:2018:BoutiqueElysee}{Mondon:2023:IA}
 
 \section{Compilation}
 
