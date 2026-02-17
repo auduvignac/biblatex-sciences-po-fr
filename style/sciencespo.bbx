@@ -76,6 +76,25 @@
 \DeclareFieldFormat[online]{url}{\url{#1}}
 \DeclareFieldFormat[online]{pubdate}{\mkbibdatelong{#1}}
 \DeclareFieldFormat[online]{updatedate}{\mkbibdatelong{#1}}
+\ExplSyntaxOn
+\cs_new_protected:Npn \scpo_format_duration:n #1
+  {
+    \seq_set_split:Nnn \l_tmpa_seq {:} {#1}
+    \int_compare:nNnTF {\seq_count:N \l_tmpa_seq} = {2}
+      {
+        \cs_if_exist:NTF \duration
+          {
+            \duration
+              {\seq_item:Nn \l_tmpa_seq {1}}
+              {\seq_item:Nn \l_tmpa_seq {2}}
+          }
+          {{\NoAutoSpacing #1}}
+      }
+      {{\NoAutoSpacing #1}}
+  }
+\cs_new_eq:NN \scpoformatduration \scpo_format_duration:n
+\ExplSyntaxOff
+\DeclareFieldFormat[online]{duration}{\scpoformatduration{#1}}
 
 % --- MACROS DATES ET ACCÈS POUR LES ENTRÉES EN LIGNE ---
 \newcommand*{\printonlinepubdatevalue}{%
@@ -316,9 +335,6 @@
   \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
     {\printtext{\mkbibquote{\thefield{title}}.}}%
     {\printfield{title}}%
-  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{video}} }%
-    {\space[vidéo en ligne]}%
-    {}%
   \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
     {\setunit{\addspace}}%
     {\setunit{\adddot\space}}%
@@ -337,8 +353,16 @@
         \iffieldundef{platform}
           {\iflistundef{publisher}{}{\printlist{publisher}}}
           {\printfield{platform}}%
-        \printonlinepubdate%
+        \iffieldundef{pubyear}{}{\adddot\space\printonlinepubdateinline}%
         \printonlineupdatedate%
+        \ifboolexpr{
+          test{\iffieldequalstr{entrysubtype}{video}}
+          and
+          not test{\iffieldundef{duration}}
+        }{%
+          \adddot\space%
+          \printfield{duration}%
+        }{}%
         \adddot\space%
         \printonlineaccess%
       }%

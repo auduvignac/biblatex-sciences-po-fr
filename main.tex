@@ -17,6 +17,9 @@
 % Hyperliens
 \usepackage{hyperref}
 
+% Durée d'une vidéo sans espace automatique avant/après le deux-points.
+\newcommand{\duration}[2]{{\NoAutoSpacing #1\string:#2}}
+
 % --------------------------------------------------------------------
 % Flag pour afficher toute la bibliographie (mode demonstration)
 % --------------------------------------------------------------------
@@ -348,7 +351,7 @@ Le \texttt{.cbx} repose sur \texttt{verbose-trad1} : répétition immédiate $\r
 		Film     & \texttt{medium}, \texttt{extent}                        & Support et durée : \og [cassette vidéo]\fg{}, \og 1 cass. vidéo VHS, 52 min.\fg{}                            \\
 		En ligne & \texttt{platform}                                       & Plateforme (Statista, YouTube...) lorsque \texttt{journaltitle} n'est pas présent.                           \\
 		En ligne & \texttt{pubdate}, \texttt{updatedate}, \texttt{urldate} & Dates de publication, de mise à jour et de consultation (affichées entre crochets).                          \\
-		En ligne & \texttt{entrysubtype}                                   & \texttt{video} $\rightarrow$ \og [vidéo en ligne]\fg{} ; \texttt{website} $\rightarrow$ \og [en ligne]\fg{}. \\
+		En ligne & \texttt{entrysubtype}                                   & \texttt{website} : titre entre guillemets ; \texttt{video} : titre en italique.                              \\
 		\bottomrule
 	\end{tabular}
 \end{table}
@@ -998,6 +1001,42 @@ Structure : \textsc{Nom}, Prénom. \textit{Titre du document}. Niveau de la thè
 }
 \end{verbatim}
 |{PresidenceRepublique:2018:BoutiqueElysee}{Mondon:2023:IA}
+
+\subsection{Vidéos en ligne}
+
+\subsubsection{Vidéo en ligne avec auteur nominatif}
+
+\onlineexample{\textsc{Nom}, Prénom. \textit{Titre de la vidéo}. Année de publication. URL : \url{...} [consulté le jour mois année].}|
+\begin{verbatim}
+@online{Has:2016:Zotero,
+  entrysubtype = {video},
+  author       = {Has, Chandra},
+  title        = {Zotero Reference Manager ({LaTeX} Basic Tutorial-13 C)},
+  platform     = {YouTube},
+  pubdate      = {2016},
+  duration     = {7:09},
+  urldate      = {2023-04-05},
+  url          = {https://www.youtube.com/watch?v=K2MAhuYpORA}
+}
+\end{verbatim}
+|{Has:2016:Zotero}{Mondon:2023:IA}
+
+\subsubsection{Vidéo en ligne avec auteur institutionnel}
+
+\onlineexample{Institution. \textit{Titre de la vidéo}. Année de publication. URL : \url{...} [consulté le jour mois année].}|
+\begin{verbatim}
+@online{SciencesPo:2017,
+  entrysubtype = {video},
+  institution  = {Sciences Po},
+  title        = {Sciences Po passe le bac : épreuve d'histoire},
+  platform     = {YouTube},
+  pubdate      = {2017-06-12},
+  urldate      = {2017-06-14},
+  url          = {https://www.youtube.com/watch?v=ZvSVkNZzvx4&t}
+}
+\end{verbatim}
+|{SciencesPo:2017}{Mondon:2023:IA}
+
 
 \section{Compilation}
 
