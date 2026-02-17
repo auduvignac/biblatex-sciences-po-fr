@@ -334,7 +334,11 @@
   \newunit\newblock%
   \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
     {\printtext{\mkbibquote{\thefield{title}}.}}%
-    {\printfield{title}}%
+    {%
+      \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{podcast}} }%
+        {\printtext{\mkbibemph{\thefield{title}}}}%
+        {\printfield{title}}%
+    }%
   \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
     {\setunit{\addspace}}%
     {\setunit{\adddot\space}}%
@@ -350,21 +354,30 @@
         \printonlineaccess%
       }%
       {%
-        \iffieldundef{platform}
-          {\iflistundef{publisher}{}{\printlist{publisher}}}
-          {\printfield{platform}}%
-        \iffieldundef{pubyear}{}{\adddot\space\printonlinepubdateinline}%
-        \printonlineupdatedate%
-        \ifboolexpr{
-          test{\iffieldequalstr{entrysubtype}{video}}
-          and
-          not test{\iffieldundef{duration}}
-        }{%
-          \adddot\space%
-          \printfield{duration}%
-        }{}%
-        \adddot\space%
-        \printonlineaccess%
+        \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{podcast}} }%
+          {%
+            \iffieldundef{duration}{}{\printfield{duration}}%
+            \iffieldundef{series}{}{\adddot\space\mkbibparens{\printfield{series}}}%
+            \adddot\space%
+            \printonlineaccess%
+          }%
+          {%
+            \iffieldundef{platform}
+              {\iflistundef{publisher}{}{\printlist{publisher}}}
+              {\printfield{platform}}%
+            \iffieldundef{pubyear}{}{\adddot\space\printonlinepubdateinline}%
+            \printonlineupdatedate%
+            \ifboolexpr{
+              test{\iffieldequalstr{entrysubtype}{video}}
+              and
+              not test{\iffieldundef{duration}}
+            }{%
+              \adddot\space%
+              \printfield{duration}%
+            }{}%
+            \adddot\space%
+            \printonlineaccess%
+          }%
       }%
   }{%
     \printfield{journaltitle}%
