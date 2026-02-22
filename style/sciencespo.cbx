@@ -12,6 +12,14 @@
   \scpo@titleformat{#1}}
 \DeclareFieldFormat{citetitle}{%
   \scpo@titleformat{#1}}
+\DeclareFieldFormat[online]{cbx:opcitlabel}{%
+  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }
+    {\mkbibquote{#1}}
+    {\scpo@titleformat{#1}}}
+\DeclareFieldFormat[online]{citetitle}{%
+  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }
+    {\mkbibquote{#1}}
+    {\scpo@titleformat{#1}}}
 \DeclareFieldFormat[thesis]{citetitle}{%
   \mkbibemph{#1}}
 
@@ -66,6 +74,7 @@
     test{\ifentrytype{incollection}}
     or test{\ifentrytype{article}}
     or test{\ifentrytype{thesis}}
+    or test{\ifentrytype{online}}
   }
     {%
       \iffieldundef{labeltitle}
@@ -200,19 +209,18 @@
 % Bloc commun pour op./loc. cit. des ressources en ligne sans labelname
 \newbibmacro*{cite:online:opcit}{%
   \usebibmacro{cite:online:prefix}%
-  \ifboolexpr{ test{\iffieldundef{shorttitle}} and test{\iffieldundef{labeltitle}} }
-    {}
+  \ifloccit
+    {\usebibmacro{cite:loccit}}
     {%
-      \printtext[bibhyperlink]{%
-        \iffieldundef{shorttitle}
-          {\printfield[cbx:opcitlabel]{labeltitle}}
-          {\printfield[cbx:opcitlabel]{shorttitle}}}%
-      \setunit{\addcomma\space}}%
-  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }
-    {\printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}
-    {\ifloccit
-       {\usebibmacro{cite:loccit}}
-       {\printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}}}
+      \ifboolexpr{ test{\iffieldundef{shorttitle}} and test{\iffieldundef{labeltitle}} }
+        {}
+        {%
+          \printtext[bibhyperlink]{%
+            \iffieldundef{shorttitle}
+              {\printfield[cbx:opcitlabel]{labeltitle}}
+              {\printfield[cbx:opcitlabel]{shorttitle}}}%
+          \setunit{\addcomma\space}}%
+      \printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}}
 
 % Titre court pour les rapports sans labelname (hors op./loc. cit.)
 \newbibmacro*{cite:report:title}{%

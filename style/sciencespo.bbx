@@ -74,8 +74,28 @@
 \DeclareFieldFormat[thesis]{url}{\url{#1}}
 \DeclareFieldFormat[report]{url}{\url{#1}}
 \DeclareFieldFormat[online]{url}{\url{#1}}
+\DeclareFieldFormat[online]{websitetitle}{#1}
 \DeclareFieldFormat[online]{pubdate}{\mkbibdatelong{#1}}
 \DeclareFieldFormat[online]{updatedate}{\mkbibdatelong{#1}}
+\ExplSyntaxOn
+\cs_new_protected:Npn \scpo_format_duration:n #1
+  {
+    \seq_set_split:Nnn \l_tmpa_seq {:} {#1}
+    \int_compare:nNnTF {\seq_count:N \l_tmpa_seq} = {2}
+      {
+        \cs_if_exist:NTF \duration
+          {
+            \duration
+              {\seq_item:Nn \l_tmpa_seq {1}}
+              {\seq_item:Nn \l_tmpa_seq {2}}
+          }
+          {{\NoAutoSpacing #1}}
+      }
+      {{\NoAutoSpacing #1}}
+  }
+\cs_new_eq:NN \scpoformatduration \scpo_format_duration:n
+\ExplSyntaxOff
+\DeclareFieldFormat[online]{duration}{\scpoformatduration{#1}}
 
 % --- MACROS DATES ET ACCÈS POUR LES ENTRÉES EN LIGNE ---
 \newcommand*{\printonlinepubdatevalue}{%
@@ -158,6 +178,97 @@
           \ifbool{scpo@fullcitepostnote}{}{\adddot}%
         }%
     }%
+}
+
+% --- HELPERS RENDU ENTRÉES EN LIGNE ---
+\newcommand*{\printonlineplatformorpublisher}{%
+  \iffieldundef{platform}
+    {\iflistundef{publisher}{}{\printlist{publisher}}}
+    {\printfield{platform}}%
+}
+
+\newcommand*{\printonlineplatformonly}{%
+  \iffieldundef{platform}{}{\printfield{platform}}%
+}
+
+\newcommand*{\printonlinedates}{%
+  \iffieldundef{pubyear}{}{\adddot\space\printonlinepubdateinline}%
+  \printonlineupdatedate%
+}
+
+\newcommand*{\printonlineplatformdatesaccess}{%
+  \printonlineplatformorpublisher%
+  \printonlinedates%
+  \adddot\space%
+  \printonlineaccess%
+}
+
+\newcommand*{\printonlinenameblock}{%
+  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{podcast}} }%
+    {\ifnameundef{author}{\iflistundef{publisher}{\printlist{institution}}{\printlist{publisher}}}{\printnames{author}}}%
+    {\ifnameundef{author}{\printlist{institution}}{\printnames{author}}}%
+}
+
+\newcommand*{\printonlinetitleblock}{%
+  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
+    {\printtext{\mkbibquote{\printfield[websitetitle]{title}}.}}%
+    {\printfield{title}}%
+  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
+    {\setunit{\addspace}}%
+    {\setunit{\adddot\space}}%
+}
+
+\newcommand*{\printonlinewebsiteblock}{%
+  \printonlineplatformdatesaccess%
+}
+
+\newcommand*{\printonlinepodcastblock}{%
+  \printonlineplatformonly%
+  \printonlinedates%
+  \iffieldundef{duration}{}{\adddot\space\printfield{duration}}%
+  \iffieldundef{series}{}{\adddot\space\mkbibparens{\printfield{series}}}%
+  \adddot\space%
+  \printonlineaccess%
+}
+
+\newcommand*{\printonlinedefaultblock}{%
+  \printonlineplatformorpublisher%
+  \printonlinedates%
+  \ifboolexpr{
+    test{\iffieldequalstr{entrysubtype}{video}}
+    and
+    not test{\iffieldundef{duration}}
+  }{%
+    \adddot\space%
+    \printfield{duration}%
+  }{}%
+  \adddot\space%
+  \printonlineaccess%
+}
+
+\newcommand*{\printonlinejournalblock}{%
+  \printfield{journaltitle}%
+  \space[en ligne]\adddot\space%
+  \printonlinepubdateinline%
+  \iffieldundef{volume}{}{%
+    \addcomma\space%
+    \printtext{vol.\space\printfield{volume}}}%
+  \iffieldundef{number}{}{%
+    \addcomma\space%
+    \printtext{n\textsuperscript{o}\space\printfield{number}}}%
+  \iffieldundef{pages}{}{%
+    \addcomma\space%
+    \printtext{p.\space\printfield{pages}}}%
+  \adddot\space%
+  \printonlineaccess%
+}
+
+\newcommand*{\printonlinenonjournalblock}{%
+  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
+    {\printonlinewebsiteblock}%
+    {\ifboolexpr{ test{\iffieldequalstr{entrysubtype}{podcast}} }%
+       {\printonlinepodcastblock}%
+       {\printonlinedefaultblock}}%
 }
 
 % --- DRIVER POUR LIVRE (@book) ---
@@ -311,38 +422,13 @@
 \DeclareBibliographyDriver{online}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \ifnameundef{author}{\printlist{institution}}{\printnames{author}}%
+  \printonlinenameblock%
   \newunit\newblock%
-  \printfield{title}%
-  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{video}} }%
-    {\space[vidéo en ligne]}%
-    {\ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
-       {\space[en ligne]}%
-       {}}%
-  \setunit{\adddot\space}%
+  \printonlinetitleblock%
   \iffieldundef{journaltitle}{%
-    \iffieldundef{platform}
-      {\iflistundef{publisher}{}{\printlist{publisher}}}
-      {\printfield{platform}}%
-    \printonlinepubdate%
-    \printonlineupdatedate%
-    \adddot\space%
-    \printonlineaccess%
+    \printonlinenonjournalblock%
   }{%
-    \printfield{journaltitle}%
-    \space[en ligne]\adddot\space%
-    \printonlinepubdateinline%
-    \iffieldundef{volume}{}{%
-      \addcomma\space%
-      \printtext{vol.\space\printfield{volume}}}%
-    \iffieldundef{number}{}{%
-      \addcomma\space%
-      \printtext{n\textsuperscript{o}\space\printfield{number}}}%
-    \iffieldundef{pages}{}{%
-      \addcomma\space%
-      \printtext{p.\space\printfield{pages}}}%
-    \adddot\space%
-    \printonlineaccess%
+    \printonlinejournalblock%
   }%
   \usebibmacro{finentry}%
 }
