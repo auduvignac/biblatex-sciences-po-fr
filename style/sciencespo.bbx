@@ -179,6 +179,25 @@
     }%
 }
 
+% --- HELPERS RENDU ENTRÉES EN LIGNE ---
+\newcommand*{\printonlineplatformorpublisher}{%
+  \iffieldundef{platform}
+    {\iflistundef{publisher}{}{\printlist{publisher}}}
+    {\printfield{platform}}%
+}
+
+\newcommand*{\printonlinedates}{%
+  \iffieldundef{pubyear}{}{\adddot\space\printonlinepubdateinline}%
+  \printonlineupdatedate%
+}
+
+\newcommand*{\printonlineplatformdatesaccess}{%
+  \printonlineplatformorpublisher%
+  \printonlinedates%
+  \adddot\space%
+  \printonlineaccess%
+}
+
 % --- DRIVER POUR LIVRE (@book) ---
 \DeclareBibliographyDriver{book}{%
   \usebibmacro{bibindex}%
@@ -347,33 +366,21 @@
   \iffieldundef{journaltitle}{%
     \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
       {%
-        \iffieldundef{platform}
-          {\iflistundef{publisher}{}{\printlist{publisher}}}
-          {\printfield{platform}}%
-        \iffieldundef{pubyear}{}{\adddot\space\printonlinepubdateinline}%
-        \printonlineupdatedate%
-        \adddot\space%
-        \printonlineaccess%
+        \printonlineplatformdatesaccess%
       }%
       {%
         \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{podcast}} }%
           {%
-            \iffieldundef{platform}
-              {\iflistundef{publisher}{}{\printlist{publisher}}}
-              {\printfield{platform}}%
-            \iffieldundef{pubyear}{}{\adddot\space\printonlinepubdateinline}%
-            \printonlineupdatedate%
+            \printonlineplatformorpublisher%
+            \printonlinedates%
             \iffieldundef{duration}{}{\adddot\space\printfield{duration}}%
             \iffieldundef{series}{}{\adddot\space\mkbibparens{\printfield{series}}}%
             \adddot\space%
             \printonlineaccess%
           }%
           {%
-            \iffieldundef{platform}
-              {\iflistundef{publisher}{}{\printlist{publisher}}}
-              {\printfield{platform}}%
-            \iffieldundef{pubyear}{}{\adddot\space\printonlinepubdateinline}%
-            \printonlineupdatedate%
+            \printonlineplatformorpublisher%
+            \printonlinedates%
             \ifboolexpr{
               test{\iffieldequalstr{entrysubtype}{video}}
               and
