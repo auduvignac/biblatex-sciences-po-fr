@@ -74,6 +74,7 @@
 \DeclareFieldFormat[thesis]{url}{\url{#1}}
 \DeclareFieldFormat[report]{url}{\url{#1}}
 \DeclareFieldFormat[online]{url}{\url{#1}}
+\DeclareFieldFormat[online]{websitetitle}{#1}
 \DeclareFieldFormat[online]{pubdate}{\mkbibdatelong{#1}}
 \DeclareFieldFormat[online]{updatedate}{\mkbibdatelong{#1}}
 \ExplSyntaxOn
@@ -358,16 +359,8 @@
     {\ifnameundef{author}{\printlist{institution}}{\printnames{author}}}%
   \newunit\newblock%
   \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
-    {\printtext{\mkbibquote{\thefield{title}}.}}%
-    {%
-      \ifboolexpr{
-        test{\iffieldequalstr{entrysubtype}{podcast}}
-        or
-        test{\iffieldequalstr{entrysubtype}{statistic}}
-      }%
-        {\printtext{\mkbibemph{\thefield{title}}}}%
-        {\printfield{title}}%
-    }%
+    {\printtext{\mkbibquote{\printfield[websitetitle]{title}}.}}%
+    {\printfield{title}}%
   \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
     {\setunit{\addspace}}%
     {\setunit{\adddot\space}}%
