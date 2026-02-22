@@ -18,6 +18,22 @@ TEXINPUTS := .:$(STYLE_DIR)//$(if $(TEXINPUTS),:$(TEXINPUTS),:)
 BIBINPUTS := .:$(BIB_DIR)//$(if $(BIBINPUTS),:$(BIBINPUTS),:)
 BSTINPUTS := .:$(STYLE_DIR)//$(if $(BSTINPUTS),:$(BSTINPUTS),:)
 LATEX_ENV = TEXINPUTS=$(TEXINPUTS) BIBINPUTS=$(BIBINPUTS) BSTINPUTS=$(BSTINPUTS)
+CLEAN_IGNORED = find . -type f \( \
+	-name '*.aux' -o \
+	-name '*.bbl' -o \
+	-name '*.bcf' -o \
+	-name '*.blg' -o \
+	-name '*.fdb_latexmk' -o \
+	-name '*.fls' -o \
+	-name '*.lof' -o \
+	-name '*.log' -o \
+	-name '*.lot' -o \
+	-name '*.out' -o \
+	-name '*.run.xml' -o \
+	-name '*.synctex.gz' -o \
+	-name '*.toc' -o \
+	-name '*.xdv' \
+\) -delete
 export LATEXMK LATEXMK_CLEAN
 define prepare_main_pdf_mount
 	@if [ -d main.pdf ]; then \
@@ -53,9 +69,10 @@ endif
 
 clean:
 ifeq ($(USE_DOCKER),1)
-	$(DOCKER) bash -lc "$$LATEXMK_CLEAN && rm -f /app/$$DEMO_TEX /app/$${DEMO_TEX%.tex}.*"
+	$(DOCKER) bash -lc "$$LATEXMK_CLEAN && cd /app && $(CLEAN_IGNORED) && rm -f /app/$$DEMO_TEX /app/$${DEMO_TEX%.tex}.*"
 else
 	$(LATEX_ENV) $(LATEXMK_CLEAN)
+	$(CLEAN_IGNORED)
 	rm -f $(DEMO_TEX) $(basename $(DEMO_TEX)).*
 	rm -f main.pdf
 endif
