@@ -356,7 +356,11 @@
   \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
     {\printtext{\mkbibquote{\thefield{title}}.}}%
     {%
-      \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{podcast}} }%
+      \ifboolexpr{
+        test{\iffieldequalstr{entrysubtype}{podcast}}
+        or
+        test{\iffieldequalstr{entrysubtype}{statistic}}
+      }%
         {\printtext{\mkbibemph{\thefield{title}}}}%
         {\printfield{title}}%
     }%
