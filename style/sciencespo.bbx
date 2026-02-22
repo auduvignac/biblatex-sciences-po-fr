@@ -186,6 +186,10 @@
     {\printfield{platform}}%
 }
 
+\newcommand*{\printonlineplatformonly}{%
+  \iffieldundef{platform}{}{\printfield{platform}}%
+}
+
 \newcommand*{\printonlinedates}{%
   \iffieldundef{pubyear}{}{\adddot\space\printonlinepubdateinline}%
   \printonlineupdatedate%
@@ -375,7 +379,7 @@
       {%
         \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{podcast}} }%
           {%
-            \printonlineplatformorpublisher%
+            \printonlineplatformonly%
             \printonlinedates%
             \iffieldundef{duration}{}{\adddot\space\printfield{duration}}%
             \iffieldundef{series}{}{\adddot\space\mkbibparens{\printfield{series}}}%
