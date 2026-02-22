@@ -35,11 +35,8 @@ services:
       # PDF exporté directement à la racine du projet
       - ./main.pdf:/app/main.pdf
 
-      # Style biblatex SciencesPo directement visible par LaTeX/Biber
-      - ./style/sciencespo.cbx:/app/texmf/tex/latex/biblatex/cbx/sciencespo.cbx:ro
-      - ./style/sciencespo.bbx:/app/texmf/tex/latex/biblatex/bbx/sciencespo.bbx:ro
-      - ./style/sciencespo-common.def:/app/texmf/tex/latex/biblatex/sciencespo-common.def:ro
-      - ./style/biblatex-dm.cfg:/app/texmf/tex/latex/biblatex/biblatex-dm.cfg:ro
+      # Arbre de style complet visible via TEXMFHOME (/app/texmf)
+      - ./style:/app/texmf/tex/latex/biblatex:ro
 
 volumes:
   build-cache:
