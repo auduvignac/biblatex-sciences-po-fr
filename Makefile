@@ -4,8 +4,13 @@ DEMO ?= 0
 USE_DOCKER ?= 0
 STYLE_DIR ?= ./style
 BIB_DIR ?= ./bibliographies
-UID ?= $(shell sh -c 'id -u 2>/dev/null || echo 1000')
-GID ?= $(shell sh -c 'id -g 2>/dev/null || echo 1000')
+ifeq ($(OS),Windows_NT)
+UID ?= 1000
+GID ?= 1000
+else
+UID ?= $(shell id -u 2>/dev/null || echo 1000)
+GID ?= $(shell id -g 2>/dev/null || echo 1000)
+endif
 
 DOCKER = docker compose run --rm -e UID=$(UID) -e GID=$(GID) -e DEMO_TEX -e LATEXMK -e LATEXMK_CLEAN -e STYLE_DIR -e BIB_DIR -e TEXINPUTS -e BIBINPUTS -e BSTINPUTS latex
 DEMO_TEX = build/demo.tex
