@@ -2,19 +2,21 @@
 
 DEMO ?= 0
 USE_DOCKER ?= 0
-UID := $(shell id -u)
-GID := $(shell id -g)
+STYLE_DIR ?= ./style
+BIB_DIR ?= ./bibliographies
+UID ?= $(shell sh -c 'id -u 2>/dev/null || echo 1000')
+GID ?= $(shell sh -c 'id -g 2>/dev/null || echo 1000')
 
-DOCKER = docker compose run --rm -e UID=$(UID) -e GID=$(GID) -e DEMO_TEX -e LATEXMK -e LATEXMK_CLEAN latex
+DOCKER = docker compose run --rm -e UID=$(UID) -e GID=$(GID) -e DEMO_TEX -e LATEXMK -e LATEXMK_CLEAN -e STYLE_DIR -e BIB_DIR -e TEXINPUTS -e BIBINPUTS -e BSTINPUTS latex
 DEMO_TEX = build/demo.tex
 export DEMO_TEX
 
 DEMO_SCRIPT = scripts/pdf-demo.sh
 LATEXMK = latexmk -r latexmkrc -pdf -xelatex
 LATEXMK_CLEAN = latexmk -r latexmkrc -C
-TEXINPUTS := .:./style//$(if $(TEXINPUTS),:$(TEXINPUTS),:)
-BIBINPUTS := .:./bibliographies//$(if $(BIBINPUTS),:$(BIBINPUTS),:)
-BSTINPUTS := .:./style//$(if $(BSTINPUTS),:$(BSTINPUTS),:)
+TEXINPUTS := .:$(STYLE_DIR)//$(if $(TEXINPUTS),:$(TEXINPUTS),:)
+BIBINPUTS := .:$(BIB_DIR)//$(if $(BIBINPUTS),:$(BIBINPUTS),:)
+BSTINPUTS := .:$(STYLE_DIR)//$(if $(BSTINPUTS),:$(BSTINPUTS),:)
 LATEX_ENV = TEXINPUTS=$(TEXINPUTS) BIBINPUTS=$(BIBINPUTS) BSTINPUTS=$(BSTINPUTS)
 export LATEXMK LATEXMK_CLEAN
 define prepare_main_pdf_mount
