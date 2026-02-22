@@ -1041,12 +1041,14 @@ Structure : \textsc{Nom}, Prénom. \textit{Titre du document}. Niveau de la thè
 
 \subsubsection{Podcasts avec auteur nominatif}
 
-\onlineexample{\textsc{Nom}, Prénom. \textit{Titre de la vidéo}. Durée. (Titre de la collection ou de la série). URL : \url{...} [consulté le jour mois année].}|
+\onlineexample{\textsc{Nom}, Prénom. \textit{Titre de la vidéo}. Date de publication. Durée. (Titre de la collection ou de la série). URL : \url{...} [consulté le jour mois année].}|
 \begin{verbatim}
 @online{Levy:2023:IAPodcast,
   entrysubtype = {podcast},
   author       = {Lévy, Claire},
   title        = {L'intelligence artificielle au quotidien},
+  platform     = {Plateforme},
+  pubdate      = {2023-02-01},
   duration     = {28 min.},
   series       = {Le monde en question},
   urldate      = {2023-04-03},
@@ -1057,12 +1059,14 @@ Structure : \textsc{Nom}, Prénom. \textit{Titre du document}. Niveau de la thè
 
 \subsubsection{Podcasts avec auteur institutionnel}
 
-\onlineexample{Institution. \textit{Titre de la vidéo}. Durée. (Titre de la collection ou de la série). URL : \url{...} [consulté le jour mois année].}|
+\onlineexample{Éditeur. \textit{Titre de la vidéo}. Date de publication. Durée. (Titre de la collection ou de la série). URL : \url{...} [consulté le jour mois année].}|
 \begin{verbatim}
 @online{FranceCulture:2023:Holodomor,
   entrysubtype = {podcast},
-  institution  = {{France Culture}},
+  publisher    = {{France Culture}},
   title        = {La France reconnaît l'Holodomor comme un « génocide »},
+  platform     = {Radio France},
+  pubdate      = {2023-02-01},
   duration     = {15 min.},
   series       = {Guerre en Ukraine, le podcast},
   urldate      = {2023-04-03},

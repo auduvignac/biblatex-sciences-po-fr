@@ -330,7 +330,9 @@
 \DeclareBibliographyDriver{online}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \ifnameundef{author}{\printlist{institution}}{\printnames{author}}%
+  \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{podcast}} }%
+    {\ifnameundef{author}{\iflistundef{publisher}{\printlist{institution}}{\printlist{publisher}}}{\printnames{author}}}%
+    {\ifnameundef{author}{\printlist{institution}}{\printnames{author}}}%
   \newunit\newblock%
   \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{website}} }%
     {\printtext{\mkbibquote{\thefield{title}}.}}%
@@ -356,7 +358,12 @@
       {%
         \ifboolexpr{ test{\iffieldequalstr{entrysubtype}{podcast}} }%
           {%
-            \iffieldundef{duration}{}{\printfield{duration}}%
+            \iffieldundef{platform}
+              {\iflistundef{publisher}{}{\printlist{publisher}}}
+              {\printfield{platform}}%
+            \iffieldundef{pubyear}{}{\adddot\space\printonlinepubdateinline}%
+            \printonlineupdatedate%
+            \iffieldundef{duration}{}{\adddot\space\printfield{duration}}%
             \iffieldundef{series}{}{\adddot\space\mkbibparens{\printfield{series}}}%
             \adddot\space%
             \printonlineaccess%
