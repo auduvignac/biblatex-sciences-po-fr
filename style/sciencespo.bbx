@@ -4,6 +4,34 @@
 \RequireBibliographyStyle{authoryear}
 \input{sciencespo-common.def}
 
+% Sorting: keep name/year/title order but fall back to institutional fields
+% before title for entries without personal authors (e.g. many @online entries).
+\DeclareSortingTemplate{nyt}{%
+  \sort{%
+    \field{presort}}
+  \sort[final]{%
+    \field{sortkey}}
+  \sort{%
+    \field{sortname}%
+    \field{author}%
+    \field{editor}%
+    \field{translator}%
+    \field{shortauthor}%
+    \field{shorteditor}%
+    \field{shortinstitution}%
+    \field{institution}%
+    \field{organization}%
+    \field{publisher}}
+  \sort{%
+    \field{sortyear}%
+    \field{year}}
+  \sort{%
+    \field{sorttitle}%
+    \field{title}}
+  \sort{%
+    \field{volume}%
+    \literal{0}}}
+
 % --- GESTION DU NOMBRE D'AUTEURS (et al.) ---
 \AtBeginDocument{%
     \setcounter{maxnames}{3}
