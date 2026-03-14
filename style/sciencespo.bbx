@@ -384,14 +384,28 @@
   \iffieldundef{monthtext}{\printfield{month}\addspace\printfield{year}}{\printfield{monthtext}}%
   \addcomma\space%
   \iffieldundef{volume}{}{\printtext{vol.\addspace}\printfield{volume}\addcomma\space}%
-  \iffieldundef{number}{}{\printtext{n\textsuperscript{o}\addspace}\printfield{number}\addcomma\space}%
+  \iffieldundef{number}{}{\printtext{n\textsuperscript{o}\addspace}\printfield{number}}%
   \iffieldundef{pages}
     {}
     {%
+      \addcomma\space%
       \iffieldpages{pages}
         {\printtext{pp.\addspace}}
         {\printtext{p.\addspace}}%
       \printfield{pages}}%
+  % Pour les articles institutionnels: afficher le nom complet de l'institution
+  % après les informations de revue quand un sigle court a été utilisé en tête.
+  \ifboolexpr{
+    test {\ifnameundef{author}}
+    and
+    test {\ifnameundef{editor}}
+    and
+    not test {\iffieldundef{shortinstitution}}
+    and
+    not test {\iflistundef{institution}}
+  }
+    {\adddot\space\printlist{institution}}
+    {}%
   \iffieldundef{url}{}{\adddot\space\printonlineaccess}%
   \usebibmacro{finentry}%
 }
