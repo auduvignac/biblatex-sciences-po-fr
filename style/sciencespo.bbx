@@ -73,6 +73,7 @@
 \DeclareFieldFormat[thesis]{title}{\mkbibemph{#1}}
 \DeclareFieldFormat[incollection]{booktitle}{\mkbibemph{#1}}
 \DeclareFieldFormat{journaltitle}{\mkbibemph{#1}}
+\DeclareFieldFormat[article]{issuetitle}{#1}
 \DeclareFieldFormat{edition}{#1\adddot}
 \DeclareFieldFormat[incollection]{pages}{#1}
 \DeclareFieldFormat[article]{pages}{#1}
@@ -380,6 +381,7 @@
   \printfield{title}%
   \setunit{\adddot\space}%
   \printfield{journaltitle}%
+  \iffieldundef{issuetitle}{}{\addcomma\space\printtext{numéro\space\mkbibquote{\thefield{issuetitle}}}}%
   \addcomma\space%
   \iffieldundef{monthtext}{\printfield{month}\addspace\printfield{year}}{\printfield{monthtext}}%
   \addcomma\space%
