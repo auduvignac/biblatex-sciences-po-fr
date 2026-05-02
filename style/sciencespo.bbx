@@ -73,6 +73,8 @@
 \DeclareFieldFormat[thesis]{title}{\mkbibemph{#1}}
 \DeclareFieldFormat[incollection]{booktitle}{\mkbibemph{#1}}
 \DeclareFieldFormat{journaltitle}{\mkbibemph{#1}}
+\DeclareFieldFormat[article]{issuetitle}{#1}
+\DeclareFieldFormat[article]{issuetitlelabel}{#1}
 \DeclareFieldFormat{edition}{#1\adddot}
 \DeclareFieldFormat[incollection]{pages}{#1}
 \DeclareFieldFormat[article]{pages}{#1}
@@ -274,6 +276,19 @@
   \printonlineaccess%
 }
 
+\newcommand*{\printarticleissuetitle}{%
+  \iffieldundef{issuetitle}%
+    {}%
+    {%
+      \addcomma\space%
+      \printtext{%
+        \iffieldundef{issuetitlelabel}
+          {}
+          {\printfield{issuetitlelabel}\space\addcolon\space}%
+        \mkbibquote{\printfield{issuetitle}}}%
+    }%
+}
+
 \newcommand*{\printonlinejournalblock}{%
   \printfield{journaltitle}%
   \space[en ligne]\adddot\space%
@@ -380,6 +395,7 @@
   \printfield{title}%
   \setunit{\adddot\space}%
   \printfield{journaltitle}%
+  \printarticleissuetitle%
   \addcomma\space%
   \iffieldundef{monthtext}{\printfield{month}\addspace\printfield{year}}{\printfield{monthtext}}%
   \addcomma\space%

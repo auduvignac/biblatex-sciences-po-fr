@@ -343,6 +343,7 @@ Le \texttt{.cbx} repose sur \texttt{verbose-trad1} : répétition immédiate $\r
 		Tous     & \texttt{shorttitle}                                     & Affiché avant op. cit. pour distinguer deux titres du même auteur.                                           \\
 		Rapport  & \texttt{shortinstitution}                               & Acronyme prioritaire lorsque l'auteur est absent.                                                            \\
 		Article  & \texttt{monthtext}                                      & Mois/saison libre (ex. \texttt{fév.-avr. 2001}) en lieu et place de \texttt{month+year}.                     \\
+		Article  & \texttt{issuetitlelabel}                                & Libellé optionnel affiché avant \texttt{issuetitle} (ex. \texttt{Dossier thématique}).                       \\
 		Chapitre & \texttt{editortype}                                     & Rôle de l'éditeur scientifique via clé localisable (ex. \texttt{director} \(\rightarrow\) \og dir.\fg{}). \\
 		Thèse    & \texttt{discipline}                                     & Discipline affichée après le type de thèse.                                                                  \\
 		Film     & \texttt{medium}, \texttt{extent}                        & Support et durée : \og [cassette vidéo]\fg{}, \og 1 cass. vidéo VHS, 52 min.\fg{}                            \\
@@ -906,16 +907,34 @@ Structure : \textsc{Nom}, Prénom. \og Titre de l'article \fg{}. \textit{Titre d
 \end{verbatim}
 |{Rinde:Rokkan:1959:Online}{Fitoussi:1995}
 
-\subsubsection{Citation d'une revue institutionnelle avec volume et numéro sans article précisé}
+\subsubsection{Citation d'une revue institutionnelle avec volume, numéro et sans article précisé}
 
-\bookexample{Institution abrégée. \textit{Titre de la revue}, mois année, n\textsuperscript{o} y. Institution nom complet. URL : \url{...} [consulté le jour mois année].}|
+\bookexample{Institution abrégée. \textit{Titre de la revue}, « Titre du numéro », mois année, n\textsuperscript{o} y. Institution nom complet. URL : \url{...} [consulté le jour mois année].}|
+\begin{verbatim}
+@article{Sibony2015:RDN,
+  author       = {Sibony, Laura},
+  title        = {Les réseaux sociaux transforment ils la guerre ?},
+  journaltitle = {Revue Défense Nationale},
+  issuetitle   = {Cyberdéfense et cyberguerre},
+  monthtext    = {nov. 2015},
+  year         = {2015},
+  number       = {784},
+  pages        = {49-52}
+}
+\end{verbatim}
+|{Sibony2015:RDN}{Fitoussi:1995}
+
+\subsubsection{Citation d'une revue institutionnelle avec volume, numéro, dossier thématique et sans article précisé}
+
+\bookexample{Institution abrégée. \textit{Titre de la revue}, Dossier thématique : « Titre du numéro », mois année, n\textsuperscript{o} y. Institution nom complet. URL : \url{...} [consulté le jour mois année].}|
 \begin{verbatim}
 @article{IHEMI:2025:LIREC75,
   shortinstitution = {{IHEMI}},
   sortkey         = {{IHEMI}},
   institution     = {{Institut des Hautes Etudes du Ministère de l'Intérieur}},
   subtitle     = {Comment collaborer davantage avec les citoyens plutôt que de les « responsabiliser » ? : leçons tirées du Japon},
-  titleaddon   = {Dossier : Le volontariat et la mobilisation citoyenne : leviers de la gestion de crise ?},
+  issuetitlelabel  = {Dossier thématique},
+  issuetitle        = {Le volontariat et la mobilisation citoyenne : leviers de la gestion de crise ?},
   journaltitle = {LIREC -- Lettre d'information sur les risques et les crises},
   year         = {2025},
   monthtext    = {décembre 2025},
