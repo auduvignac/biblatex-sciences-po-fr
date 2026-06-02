@@ -87,10 +87,10 @@
 \DeclareFieldFormat[report]{pagetotal}{#1\addspace\bibstring{pages}}
 \DeclareFieldFormat[report]{pages}{%
   \ifnumeral{#1}
-    {p\adddot\space#1}
+    {p\adddot\addnbspace#1}
     {\ifnumerals{#1}
-       {pp\adddot\space#1}
-       {p\adddot\space#1}}}
+       {pp\adddot\addnbspace#1}
+       {p\adddot\addnbspace#1}}}
 \DeclareFieldFormat[online]{volume}{#1}
 \DeclareFieldFormat[online]{number}{#1}
 \DeclareFieldFormat[online]{pages}{#1}
@@ -295,13 +295,13 @@
   \printonlinepubdateinline%
   \iffieldundef{volume}{}{%
     \addcomma\space%
-    \printtext{vol.\space\printfield{volume}}}%
+    \printtext{vol.\addnbspace\printfield{volume}}}%
   \iffieldundef{number}{}{%
     \addcomma\space%
-    \printtext{n\textsuperscript{o}~\printfield{number}}}%
+    \printtext{n\textsuperscript{o}\addnbspace\printfield{number}}}%
   \iffieldundef{pages}{}{%
     \addcomma\space%
-    \printtext{p.\space\printfield{pages}}}%
+    \printtext{p.\addnbspace\printfield{pages}}}%
   \adddot\space%
   \printonlineaccess%
 }
@@ -370,8 +370,8 @@
   \adddot%
   \addspace%
   \iffieldpages{pages}
-    {\printtext{\bibstring{pages}\addspace}}
-    {\printtext{\bibstring{page}\addspace}}%
+    {\printtext{\bibstring{pages}\addnbspace}}
+    {\printtext{\bibstring{page}\addnbspace}}%
   \printfield{pages}%
   \iffieldundef{series}
     {}
@@ -399,15 +399,15 @@
   \addcomma\space%
   \iffieldundef{monthtext}{\printfield{month}\addspace\printfield{year}}{\printfield{monthtext}}%
   \addcomma\space%
-  \iffieldundef{volume}{}{\printtext{vol.\addspace}\printfield{volume}\addcomma\space}%
-  \iffieldundef{number}{}{\printtext{n\textsuperscript{o}~\printfield{number}}}%
+  \iffieldundef{volume}{}{\printtext{vol.\addnbspace}\printfield{volume}\addcomma\space}%
+  \iffieldundef{number}{}{\printtext{n\textsuperscript{o}\addnbspace\printfield{number}}}%
   \iffieldundef{pages}
     {}
     {%
       \addcomma\space%
       \iffieldpages{pages}
-        {\printtext{pp.\addspace}}
-        {\printtext{p.\addspace}}%
+        {\printtext{pp.\addnbspace}}
+        {\printtext{p.\addnbspace}}%
       \printfield{pages}}%
   % Pour les articles institutionnels: afficher le nom complet de l'institution
   % après les informations de revue quand un sigle court a été utilisé en tête.
