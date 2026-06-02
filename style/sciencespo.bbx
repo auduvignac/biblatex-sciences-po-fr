@@ -80,11 +80,11 @@
 \DeclareFieldFormat[article]{pages}{#1}
 \DeclareFieldFormat[thesis]{pages}{%
   \ifnumeral{#1}
-    {#1\addspace\bibstring{page}}
+    {#1\addnbspace\bibstring{page}}
     {\ifnumerals{#1}
-       {#1\addspace\bibstring{pages}}
+       {#1\addnbspace\bibstring{pages}}
        {#1}}}
-\DeclareFieldFormat[report]{pagetotal}{#1\addspace\bibstring{pages}}
+\DeclareFieldFormat[report]{pagetotal}{#1\addnbspace\bibstring{pages}}
 \DeclareFieldFormat[report]{pages}{%
   \ifnumeral{#1}
     {p\adddot\addnbspace#1}
@@ -507,9 +507,9 @@
   \iffieldundef{type}
     {\iffieldundef{number}
        {}%
-       {\printtext{\bibstring{report}\addspace\bibstring{number}\addspace\printfield{number}}}}%
+       {\printtext{\bibstring{report}\addspace\bibstring{number}\addnbspace\printfield{number}}}}%
     {\printfield{type}%
-     \iffieldundef{number}{}{\addspace\bibstring{number}\addspace\printfield{number}}}%
+     \iffieldundef{number}{}{\addspace\bibstring{number}\addnbspace\printfield{number}}}%
   \setunit{\adddot\space}%
   \iffieldundef{organization}
     {%
