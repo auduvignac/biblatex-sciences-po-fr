@@ -298,7 +298,7 @@
     \printtext{vol.\space\printfield{volume}}}%
   \iffieldundef{number}{}{%
     \addcomma\space%
-    \printtext{n\textsuperscript{o}\space\printfield{number}}}%
+    \printtext{n\textsuperscript{o}~\printfield{number}}}%
   \iffieldundef{pages}{}{%
     \addcomma\space%
     \printtext{p.\space\printfield{pages}}}%
@@ -400,7 +400,7 @@
   \iffieldundef{monthtext}{\printfield{month}\addspace\printfield{year}}{\printfield{monthtext}}%
   \addcomma\space%
   \iffieldundef{volume}{}{\printtext{vol.\addspace}\printfield{volume}\addcomma\space}%
-  \iffieldundef{number}{}{\printtext{n\textsuperscript{o}\addspace}\printfield{number}}%
+  \iffieldundef{number}{}{\printtext{n\textsuperscript{o}~\printfield{number}}}%
   \iffieldundef{pages}
     {}
     {%
